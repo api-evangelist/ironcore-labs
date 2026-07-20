@@ -1,0 +1,16 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/ironcore-labs-vendor-bridge-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: Authorization
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: 'VAB authorization header. Form: `vab:1:<API_KEY>`'
+  sources:
+  - openapi/ironcore-labs-vendor-bridge-openapi.yml
