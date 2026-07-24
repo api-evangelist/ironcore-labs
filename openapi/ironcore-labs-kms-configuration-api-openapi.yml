@@ -1,0 +1,1375 @@
+openapi: 3.1.0
+info:
+  title: Vendor API Bridge Configuration Assignment KMS Configuration API
+  version: 3.1.0
+  description: API used to manage tenants and KMS configurations by communicating with the IronCore Configuration Broker on your behalf.
+  contact:
+    name: IronCore Labs
+    url: www.ironcorelabs.com
+    email: info@ironcorelabs.com
+  summary: IronCore Vendor API Bridge
+servers:
+- url: http://localhost:3000/api
+  description: Local
+security:
+- Authorization: []
+tags:
+- name: KMS Configuration
+  description: KMS configurations from different providers (AWS, Azure, GCP, Thales)
+paths:
+  /1/kms/configs:
+    parameters: []
+    get:
+      summary: KMS Config List
+      tags:
+      - KMS Configuration
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigListResponse'
+        '401':
+          description: Unauthorized
+      operationId: get-kms-configs
+      description: "List the metadata of all KMS configurations owned by the calling vendor.  \nThis does not decrypt any of the sensitive KMS configuration data."
+      parameters:
+      - $ref: '#/components/parameters/iclRequestorId'
+      - schema:
+          type: string
+          enum:
+          - assignments
+          - created
+          - updated
+          default: created
+        in: query
+        name: sortColumn
+        description: Field to use for sorting
+      - schema:
+          type: string
+          enum:
+          - AWS
+          - GCP
+          - AZURE
+        in: query
+        name: kmsType
+        description: KMS to filter results to
+      - schema:
+          type: boolean
+        in: query
+        name: leasingEnabled
+        description: Key leasing status to filter results to
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/sortDirection'
+    post:
+      summary: KMS Config Create
+      operationId: post-kms-configs
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigCreateResponse'
+        '401':
+          description: Unauthorized
+      parameters:
+      - $ref: '#/components/parameters/iclRequestorId'
+      description: Create a new KMS configuration. This configuration will not be assigned to any tenants.
+      tags:
+      - KMS Configuration
+      requestBody:
+        $ref: '#/components/requestBodies/KmsConfigCreateRequest'
+  /1/kms/configs/{kmsConfigId}:
+    parameters:
+    - $ref: '#/components/parameters/kmsConfigId'
+    get:
+      summary: KMS Config Get
+      tags:
+      - KMS Configuration
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigGetResponse'
+        '401':
+          description: Unauthorized
+        '422':
+          description: "Unprocessable Entity  \nPossible causes:  \n\\- Invalid KMS configuration ID provided  \n\\- Kms configuration not owned by calling vendor"
+      operationId: get-kms-configs-kmsConfigId
+      parameters:
+      - $ref: '#/components/parameters/iclRequestorId'
+      description: "Get the specified KMS configuration. \nReturns metadata and, if your organization owns the configuration, the decrypted data."
+    put:
+      summary: KMS Config Update
+      operationId: put-kms-configs-kmsConfigId
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigUpdateResponse'
+        '401':
+          description: Unauthorized
+        '422':
+          description: 'Unprocessable Entity
+
+            Possible causes:
+
+            \- Invalid KMS configuration ID provided
+
+            \- Kms configuration not owned by calling vendor'
+      parameters:
+      - $ref: '#/components/parameters/iclRequestorId'
+      description: Update the specified KMS configuration's encrypted data or enable/disable key leasing for the configuration. The configuration must be owned by the calling vendor.
+      tags:
+      - KMS Configuration
+      requestBody:
+        $ref: '#/components/requestBodies/KmsConfigUpdateRequest'
+    delete:
+      summary: KMS Config Delete
+      operationId: delete-kms-configs-kmsConfigId
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigDeleteResponse'
+        '401':
+          description: Unauthorized
+        '422':
+          description: "Unprocessable Entity  \nPossible causes:  \n\\- Invalid KMS configuration ID provided  \n\\- Kms configuration not owned by calling vendor  \n\\- Config currently in use via an assignment"
+      parameters:
+      - $ref: '#/components/parameters/iclRequestorId'
+      description: 'Delete the specified KMS configuration. In order to succeed, the configuration must be owned by the calling vendor and not have any tenant assignments.
+
+
+        This API allows for destructively offboarding a tenant with active secrets. Secrets are not recoverable and any downstream services (Deterministic Encryption, Cloaked Search) will fail when attempting to do things with those secrets. **We strongly advise checking for `secret_count == 0` before issuing a KMS Configuration DELETE**.'
+      tags:
+      - KMS Configuration
+components:
+  schemas:
+    AzureKmsConfigUpdate:
+      title: AzureKmsConfigUpdate
+      type: object
+      examples:
+      - credentials:
+          clientId: myClientId
+          clientSecret: myClientSecret
+          tenantGuid: myTenantGuid
+        type: AZURE
+        version: 1
+      x-internal: false
+      description: Azure configuration update. `keyPath` cannot be updated
+      properties:
+        credentials:
+          $ref: '#/components/schemas/AzureCredentialsV1'
+        type:
+          type: string
+          enum:
+          - AZURE
+          description: 'KMS type: Azure'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+      - credentials
+      - type
+      - version
+    AwsKmsConfigUpdate:
+      title: AwsKmsConfigUpdate
+      x-stoplight: null
+      type: object
+      examples:
+      - credentials:
+          accessKeyId: myAccessKeyId
+          secretAccessKey: mySecretAccessKey
+        type: AWS
+        version: 1
+      description: AWS configuration update. `keyPath` cannot be updated
+      properties:
+        credentials:
+          $ref: '#/components/schemas/AwsCredentialsV1'
+        type:
+          type: string
+          enum:
+          - AWS
+          description: 'KMS type: AWS'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+      - credentials
+      - type
+      - version
+    GcpKmsConfigUpdate:
+      title: GcpKmsConfigUpdate
+      type: object
+      examples:
+      - credentials:
+          client_email: myClientEmail
+          private_key: myPrivateKey
+        type: GCP
+        version: 1
+      description: GCP configuration update. `keyPath` cannot be updated
+      properties:
+        credentials:
+          $ref: '#/components/schemas/GcpCredentialsV1'
+        type:
+          type: string
+          enum:
+          - GCP
+          description: 'KMS type: GCP'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+      - credentials
+      - type
+      - version
+    Base64:
+      type: string
+      title: Base64
+      examples:
+      - AgA4eyJfZGlkXyI6IjVkMW
+      pattern: ^[A-Za-z0-9+/=]+
+      description: Base 64 string
+    AwsCredentialsV1:
+      title: AwsCredentialsV1
+      type: object
+      properties:
+        accessKeyId:
+          type: string
+          description: AWS Accesss Key ID
+        secretAccessKey:
+          type: string
+          description: AWS Secret Access Key
+      required:
+      - accessKeyId
+      - secretAccessKey
+      description: AWS credentials
+      examples:
+      - accessKeyId: myAccessKeyId
+        secretAccessKey: mySecretAccessKey
+    KmsConfigId:
+      type: integer
+      title: KmsConfigId
+      description: KMS configuration ID
+      minimum: 1
+      examples: []
+    ThalesCredentialsV1:
+      title: ThalesCredentialsV1
+      x-stoplight:
+        id: 9y1giaxkl7n6i
+      type: object
+      properties:
+        authDomain:
+          type: string
+          x-stoplight:
+            id: i54hy5k27kkmy
+          description: Thales auth domain. May default to root
+        connection:
+          type: string
+          x-stoplight:
+            id: 9i96z3el8wc4f
+          description: Thales connection. May default to local_account
+        username:
+          type: string
+          x-stoplight:
+            id: i52z478me2a3c
+          description: Thales username
+        password:
+          type: string
+          x-stoplight:
+            id: qabpvzo6e57p6
+          description: Thales password
+      required:
+      - authDomain
+      - connection
+      - username
+      - password
+      description: Thales credentials
+      examples:
+      - authDomain: root
+        connection: local_account
+        username: foo
+        password: bar
+    CreatedByType:
+      type: string
+      title: CreatedByType
+      enum:
+      - Tsp
+      - Admin
+      - Va
+      examples:
+      - Vaa
+      - Tsp
+      - Admin
+      description: Creator type
+    AwsKmsConfigNonsensitive:
+      title: AwsKmsConfigNonsensitive
+      type: object
+      examples:
+      - keyPath:
+          keyID: myKeyId
+          region: us-east
+        type: AWS
+        version: 1
+      description: AWS configuration without sensitive credentials
+      properties:
+        keyPath:
+          type: object
+          required:
+          - keyID
+          - region
+          description: AWS keypath
+          properties:
+            keyID:
+              type: string
+              description: AWS Key ID
+            region:
+              type: string
+              example: us-east
+              description: AWS Region
+        type:
+          type: string
+          enum:
+          - AWS
+          description: 'KMS type: AWS'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+      - keyPath
+      - type
+      - version
+    AzureKmsConfigNonsensitive:
+      title: AzureKmsConfigNonsensitive
+      type: object
+      examples:
+      - keyPath:
+          keyName: myKeyName
+          vaultBaseUrl: myVaultBaseUrl
+        type: AZURE
+        version: 1
+      x-internal: false
+      description: Azure configuration without sensitive credentials
+      properties:
+        keyPath:
+          type: object
+          required:
+          - keyName
+          - vaultBaseUrl
+          description: Azure keypath
+          properties:
+            keyName:
+              type: string
+              description: Azure Key Name
+            vaultBaseUrl:
+              type: string
+              description: Azure Vault Base URL
+        type:
+          type: string
+          enum:
+          - AZURE
+          description: 'KMS type: Azure'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+      - keyPath
+      - type
+      - version
+    AwsKmsConfig:
+      title: AwsKmsConfig
+      type: object
+      examples:
+      - credentials:
+          accessKeyId: myAccessKeyId
+          secretAccessKey: mySecretAccessKey
+        keyPath:
+          keyID: myKeyId
+          region: us-east
+        type: AWS
+        version: 1
+      description: AWS configuration
+      properties:
+        credentials:
+          $ref: '#/components/schemas/AwsCredentialsV1'
+        keyPath:
+          type: object
+          required:
+          - keyID
+          - region
+          description: AWS keypath
+          properties:
+            keyID:
+              type: string
+              description: AWS Key ID
+            region:
+              type: string
+              example: us-east
+              description: AWS Region
+        type:
+          type: string
+          enum:
+          - AWS
+          description: 'KMS type: AWS'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+      - credentials
+      - keyPath
+      - type
+      - version
+    KmsConfigurationUpdate:
+      title: KmsConfigurationUpdate
+      oneOf:
+      - $ref: '#/components/schemas/AwsKmsConfigUpdate'
+      - $ref: '#/components/schemas/AzureKmsConfigUpdate'
+      - $ref: '#/components/schemas/GcpKmsConfigUpdate'
+      - $ref: '#/components/schemas/ThalesKmsConfigUpdate'
+        x-stoplight:
+          id: 7xcsbn867lfge
+      examples:
+      - credentials:
+          clientId: myClientId
+          clientSecret: myClientSecret
+          tenantGuid: myTenantGuid
+        type: AZURE
+        version: 1
+      - credentials:
+          accessKeyId: myAccessKeyId
+          secretAccessKey: mySecretAccessKey
+        type: AWS
+        version: 1
+      - credentials:
+          client_email: myClientEmail
+          private_key: myPrivateKey
+        keyPath:
+          cryptoKeyId: myCryptoKeyId
+          keyRingId: myKeyRingId
+          locationId: myLocationId
+          projectId: myProjectId
+        type: GCP
+        version: 1
+      description: KMS configuration update. `keyPath` cannot be updated
+    ThalesKmsConfig:
+      title: ThalesKmsConfig
+      x-stoplight:
+        id: nb2balwsrnvqk
+      type: object
+      examples:
+      - credentials:
+          authDomain: root
+          connection: local_account
+          username: foo
+          password: bar
+        keyPath:
+          keyId: string
+          serviceUrl: string
+        type: THALES
+        version: 1
+      description: Thales configuration
+      properties:
+        credentials:
+          $ref: '#/components/schemas/ThalesCredentialsV1'
+          x-stoplight:
+            id: 196iuez1cnqvf
+          description: Thales credentials. Can be updated later
+        keyPath:
+          type: object
+          x-stoplight:
+            id: iv9l0nbray601
+          description: Thales key path. Cannot be changed later
+          required:
+          - keyId
+          - serviceUrl
+          properties:
+            keyId:
+              type: string
+              x-stoplight:
+                id: yz90v635shwkj
+              description: Thales key ID
+            serviceUrl:
+              type: string
+              x-stoplight:
+                id: irltdyh6mecj6
+              description: Thales service URL
+        type:
+          type: string
+          x-stoplight:
+            id: vui4ehfkrst3q
+          enum:
+          - THALES
+          description: 'KMS type: THALES'
+        version:
+          type: integer
+          x-stoplight:
+            id: vgqjq2aj92kfs
+          minimum: 1
+          description: Config version
+      required:
+      - credentials
+      - keyPath
+      - type
+      - version
+    ThalesKmsConfigUpdate:
+      title: ThalesKmsConfigUpdate
+      x-stoplight:
+        id: nb2balwsrnvqk
+      type: object
+      examples:
+      - credentials:
+          authDomain: root
+          connection: local_account
+          username: foo
+          password: bar
+        type: THALES
+        version: 1
+      description: Thales configuration update. `keyPath` cannot be updated
+      properties:
+        credentials:
+          $ref: '#/components/schemas/ThalesCredentialsV1'
+          x-stoplight:
+            id: 196iuez1cnqvf
+          description: Thales credentials. Can be updated later
+        type:
+          type: string
+          x-stoplight:
+            id: vui4ehfkrst3q
+          enum:
+          - THALES
+          description: 'KMS type: THALES'
+        version:
+          type: integer
+          x-stoplight:
+            id: vgqjq2aj92kfs
+          minimum: 1
+          description: Config version
+      required:
+      - credentials
+      - type
+      - version
+    AzureKmsConfig:
+      title: AzureKmsConfig
+      type: object
+      examples:
+      - credentials:
+          clientId: myClientId
+          clientSecret: myClientSecret
+          tenantGuid: myTenantGuid
+        keyPath:
+          keyName: myKeyName
+          vaultBaseUrl: myVaultBaseUrl
+        type: AZURE
+        version: 1
+      x-internal: false
+      description: Azure configuration
+      properties:
+        credentials:
+          $ref: '#/components/schemas/AzureCredentialsV1'
+        keyPath:
+          type: object
+          required:
+          - keyName
+          - vaultBaseUrl
+          description: Azure keypath
+          properties:
+            keyName:
+              type: string
+              description: Azure Key Name
+            vaultBaseUrl:
+              type: string
+              description: Azure Vault Base URL
+        type:
+          type: string
+          enum:
+          - AZURE
+          description: 'KMS type: Azure'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+      - credentials
+      - keyPath
+      - type
+      - version
+    BasicKmsConfig:
+      title: BasicKmsConfig
+      type: object
+      examples:
+      - id: 501
+        kmsType: AZURE
+        version: 1
+        createdBy:
+          id: vendor
+          name: Vendor
+          type: Vaa
+        primary: true
+        active: true
+        leasingAllowed: false
+        tenantId: tenant-icl
+        created: '2022-01-13T21:44:43.653Z'
+        updated: '2022-01-13T21:44:43.653Z'
+      description: KMS Configuration metadata
+      required:
+      - id
+      - kmsType
+      - version
+      - createdBy
+      - leasingAllowed
+      - assignmentCount
+      - secretCount
+      - created
+      - updated
+      properties:
+        id:
+          type: integer
+          description: KMS Config ID
+        kmsType:
+          $ref: '#/components/schemas/KmsType'
+        version:
+          type: integer
+          description: Config verssion
+          minimum: 1
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+        leasingAllowed:
+          type: boolean
+          description: Is key leasing enabled?
+        assignmentCount:
+          description: Number of consumers of the configuration.
+          type: integer
+        secretCount:
+          type: integer
+          x-stoplight:
+            id: 8h1q01fci9mae
+          minimum: 0
+          description: Number of active secrets associated with this configuration
+        created:
+          $ref: '#/components/schemas/Timestamp'
+        updated:
+          $ref: '#/components/schemas/Timestamp'
+    CreatedBy:
+      title: CreatedBy
+      type: object
+      examples:
+      - id: vendor
+        name: Vendor
+        type: Vaa
+      description: Metadata about creating user/service
+      properties:
+        id:
+          type: string
+          description: Creator ID
+        name:
+          type: string
+          description: Creator name
+        type:
+          $ref: '#/components/schemas/CreatedByType'
+      required:
+      - id
+      - name
+      - type
+    GcpKmsConfigNonsensitive:
+      title: GcpKmsConfigNonsensitive
+      type: object
+      examples:
+      - keyPath:
+          cryptoKeyId: myCryptoKeyId
+          keyRingId: myKeyRingId
+          locationId: myLocationId
+          projectId: myProjectId
+        type: GCP
+        version: 1
+      description: GCP configuration without sensitive credentials
+      properties:
+        keyPath:
+          type: object
+          description: GCP keypath
+          required:
+          - cryptoKeyId
+          - keyRingId
+          - locationId
+          - projectId
+          properties:
+            cryptoKeyId:
+              type: string
+              description: GCP crypto key ID
+            keyRingId:
+              type: string
+              description: GCP key ring ID
+            locationId:
+              type: string
+              description: GCP location ID
+            projectId:
+              type: string
+              description: GCP project ID
+        type:
+          type: string
+          enum:
+          - GCP
+          description: 'KMS type: GCP'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+      - keyPath
+      - type
+      - version
+    GcpCredentialsV1:
+      title: GcpCredentialsV1
+      type: object
+      description: GCP credentials
+      properties:
+        client_email:
+          type: string
+          description: GCP client email
+        private_key:
+          type: string
+          description: GCP private key
+      required:
+      - client_email
+      - private_key
+      examples:
+      - client_email: myClientEmail
+        private_key: myPrivateKey
+    KmsType:
+      type: string
+      title: KmsType
+      enum:
+      - AZURE
+      - AWS
+      - GCP
+      examples:
+      - AWS
+      - AZURE
+      - GCP
+      description: 'KMS type: AWS, Azure, or GCP'
+    ThalesKmsConfigNonsensitive:
+      title: ThalesKmsConfigNonsensitive
+      x-stoplight:
+        id: nb2balwsrnvqk
+      type: object
+      examples:
+      - keyPath:
+          keyId: string
+          serviceUrl: string
+        type: THALES
+        version: 1
+      description: Thales configuration without sensitive credentials
+      properties:
+        keyPath:
+          type: object
+          x-stoplight:
+            id: iv9l0nbray601
+          description: Thales key path. Cannot be changed later
+          required:
+          - keyId
+          - serviceUrl
+          properties:
+            keyId:
+              type: string
+              x-stoplight:
+                id: yz90v635shwkj
+              description: Thales key ID
+            serviceUrl:
+              type: string
+              x-stoplight:
+                id: irltdyh6mecj6
+              description: Thales service URL
+        type:
+          type: string
+          x-stoplight:
+            id: vui4ehfkrst3q
+          enum:
+          - THALES
+          description: 'KMS type: THALES'
+        version:
+          type: integer
+          x-stoplight:
+            id: vgqjq2aj92kfs
+          minimum: 1
+          description: Config version
+      required:
+      - keyPath
+      - type
+      - version
+    AzureCredentialsV1:
+      title: AzureCredentialsV1
+      type: object
+      properties:
+        clientId:
+          type: string
+          description: Azure Client ID
+        clientSecret:
+          type: string
+          description: Azure Client Secret
+        tenantGuid:
+          type: string
+          description: Azure Tenant GUID
+      required:
+      - clientId
+      - clientSecret
+      - tenantGuid
+      description: Azure credentials
+      examples:
+      - clientId: myClientId
+        clientSecret: myClientSecret
+        tenantGuid: myTenantGuid
+    GcpKmsConfig:
+      title: GcpKmsConfig
+      type: object
+      examples:
+      - credentials:
+          client_email: myClientEmail
+          private_key: myPrivateKey
+        keyPath:
+          cryptoKeyId: myCryptoKeyId
+          keyRingId: myKeyRingId
+          locationId: myLocationId
+          projectId: myProjectId
+        type: GCP
+        version: 1
+      description: GCP configuration
+      properties:
+        credentials:
+          $ref: '#/components/schemas/GcpCredentialsV1'
+        keyPath:
+          type: object
+          description: GCP keypath
+          required:
+          - cryptoKeyId
+          - keyRingId
+          - locationId
+          - projectId
+          properties:
+            cryptoKeyId:
+              type: string
+              description: GCP crypto key ID
+            keyRingId:
+              type: string
+              description: GCP key ring ID
+            locationId:
+              type: string
+              description: GCP location ID
+            projectId:
+              type: string
+              description: GCP project ID
+        type:
+          type: string
+          enum:
+          - GCP
+          description: 'KMS type: GCP'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+      - credentials
+      - keyPath
+      - type
+      - version
+    Timestamp:
+      type: string
+      title: Timestamp
+      description: RFC3339 timestamp
+      pattern: ^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$
+      examples:
+      - '2022-01-13T21:44:43.653Z'
+      example: '2022-01-13T21:44:43.653Z'
+    KmsConfiguration:
+      title: KmsConfiguration
+      oneOf:
+      - $ref: '#/components/schemas/AwsKmsConfig'
+      - $ref: '#/components/schemas/AzureKmsConfig'
+      - $ref: '#/components/schemas/GcpKmsConfig'
+      - $ref: '#/components/schemas/ThalesKmsConfig'
+        x-stoplight:
+          id: e2tg4fjspzd23
+      examples:
+      - credentials:
+          clientId: myClientId
+          clientSecret: myClientSecret
+          tenantGuid: myTenantGuid
+        keyPath:
+          keyName: myKeyName
+          vaultBaseUrl: myVaultBaseUrl
+        type: AZURE
+        version: 1
+      - credentials:
+          accessKeyId: myAccessKeyId
+          secretAccessKey: mySecretAccessKey
+        keyPath:
+          keyID: myKeyId
+          region: us-east
+        type: AWS
+        version: 1
+      - credentials:
+          client_email: myClientEmail
+          private_key: myPrivateKey
+        keyPath:
+          cryptoKeyId: myCryptoKeyId
+          keyRingId: myKeyRingId
+          locationId: myLocationId
+          projectId: myProjectId
+        type: GCP
+        version: 1
+      description: KMS configuration
+    KmsConfigurationNonsensitive:
+      title: KmsConfigurationNonsensitive
+      oneOf:
+      - $ref: '#/components/schemas/AwsKmsConfigNonsensitive'
+      - $ref: '#/components/schemas/AzureKmsConfigNonsensitive'
+      - $ref: '#/components/schemas/GcpKmsConfigNonsensitive'
+      - $ref: '#/components/schemas/ThalesKmsConfigNonsensitive'
+        x-stoplight:
+          id: 3pgfp6g80ysuq
+      examples:
+      - keyPath:
+          keyName: myKeyName
+          vaultBaseUrl: myVaultBaseUrl
+        type: AZURE
+        version: 1
+      - keyPath:
+          keyID: myKeyId
+          region: us-east
+        type: AWS
+        version: 1
+      - keyPath:
+          cryptoKeyId: myCryptoKeyId
+          keyRingId: myKeyRingId
+          locationId: myLocationId
+          projectId: myProjectId
+        type: GCP
+        version: 1
+      description: KMS configuration without sensitive credentials
+  parameters:
+    sortDirection:
+      name: sortDirection
+      in: query
+      required: false
+      schema:
+        type: string
+        default: desc
+        enum:
+        - asc
+        - desc
+      description: Direction to sort
+    page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+      description: Page number to return
+    kmsConfigId:
+      name: kmsConfigId
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: KMS Configuration ID
+    iclRequestorId:
+      name: icl-requestor-id
+      in: header
+      required: true
+      schema:
+        type: string
+      description: ID of requesting user/service
+    pageSize:
+      name: pageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 10
+      description: Number of entries returned per page
+  responses:
+    KmsConfigCreateResponse:
+      description: Result of creating a KMS configuration
+      content:
+        application/json:
+          schema:
+            title: KmsConfigCreateResponse
+            type: object
+            examples:
+            - id: 1
+              encryptedConfig: string
+              kmsType: AZURE
+              version: 1
+              createdBy:
+                id: string
+                name: string
+                type: Vaa
+              created: '2022-01-13T21:44:43.653Z'
+              updated: '2022-01-13T21:44:43.653Z'
+              leasingAllowed: true
+            required:
+            - id
+            - encryptedConfig
+            - kmsType
+            - version
+            - createdBy
+            - leasingAllowed
+            - assignmentCount
+            - secretCount
+            - created
+            - updated
+            properties:
+              id:
+                $ref: '#/components/schemas/KmsConfigId'
+              encryptedConfig:
+                $ref: '#/components/schemas/Base64'
+              kmsType:
+                $ref: '#/components/schemas/KmsType'
+              version:
+                type: integer
+                description: Config version
+                minimum: 1
+              createdBy:
+                $ref: '#/components/schemas/CreatedBy'
+              leasingAllowed:
+                type: boolean
+                description: Is key leasing enabled?
+              assignmentCount:
+                type: integer
+                description: Number of consumers of this configuration
+                minimum: 0
+              secretCount:
+                type: integer
+                x-stoplight:
+                  id: wgnyzqo5kmid0
+                minimum: 0
+                description: Number of active secrets associated with this configuration
+              created:
+                $ref: '#/components/schemas/Timestamp'
+              updated:
+                $ref: '#/components/schemas/Timestamp'
+          examples:
+            New tenant:
+              value:
+                id: 803
+                encryptedConfig: AgA4eyJfZGlkXyI6IjVkMW
+                kmsType: AZURE
+                version: 1
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                leasingAllowed: false
+                assignmentCount: 0
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+                secretCount: 0
+    KmsConfigDeleteResponse:
+      description: Result of deleting a KMS configuration
+      content:
+        application/json:
+          schema:
+            title: KmsConfigDeleteResponse
+            type: object
+            examples:
+            - id: 1
+            properties:
+              id:
+                $ref: '#/components/schemas/KmsConfigId'
+            required:
+            - id
+          examples:
+            Delete tenant:
+              value:
+                id: 803
+    KmsConfigGetResponse:
+      description: Result of decrypting a KMS configuration
+      content:
+        application/json:
+          schema:
+            title: KmsConfigGetResponse
+            type: object
+            required:
+            - id
+            - decryptedConfig
+            - createdBy
+            - leasingAllowed
+            - assignmentCount
+            - secretCount
+            - created
+            - updated
+            properties:
+              id:
+                $ref: '#/components/schemas/KmsConfigId'
+              decryptedConfig:
+                $ref: '#/components/schemas/KmsConfigurationNonsensitive'
+              createdBy:
+                $ref: '#/components/schemas/CreatedBy'
+              leasingAllowed:
+                type: boolean
+                description: Is key leasing enabled?
+              assignmentCount:
+                description: Number of consumers of the configuration.
+                type: integer
+              secretCount:
+                type: integer
+                x-stoplight:
+                  id: 3v7sbjdhyxia4
+                minimum: 0
+                description: Number of active secrets associated with this configuration
+              created:
+                $ref: '#/components/schemas/Timestamp'
+              updated:
+                $ref: '#/components/schemas/Timestamp'
+          examples:
+            Get configuration:
+              value:
+                id: 803
+                decryptedConfig:
+                  keyPath:
+                    keyName: myKeyPath
+                    vaultBaseUrl: myVaultBaseUrl
+                  type: AZURE
+                  version: 1
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                leasingAllowed: false
+                assignmentCount: 2
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+                secretCount: 0
+    KmsConfigListResponse:
+      description: Result of listing the vendor's KMS configurations
+      content:
+        application/json:
+          schema:
+            title: TenantConfigListResponse
+            type: object
+            examples:
+            - tenant_configs:
+              - id: 1
+                kmsType: AZURE
+                version: 1
+                createdBy:
+                  id: string
+                  name: string
+                  type: Vaa
+                primary: true
+                active: true
+                leasingAllowed: true
+                tenantId: string
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+              vendor_configs:
+              - id: 1
+                kmsType: AZURE
+                version: 1
+                createdBy:
+                  id: string
+                  name: string
+                  type: Vaa
+                primary: true
+                active: true
+                leasingAllowed: true
+                tenantId: string
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+            properties:
+              result:
+                type: array
+                minItems: 0
+                description: Vendor configs
+                items:
+                  $ref: '#/components/schemas/BasicKmsConfig'
+              page:
+                type: integer
+                description: Current response page number
+              totalPages:
+                type: integer
+                description: Total number of response pages
+            required:
+            - result
+            - page
+            - totalPages
+          examples:
+            List configurations:
+              value:
+                result:
+                - id: 803
+                  kmsType: AZURE
+                  version: 1
+                  createdBy:
+                    id: vendor
+                    name: Vendor
+                    type: Va
+                  leasingAllowed: false
+                  assignmentCount: 1
+                  created: '2022-01-13T21:44:43.653Z'
+                  updated: '2022-01-13T21:44:43.653Z'
+                  secretCount: 0
+                page: 1
+                totalPages: 1
+    KmsConfigUpdateResponse:
+      description: Result of updating a KMS configuration
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - id
+            - encryptedConfig
+            - kmsType
+            - version
+            - createdBy
+            - leasingAllowed
+            - assignmentCount
+            - secretCount
+            - created
+            - updated
+            properties:
+              id:
+                $ref: '#/components/schemas/KmsConfigId'
+              encryptedConfig:
+                $ref: '#/components/schemas/Base64'
+              kmsType:
+                $ref: '#/components/schemas/KmsType'
+              version:
+                type: integer
+                description: Config version
+                minimum: 1
+              createdBy:
+                $ref: '#/components/schemas/CreatedBy'
+              leasingAllowed:
+                type: boolean
+                description: Is key leasing enabled?
+              assignmentCount:
+                type: integer
+                description: Number of consumers of this configuration
+                minimum: 0
+              secretCount:
+                type: integer
+                x-stoplight:
+                  id: ywki49gsj579o
+                minimum: 0
+                description: Number of active secrets associated with this configuration
+              created:
+                $ref: '#/components/schemas/Timestamp'
+              updated:
+                $ref: '#/components/schemas/Timestamp'
+          examples:
+            Update configuration:
+              value:
+                id: 1
+                encryptedConfig: AgA4eyJfZGlkXyI6IjVkMW
+                kmsType: AZURE
+                version: 1
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                leasingAllowed: true
+                assignmentCount: 0
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+                secretCount: 0
+  requestBodies:
+    KmsConfigCreateRequest:
+      content:
+        application/json:
+          schema:
+            title: KmsConfigCreateRequest
+            type: object
+            examples:
+            - config:
+                credentials:
+                  clientId: string
+                  clientSecret: string
+                  tenantGuid: string
+                keyPath:
+                  keyName: string
+                  vaultBaseUrl: string
+                type: AZURE
+                version: 1
+            properties:
+              config:
+                $ref: '#/components/schemas/KmsConfiguration'
+              leasingAllowed:
+                type: boolean
+                x-stoplight:
+                  id: cipij334xvx1t
+                description: Optional value indicating whether KMS config leasing should be enabled for the new configuration. If undefined, defaults to false.
+            required:
+            - config
+          examples:
+            Azure KMS configuration:
+              value:
+                config:
+                  credentials:
+                    clientId: myClientId
+                    clientSecret: myClientSecret
+                    tenantGuid: myTenantGuid
+                  keyPath:
+                    keyName: myKeyName
+                    vaultBaseUrl: myVaultBaseUrl
+                  type: AZURE
+                  version: 1
+                leasingAllowed: true
+            AWS KMS configuration:
+              value:
+                config:
+                  credentials:
+                    accessKeyId: myAccessKeyId
+                    secretAccessKey: mySecretAccessKey
+                  keyPath:
+                    keyID: myKeyId
+                    region: us-east
+                  type: AWS
+                  version: 1
+                leasingAllowed: true
+            GCP KMS configuration:
+              value:
+                config:
+                  credentials:
+                    client_email: myClientEmail
+                    private_key: myPrivateKey
+                  keyPath:
+                    cryptoKeyId: myCryptoKeyId
+                    keyRingId: myKeyRingId
+                    locationId: myLocationId
+                    projectId: myProjectId
+                  type: GCP
+                  version: 1
+                leasingAllowed: true
+      description: Encrypt a new KMS configuration
+    KmsConfigUpdateRequest:
+      content:
+        application/json:
+          schema:
+            title: KmsConfigUpdateRequest
+            type: object
+            properties:
+              config:
+                $ref: '#/components/schemas/KmsConfigurationUpdate'
+              leasingAllowed:
+                type: boolean
+                description: Wheather to allow key leasing for this configuration.
+          examples:
+            Update AWS Config:
+              value:
+                config:
+                  credentials:
+                    accessKeyId: myAccessKeyId
+                    secretAccessKey: mySecretAccessKey
+                  type: AWS
+                  version: 1
+            Update Key Leasing:
+              value:
+                leasingAllowed: true
+      description: 'Update an existing KMS configuration. The new configuration''s type and version must match the existing configuration. '
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header
+      description: 'VAB authorization header. Form: `vab:1:<API_KEY>`'
+x-stoplight:
+  id: jiu0tsbmtfigo

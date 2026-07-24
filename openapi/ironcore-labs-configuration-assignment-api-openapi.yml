@@ -1,0 +1,443 @@
+openapi: 3.1.0
+info:
+  title: Vendor API Bridge Configuration Assignment API
+  version: 3.1.0
+  description: API used to manage tenants and KMS configurations by communicating with the IronCore Configuration Broker on your behalf.
+  contact:
+    name: IronCore Labs
+    url: www.ironcorelabs.com
+    email: info@ironcorelabs.com
+  summary: IronCore Vendor API Bridge
+servers:
+- url: http://localhost:3000/api
+  description: Local
+security:
+- Authorization: []
+tags:
+- name: Configuration Assignment
+  description: Assignments between KMS configurations and tenants
+paths:
+  /1/tenants/{tenantId}/assignments:
+    parameters:
+    - $ref: '#/components/parameters/tenantId'
+    get:
+      summary: Tenant KMS Assignment List
+      tags:
+      - Configuration Assignment
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigAssignmentListResponse'
+        '401':
+          description: Unauthorized
+      operationId: get-tenants-tenantId-assignments
+      description: List the KMS assignments associated with the provided tenant.
+      parameters:
+      - $ref: '#/components/parameters/iclRequestorId'
+      - schema:
+          type: string
+          enum:
+          - active
+          - primary
+          - created
+          - updated
+          default: created
+        in: query
+        name: sortColumn
+        description: Field to use for sorting
+      - schema:
+          type: string
+          enum:
+          - active
+          - disabled
+          - primary
+        in: query
+        name: status
+        description: Assignment status to filter to
+      - schema:
+          type: string
+        in: query
+        description: Tenant ID, tenant name, or KMS configuration ID to filter to
+        name: query
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/sortDirection'
+  /1/kms/configs/{kmsConfigId}/assignments:
+    parameters:
+    - $ref: '#/components/parameters/kmsConfigId'
+    get:
+      summary: Configuration Assignment List
+      tags:
+      - Configuration Assignment
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigAssignmentListResponse'
+        '401':
+          description: Unauthorized
+      operationId: get-kms-configs-kmsConfigId-assignments
+      description: List the assignments associated with the provided KMS configuration.
+      parameters:
+      - schema:
+          type: string
+          enum:
+          - active
+          - primary
+          - created
+          - updated
+          default: created
+        in: query
+        name: sortColumn
+        description: Field to use for sorting
+      - schema:
+          type: string
+          enum:
+          - active
+          - disabled
+          - primary
+        in: query
+        name: status
+        description: Assignment status to filter to
+      - schema:
+          type: string
+        in: query
+        name: query
+        description: Tenant ID, tenant name, or KMS configuration ID to filter to
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/sortDirection'
+      - $ref: '#/components/parameters/iclRequestorId'
+  /1/kms/configs/{kmsConfigId}/tenants/{tenantId}:
+    parameters:
+    - $ref: '#/components/parameters/kmsConfigId'
+    - $ref: '#/components/parameters/tenantId'
+    get:
+      summary: KMS Assignment Get
+      tags:
+      - Configuration Assignment
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigAssignmentGetResponse'
+        '400':
+          description: "Bad Request  \nPossible causes:  \n\\- Invalid KMS configuration ID provided  \n\\- Invalid tenant ID provided"
+        '401':
+          description: Unauthorized
+      operationId: get-kms-configs-kmsConfigId-tenants-tenantId
+      parameters:
+      - $ref: '#/components/parameters/iclRequestorId'
+      description: Get the assignment from the KMS configuration to the provided tenant.
+    post:
+      summary: KMS Assignment Create
+      operationId: post-kms-configs-kmsConfigId-tenants-tenantId
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigAssignmentCreateResponse'
+        '400':
+          description: "Bad Request  \nPossible causes:  \n\\- Invalid KMS configuration ID provided  \n\\- Invalid tenant ID provided"
+        '401':
+          description: Unauthorized
+      parameters:
+      - $ref: '#/components/parameters/iclRequestorId'
+      tags:
+      - Configuration Assignment
+      description: Create a new assignment from the KMS configuration to the provided tenant. The new assignment will be active but not primary.
+    put:
+      summary: KMS Assignment Update
+      operationId: put-kms-configs-kmsConfigId-tenants-tenantId
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigAssignmentUpdateResponse'
+        '400':
+          description: "Bad Request  \nPossible causes:  \n\\- Invalid KMS configuration ID provided  \n\\- Invalid tenant ID provided\n\\- Attempting to set `primary` to `true` while `active` is `false`"
+        '401':
+          description: Unauthorized
+      parameters:
+      - $ref: '#/components/parameters/iclRequestorId'
+      tags:
+      - Configuration Assignment
+      requestBody:
+        $ref: '#/components/requestBodies/KmsConfigAssignmentUpdateRequest'
+      description: 'Update the assignment from the KMS configuration to the provided tenant. In order to succeed, the tenant must not own any of their own KMS configurations.
+
+        The primary configuration is used for encrypt calls. Setting this configuration to primary will un-set the previous primary.
+
+        Active configurations are used for appropriate decrypt calls.'
+    delete:
+      summary: KMS Assignment Delete
+      operationId: delete-kms-configs-kmsConfigId-tenants-tenantId
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigAssignmentDeleteResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      parameters:
+      - $ref: '#/components/parameters/iclRequestorId'
+      tags:
+      - Configuration Assignment
+      description: Delete the assignment from the KMS configuration to the provided tenant. In order to succeed, the tenant must not own any of their own KMS configurations.
+components:
+  schemas:
+    KmsConfigId:
+      type: integer
+      title: KmsConfigId
+      description: KMS configuration ID
+      minimum: 1
+      examples: []
+    CreatedByType:
+      type: string
+      title: CreatedByType
+      enum:
+      - Tsp
+      - Admin
+      - Va
+      examples:
+      - Vaa
+      - Tsp
+      - Admin
+      description: Creator type
+    Timestamp:
+      type: string
+      title: Timestamp
+      description: RFC3339 timestamp
+      pattern: ^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$
+      examples:
+      - '2022-01-13T21:44:43.653Z'
+      example: '2022-01-13T21:44:43.653Z'
+    TenantId:
+      title: TenantId
+      type: string
+      description: Tenant ID
+      examples:
+      - tenant-icl
+    CreatedBy:
+      title: CreatedBy
+      type: object
+      examples:
+      - id: vendor
+        name: Vendor
+        type: Vaa
+      description: Metadata about creating user/service
+      properties:
+        id:
+          type: string
+          description: Creator ID
+        name:
+          type: string
+          description: Creator name
+        type:
+          $ref: '#/components/schemas/CreatedByType'
+      required:
+      - id
+      - name
+      - type
+    KmsConfigAssignmentResponse:
+      title: KmsConfigAssignmentResponse
+      type: object
+      x-internal: false
+      properties:
+        kmsConfigId:
+          $ref: '#/components/schemas/KmsConfigId'
+        tenantId:
+          $ref: '#/components/schemas/TenantId'
+        active:
+          type: boolean
+          description: Whether the associated KMS configuration can be used to encrypt/decrypt calls.
+        primary:
+          type: boolean
+          description: Whether the associated KMS configuration will be used for encrypt calls.
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+        created:
+          $ref: '#/components/schemas/Timestamp'
+        updated:
+          $ref: '#/components/schemas/Timestamp'
+      required:
+      - kmsConfigId
+      - tenantId
+      - active
+      - primary
+      - createdBy
+      - created
+      - updated
+  responses:
+    KmsConfigAssignmentListResponse:
+      description: Result of listing KMS configuration assignments
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              result:
+                type: array
+                description: KMS configuration assignments
+                items:
+                  $ref: '#/components/schemas/KmsConfigAssignmentResponse'
+              page:
+                type: integer
+                description: Current response page number
+              totalPages:
+                type: integer
+                description: Total number of response pages
+            required:
+            - result
+            - page
+            - totalPages
+      headers: {}
+    KmsConfigAssignmentGetResponse:
+      description: Result of getting the assignment from a KMS configuration to a tenant.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KmsConfigAssignmentResponse'
+          examples:
+            Get Assignment:
+              value:
+                kmsConfigId: 1
+                tenantId: tenant-icl
+                active: true
+                primary: true
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+    KmsConfigAssignmentCreateResponse:
+      description: Result of assigning a KMS configuration to a tenant.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KmsConfigAssignmentResponse'
+          examples:
+            New assignment:
+              value:
+                kmsConfigId: 1
+                tenantId: tenant-icl
+                active: true
+                primary: true
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+    KmsConfigAssignmentDeleteResponse:
+      description: Result of deleting the assignment from a KMS configuration to a tenant.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              kmsConfigId:
+                $ref: '#/components/schemas/KmsConfigId'
+              tenantId:
+                $ref: '#/components/schemas/TenantId'
+            required:
+            - kmsConfigId
+            - tenantId
+          examples:
+            Delete assignment:
+              value:
+                kmsConfigId: 1
+                tenantId: tenant-icl
+    KmsConfigAssignmentUpdateResponse:
+      description: Result of updating the assignment from a KMS configuration to a tenant.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KmsConfigAssignmentResponse'
+          examples:
+            Update Assignment:
+              value:
+                kmsConfigId: 1
+                tenantId: tenant-icl
+                active: true
+                primary: true
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+  parameters:
+    sortDirection:
+      name: sortDirection
+      in: query
+      required: false
+      schema:
+        type: string
+        default: desc
+        enum:
+        - asc
+        - desc
+      description: Direction to sort
+    page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+      description: Page number to return
+    iclRequestorId:
+      name: icl-requestor-id
+      in: header
+      required: true
+      schema:
+        type: string
+      description: ID of requesting user/service
+    tenantId:
+      name: tenantId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Tenant ID
+    pageSize:
+      name: pageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 10
+      description: Number of entries returned per page
+    kmsConfigId:
+      name: kmsConfigId
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: KMS Configuration ID
+  requestBodies:
+    KmsConfigAssignmentUpdateRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              active:
+                type: boolean
+                description: Whether the associated KMS configuration can be used to encrypt/decrypt calls.
+              primary:
+                type: boolean
+                description: Whether the associated KMS configuration will be used for encrypt calls.
+          examples:
+            Set primary:
+              value:
+                active: true
+                primary: true
+            Disable configuration:
+              value:
+                active: false
+                primary: false
+      description: Update a KMS configuration assignment
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header
+      description: 'VAB authorization header. Form: `vab:1:<API_KEY>`'
+x-stoplight:
+  id: jiu0tsbmtfigo
