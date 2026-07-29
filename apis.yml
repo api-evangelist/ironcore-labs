@@ -1,25 +1,193 @@
 aid: ironcore-labs
 name: IronCore Labs
-description: IronCore Labs is a company surfaced as a portfolio company of techstars and added to the
-  API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  IronCore Labs builds application-layer encryption tools that keep sensitive
+  data private while it stays usable. Its products include SaaS Shield
+  (tenant-controlled envelope encryption with customer-managed keys / BYOK for
+  multi-tenant SaaS), Cloaked Search (a transparent encrypting proxy for
+  Elasticsearch and OpenSearch), Cloaked AI (encryption of vector embeddings for
+  AI/RAG workloads while preserving similarity search), the Data Control Platform
+  (end-to-end encryption SDKs where the end user holds the key), and an S3 Proxy
+  for per-tenant object encryption. Developers integrate through the unified
+  IronCore Alloy SDK (Rust, Python, Java, Kotlin), the legacy Tenant Security
+  Client (Node.js, Go, PHP), and the self-hosted Vendor API Bridge REST API for
+  programmatic tenant and KMS configuration management.
 url: https://raw.githubusercontent.com/api-evangelist/ironcore-labs/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://ironcorelabs.com/images/blog/generic-ironcore-graphic-hero.jpg
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - techstars
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: enriched
+x-tier-reason: real-api-and-artifacts
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
 tags:
 - Company
-apis: []
+- Encryption
+- Data Privacy
+- Security
+- Application-Layer Encryption
+- Key Management
+- Cryptography
+- AI
+- Vector Database
+- SaaS
+apis:
+- aid: ironcore-labs:ironcore-labs-configuration-assignment-api
+  name: IronCore Labs Configuration Assignment API
+  description: Assignments between KMS configurations and tenants
+  humanURL: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
+  baseURL: https://ironcorelabs.com
+  tags:
+  - Configuration Assignment
+  properties:
+  - type: OpenAPI
+    url: openapi/ironcore-labs-configuration-assignment-api-openapi.yml
+  - type: APIReference
+    url: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
+- aid: ironcore-labs:ironcore-labs-kms-configuration-api
+  name: IronCore Labs KMS Configuration API
+  description: KMS configurations from different providers (AWS, Azure, GCP, Thales)
+  humanURL: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
+  baseURL: https://ironcorelabs.com
+  tags:
+  - KMS Configuration
+  properties:
+  - type: OpenAPI
+    url: openapi/ironcore-labs-kms-configuration-api-openapi.yml
+  - type: APIReference
+    url: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
+- aid: ironcore-labs:ironcore-labs-tag-api
+  name: IronCore Labs Tag API
+  description: >-
+    Label shared between service account configs and tenants. Controls where KMS configurations can be
+    sent.
+  humanURL: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
+  baseURL: https://ironcorelabs.com
+  tags:
+  - Tag
+  properties:
+  - type: OpenAPI
+    url: openapi/ironcore-labs-tag-api-openapi.yml
+  - type: APIReference
+    url: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
+- aid: ironcore-labs:ironcore-labs-tenant-api
+  name: IronCore Labs Tenant API
+  description: Vendor tenants managed by the Config Broker
+  humanURL: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
+  baseURL: https://ironcorelabs.com
+  tags:
+  - Tenant
+  properties:
+  - type: OpenAPI
+    url: openapi/ironcore-labs-tenant-api-openapi.yml
+  - type: APIReference
+    url: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
+- aid: ironcore-labs:ironcore-labs-tenant-secret-api
+  name: IronCore Labs Tenant Secret API
+  description: Tenant secrets created by the TSP and stored in the Config Broker
+  humanURL: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
+  baseURL: https://ironcorelabs.com
+  tags:
+  - Tenant Secret
+  properties:
+  - type: OpenAPI
+    url: openapi/ironcore-labs-tenant-secret-api-openapi.yml
+  - type: APIReference
+    url: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+# --- Identity / developer surface ---
 - type: Website
   url: https://ironcorelabs.com/
+- type: DeveloperPortal
+  url: https://ironcorelabs.com/docs/
+- type: Documentation
+  url: https://ironcorelabs.com/docs/
+- type: APIReference
+  url: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
+- type: GettingStarted
+  url: https://ironcorelabs.com/docs/data-control-platform/quickstart/
+- type: Blog
+  url: https://ironcorelabs.com/blog/
+- type: Pricing
+  url: https://ironcorelabs.com/pricing/
+- type: GitHubOrganization
+  url: https://github.com/IronCoreLabs
+- type: Support
+  url: https://github.com/IronCoreLabs/community
+- type: TermsOfService
+  url: https://ironcorelabs.com/trust-center/terms-of-service/
+- type: PrivacyPolicy
+  url: https://ironcorelabs.com/trust-center/privacy/
+# --- Artifacts ---
+- type: OpenAPI
+  url: openapi/ironcore-labs-vendor-bridge-openapi.yml
+- type: Authentication
+  url: authentication/ironcore-labs-authentication.yml
+- type: Conventions
+  url: conventions/ironcore-labs-conventions.yml
+- type: ErrorCatalog
+  url: errors/ironcore-labs-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/ironcore-labs-lifecycle.yml
+- type: StatusPage
+  url: https://ironcorelabs.github.io/upptime/
+- type: Deprecation
+  url: https://ironcorelabs.com/docs/saas-shield/vendor-api/changelog/
+- type: ChangeLog
+  url: changelog/ironcore-labs-changelog.yml
+- type: DataModel
+  url: data-model/ironcore-labs-data-model.yml
+- type: Conformance
+  url: conformance/ironcore-labs-conformance.yml
+- type: Packages
+  url: packages/ironcore-labs-packages.yml
+- type: SDKs
+  url: packages/ironcore-labs-packages.yml
+- type: CLI
+  url: cli/ironcore-labs-cli.yml
+- type: MCPServer
+  url: mcp/ironcore-labs-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/ironcore-labs-llms.txt
+- type: WellKnown
+  url: well-known/ironcore-labs-well-known.yml
+- type: SecurityTxt
+  url: well-known/ironcore-labs-security.txt
+# --- Security / trust ---
+- type: VulnerabilityDisclosure
+  url: security/ironcore-labs-vulnerability-disclosure.yml
+- type: Security
+  url: https://ironcorelabs.com/trust-center/bug-bounty-program/
+- type: DomainSecurity
+  url: security/ironcore-labs-domain-security.yml
+- type: TrustCenter
+  url: https://ironcorelabs.com/trust-center/
+- type: Compliance
+  url: https://ironcorelabs.com/trust-center/
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

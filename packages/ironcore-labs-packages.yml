@@ -1,0 +1,137 @@
+generated: '2026-07-19'
+method: searched
+source: >-
+  Public registry lookups (crates.io, PyPI, Maven Central, npm) plus the
+  IronCore Labs GitHub org (https://github.com/IronCoreLabs) and
+  https://ironcorelabs.com/docs/
+packages:
+  # --- IronCore Alloy: unified SDK for SaaS Shield / Cloaked Search / Cloaked AI ---
+  - language: rust
+    registry: crates.io
+    name: ironcore-alloy
+    version: 0.15.2
+    url: https://crates.io/crates/ironcore-alloy
+    install: cargo add ironcore-alloy
+    official: true
+    notes: Unified SDK for IronCore encryption operations incl. vector encryption for AI data.
+  - language: python
+    registry: pypi
+    name: ironcore-alloy
+    version: 0.15.2
+    url: https://pypi.org/project/ironcore-alloy/
+    install: pip install ironcore-alloy
+    official: true
+  - language: java
+    registry: maven-central
+    name: com.ironcorelabs:ironcore-alloy-java
+    version: 0.12.1
+    url: https://central.sonatype.com/artifact/com.ironcorelabs/ironcore-alloy-java
+    install: 'implementation("com.ironcorelabs:ironcore-alloy-java:0.12.1")'
+    official: true
+  - language: kotlin
+    registry: maven-central
+    name: com.ironcorelabs:ironcore-alloy
+    version: 0.12.1
+    url: https://central.sonatype.com/artifact/com.ironcorelabs/ironcore-alloy
+    install: 'implementation("com.ironcorelabs:ironcore-alloy:0.12.1")'
+    official: true
+  # --- Tenant Security Client (SaaS Shield TSP clients, legacy where Alloy unsupported) ---
+  - language: java
+    registry: maven-central
+    name: com.ironcorelabs:tenant-security-java
+    version: 7.2.2
+    url: https://central.sonatype.com/artifact/com.ironcorelabs/tenant-security-java
+    install: 'implementation("com.ironcorelabs:tenant-security-java:7.2.2")'
+    official: true
+  - language: javascript
+    registry: npm
+    name: "@ironcorelabs/tenant-security-nodejs"
+    version: 4.1.2
+    url: https://www.npmjs.com/package/@ironcorelabs/tenant-security-nodejs
+    install: npm install @ironcorelabs/tenant-security-nodejs
+    official: true
+  - language: go
+    registry: pkg.go.dev
+    name: github.com/IronCoreLabs/tenant-security-client-go
+    url: https://pkg.go.dev/github.com/IronCoreLabs/tenant-security-client-go
+    install: go get github.com/IronCoreLabs/tenant-security-client-go
+    official: true
+  - language: php
+    registry: github
+    name: IronCoreLabs/tenant-security-client-php
+    url: https://github.com/IronCoreLabs/tenant-security-client-php
+    official: true
+  # --- Data Control Platform (end-to-end encryption) SDKs ---
+  - language: rust
+    registry: crates.io
+    name: ironoxide
+    version: 4.4.1
+    url: https://crates.io/crates/ironoxide
+    install: cargo add ironoxide
+    official: true
+    notes: Rust SDK for IronCore's Data Control Platform end-to-end encryption.
+  - language: java
+    registry: maven-central
+    name: com.ironcorelabs:ironoxide-java
+    version: 0.16.0
+    url: https://central.sonatype.com/artifact/com.ironcorelabs/ironoxide-java
+    install: 'implementation("com.ironcorelabs:ironoxide-java:0.16.0")'
+    official: true
+  - language: java
+    registry: maven-central
+    name: com.ironcorelabs:ironoxide-android
+    version: 0.16.0
+    url: https://central.sonatype.com/artifact/com.ironcorelabs/ironoxide-android
+    official: true
+  - language: scala
+    registry: maven-central
+    name: com.ironcorelabs:ironoxide-scala_2.13
+    version: 0.18.0
+    url: https://central.sonatype.com/artifact/com.ironcorelabs/ironoxide-scala_2.13
+    official: true
+  - language: javascript
+    registry: npm
+    name: "@ironcorelabs/ironweb"
+    version: 4.4.1
+    url: https://www.npmjs.com/package/@ironcorelabs/ironweb
+    install: npm install @ironcorelabs/ironweb
+    official: true
+    notes: Browser (JavaScript) SDK for DCP end-to-end encryption.
+  - language: javascript
+    registry: npm
+    name: "@ironcorelabs/ironnode"
+    version: 1.2.0
+    url: https://www.npmjs.com/package/@ironcorelabs/ironnode
+    install: npm install @ironcorelabs/ironnode
+    official: true
+    notes: Node.js SDK for DCP end-to-end encryption.
+  # --- Cryptography primitives (Transform / Proxy Re-Encryption) ---
+  - language: rust
+    registry: crates.io
+    name: recrypt
+    version: 0.16.0
+    url: https://crates.io/crates/recrypt
+    install: cargo add recrypt
+    official: true
+    notes: Audited, constant-time transform (proxy re-)encryption primitives.
+  - language: rust
+    registry: crates.io
+    name: gridiron
+    version: 0.12.2
+    url: https://crates.io/crates/gridiron
+    install: cargo add gridiron
+    official: true
+    notes: Constant-time finite-field / big-number math used by recrypt-rs.
+  - language: scala
+    registry: maven-central
+    name: com.ironcorelabs:recrypt-core_2.13
+    version: 6.0.0
+    url: https://central.sonatype.com/artifact/com.ironcorelabs/recrypt-core_2.13
+    official: true
+  - language: java
+    registry: maven-central
+    name: com.ironcorelabs:cloaked-ai
+    version: 0.4.3
+    url: https://central.sonatype.com/artifact/com.ironcorelabs/cloaked-ai
+    official: true
+    notes: Legacy standalone Cloaked AI vector-encryption library (superseded by ironcore-alloy).

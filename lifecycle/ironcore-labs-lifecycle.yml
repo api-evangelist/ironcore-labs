@@ -1,0 +1,28 @@
+generated: '2026-07-19'
+method: searched
+source: >-
+  https://ironcorelabs.com/docs/saas-shield/vendor-api/changelog/ +
+  https://ironcorelabs.com/trust-center/ + https://ironcorelabs.github.io/upptime/
+api: openapi/ironcore-labs-vendor-bridge-openapi.yml
+versioning:
+  scheme: uri-path-per-resource + product-semver
+  current: 3.2.2
+  docs: https://ironcorelabs.com/docs/saas-shield/vendor-api/changelog/
+  detail: >-
+    Individual resource families carry a path version (/1/, /2/); the Vendor
+    Bridge service carries a semver product version. Two documented major bumps
+    were breaking: v3.0.0 (removed the tenant `archived` field, replaced by
+    Tenant Delete) and v2.0.1 (KMS Config Get stopped returning decrypted
+    credentials).
+deprecation:
+  policy_url: https://ironcorelabs.com/docs/saas-shield/vendor-api/changelog/
+  detail: >-
+    Superseded resource versions (e.g. POST /1/tenants -> POST /2/tenants) remain
+    documented in the spec; breaking changes are called out per release in the
+    changelog. No RFC 8594 Sunset/Deprecation header contract is documented.
+status_page: https://ironcorelabs.github.io/upptime/
+security_advisories: https://ironcorelabs.com/trust-center/security-advisories/
+deprecated_operations: []
+notes: >-
+  StatusPage is an Upptime-hosted public uptime monitor. Deprecation is tracked
+  through the versioned changelog rather than an explicit sunset-header policy.

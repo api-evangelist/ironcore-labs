@@ -1,0 +1,60 @@
+generated: '2026-07-19'
+method: searched
+source: https://ironcorelabs.com/docs/saas-shield/vendor-api/changelog/
+api: openapi/ironcore-labs-vendor-bridge-openapi.yml
+scheme: semver
+current_version: 3.2.2
+note: >-
+  The published Vendor Bridge changelog is versioned but does not carry release
+  dates; dates are intentionally omitted rather than fabricated.
+entries:
+  - version: 3.2.2
+    breaking: false
+    highlights: [Dependency updates.]
+  - version: 3.2.1
+    breaking: false
+    highlights: [Dependency updates, Version logged on startup for debugging.]
+  - version: 3.2.0
+    breaking: false
+    highlights:
+      - Fixed empty-request handling to the config broker.
+      - Warnings for unknown fields.
+      - Enhanced logging (ray_id, matched_path, method) and request timing.
+  - version: 3.1.0
+    breaking: false
+    highlights:
+      - Added secret_count to KMS responses.
+      - Relaxed deletion restrictions on KMS configs with active secrets (destructive tenant offboarding).
+  - version: 3.0.0
+    breaking: true
+    highlights:
+      - 'BREAKING: removed the `archived` field from Tenant Update (replaced by Tenant Delete).'
+  - version: 2.6.0
+    breaking: false
+    highlights: [Switched to structured JSON logging.]
+  - version: 2.5.0
+    breaking: false
+    highlights: [Added tenantId to responses, Added tags filter capability.]
+  - version: 2.4.0
+    breaking: false
+    highlights: [Key leasing configuration support, Tenant invitation status indicator.]
+  - version: 2.3.0
+    breaking: false
+    highlights: [Key leasing requirements for tenants.]
+  - version: 2.2.0
+    breaking: false
+    highlights: [Tenant secret management endpoints.]
+  - version: 2.1.0
+    breaking: false
+    highlights: [Thales KMS configuration support.]
+  - version: 2.0.1
+    breaking: true
+    highlights:
+      - 'BREAKING: KMS Config Get no longer returns decrypted credentials.'
+      - Added tag management.
+  - version: 1.0.1
+    breaking: false
+    highlights: [Multi-architecture builds, Tenant admin invitations.]
+  - version: 1.0.0
+    breaking: false
+    highlights: [Initial release with KMS config support.]

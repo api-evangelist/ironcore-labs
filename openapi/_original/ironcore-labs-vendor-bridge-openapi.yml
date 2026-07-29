@@ -1,0 +1,2915 @@
+openapi: 3.1.0
+x-stoplight:
+  id: jiu0tsbmtfigo
+info:
+  title: Vendor API Bridge
+  version: 3.1.0
+  description: API used to manage tenants and KMS configurations by communicating with the IronCore Configuration Broker on your behalf.
+  contact:
+    name: IronCore Labs
+    url: www.ironcorelabs.com
+    email: info@ironcorelabs.com
+  summary: IronCore Vendor API Bridge
+servers:
+  - url: 'http://localhost:3000/api'
+    description: Local
+paths:
+  /2/tenants:
+    post:
+      summary: Tenant Create V2
+      operationId: post-tenants-v2
+      responses:
+        '200':
+          $ref: '#/components/responses/TenantCreateResponse'
+        '401':
+          description: Unauthorized
+      requestBody:
+        $ref: '#/components/requestBodies/TenantCreateRequestV2'
+      description: |-
+        Create a new tenant with the provided ID and name.  
+        If `tenantAdminEmail` is provided, an invite email will be sent to the tenant to claim their account.
+        The Tenant ID will be needed for all subsequent tenant calls.
+        The tenant will be created with the provided tags. If no tags are provided, the tenant will be untagged and its associated KMS configs will not be sent to any TSPs.
+        The tenant will be required to support key leasing for all of its KMS configurations if set in your vendor's Organization Settings in the Config Broker UI (can be updated after creation from Vendor Bridge).
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+      tags:
+        - Tenant
+  /1/tenants:
+    post:
+      summary: Tenant Create V1
+      operationId: post-tenants-v1
+      responses:
+        '200':
+          $ref: '#/components/responses/TenantCreateResponse'
+        '401':
+          description: Unauthorized
+      requestBody:
+        $ref: '#/components/requestBodies/TenantCreateRequestV1'
+      description: |-
+        Create a new tenant with the provided ID and name.  
+        If `tenantAdminEmail` is provided, an invite email will be sent to the tenant to claim their account.
+        The Tenant ID will be needed for all subsequent tenant calls.
+        The tenant will be created with the default tag of the vendor organization.
+        The Tenant Create V2 endpoint can be used to set tags explicitly.
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+      tags:
+        - Tenant
+    parameters: []
+    get:
+      summary: Tenant List
+      operationId: get-tenants
+      responses:
+        '200':
+          $ref: '#/components/responses/TenantListResponse'
+        '401':
+          description: Unauthorized
+      tags:
+        - Tenant
+      description: List all tenants associated with the calling vendor organization.
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+        - schema:
+            type: string
+          in: query
+          name: query
+          description: Tenant ID or name to filter to
+        - schema:
+            type: string
+            enum:
+              - name
+              - id
+              - created
+              - updated
+            default: created
+          in: query
+          name: sortColumn
+          description: Field to use for sorting
+        - schema:
+            type: string
+            enum:
+              - accepted
+              - not-accepted
+              - archived
+          in: query
+          name: status
+          description: Tenant status to filter to
+        - $ref: '#/components/parameters/sortDirection'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/page'
+  /1/tenants/secrets:
+    get:
+      summary: Tenant Secret List
+      operationId: post-1-tenants-secrets
+      responses:
+        '200':
+          $ref: '#/components/responses/TenantSecretListResponse'
+        '401':
+          description: Unauthorized
+      tags:
+        - Tenant Secret
+      requestBody:
+        $ref: '#/components/requestBodies/TenantSecretListRequest'
+      parameters:
+        - schema:
+            type: string
+            format: date-time
+          in: query
+          name: updatedSince
+          description: RFC3339 timestamp
+        - schema:
+            type: string
+            format: date-time
+          in: query
+          name: createdSince
+          description: RFC3339 timestamp
+        - $ref: '#/components/parameters/secretType'
+        - $ref: '#/components/parameters/migrationStatus'
+        - $ref: '#/components/parameters/rotationStatus'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/sortDirection'
+        - schema:
+            type: string
+            enum:
+              - created
+              - updated
+          in: query
+          name: sortColumn
+          description: Column to use for sorting
+        - schema:
+            type: string
+          in: query
+          name: query
+          description: 'Tenant provided ID, secret path, secret fingerprint, or KMS config ID to search for'
+        - $ref: '#/components/parameters/iclRequestorId'
+      description: List secrets associated with the vendor's tenants
+    parameters: []
+  '/1/tenants/{tenantId}/invite':
+    parameters:
+      - $ref: '#/components/parameters/tenantId'
+    post:
+      summary: Tenant Invite Resend
+      operationId: post-tenants-tenantId-invite
+      responses:
+        '200':
+          $ref: '#/components/responses/TenantResendInviteResponse'
+        '422':
+          description: |
+            Unprocessable Entity
+            Tenant does not exist or has already accepted an invitation
+      tags:
+        - Tenant
+      description: Resend an invitation for the provided tenant account to the given email address. This will allow the tenant administrator to claim their account.
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+      requestBody:
+        $ref: '#/components/requestBodies/TenantResendInviteRequest'
+  '/1/tenants/{tenantId}':
+    parameters:
+      - $ref: '#/components/parameters/tenantId'
+    delete:
+      summary: Tenant Delete
+      operationId: delete-tenants-tenantId
+      responses:
+        '200':
+          $ref: '#/components/responses/TenantDeleteResponse'
+        '401':
+          description: Unauthorized
+        '422':
+          description: |-
+            Unprocessable Entity  
+            Possible causes:
+            \- Invalid tenant ID provided  
+            \- Tenant has taken control of their account (must archive tenant instead)  
+            \- Tenant has KMS configurations. Note that you must wait 36 hours after deleting all KMS configurations before deleting a tenant.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      description: |-
+        Delete a tenant. This will sever the connection between the vendor and tenant organizations. 
+        If you wish to re-invite the tenant, simply send a new invite and have the tenant admin choose to Link Organizations to reestablish the connection.
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+      tags:
+        - Tenant
+    put:
+      summary: Tenant Update
+      operationId: put-tenants-tenantId
+      responses:
+        '200':
+          $ref: '#/components/responses/TenantUpdateResponse'
+        '400':
+          description: |-
+            Bad Request  
+            Possible causes:  
+            \- Invalid tenant ID provided  
+            \- Attempting to un-archive a tenant  
+            \- Attempting to archive an unclaimed tenant (must delete tenant instead)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples: {}
+        '401':
+          description: Unauthorized
+      requestBody:
+        $ref: '#/components/requestBodies/TenantUpdateRequest'
+      description: 'Update a tenant''s name, key leasing requirement, or the tenant''s assigned tags.  '
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+      tags:
+        - Tenant
+    get:
+      summary: Tenant Get
+      operationId: get-tenants-tenantId
+      responses:
+        '200':
+          $ref: '#/components/responses/TenantGetResponse'
+        '401':
+          description: Unauthorized
+      tags:
+        - Tenant
+      description: Get information about the provided tenant.
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+  '/1/tenants/{tenantId}/assignments':
+    parameters:
+      - $ref: '#/components/parameters/tenantId'
+    get:
+      summary: Tenant KMS Assignment List
+      tags:
+        - Configuration Assignment
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigAssignmentListResponse'
+        '401':
+          description: Unauthorized
+      operationId: get-tenants-tenantId-assignments
+      description: List the KMS assignments associated with the provided tenant.
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+        - schema:
+            type: string
+            enum:
+              - active
+              - primary
+              - created
+              - updated
+            default: created
+          in: query
+          name: sortColumn
+          description: Field to use for sorting
+        - schema:
+            type: string
+            enum:
+              - active
+              - disabled
+              - primary
+          in: query
+          name: status
+          description: Assignment status to filter to
+        - schema:
+            type: string
+          in: query
+          description: 'Tenant ID, tenant name, or KMS configuration ID to filter to'
+          name: query
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/sortDirection'
+  '/1/tenants/{tenantId}/secrets/rotate/begin':
+    parameters:
+      - $ref: '#/components/parameters/tenantId'
+    post:
+      summary: Tenant Secret Rotation Begin
+      operationId: post-1-tenants-tenantId-secrets-rotate-begin
+      responses:
+        '200':
+          $ref: '#/components/responses/TenantSecretRotationResponse'
+      tags:
+        - Tenant Secret
+      requestBody:
+        $ref: '#/components/requestBodies/TenantSecretRotationRequest'
+      description: |-
+        Begin rotation for a tenant secret. If `id` is specified, the assignment with that ID will be marked InRotation. If `secretType` and `secretPath` are specified, the tenant's Current secret matching those will be marked InRotation.
+        InRotation secrets can still be used for decryption.
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+  '/1/tenants/{tenantId}/secrets/rotate/commit':
+    parameters:
+      - $ref: '#/components/parameters/tenantId'
+    post:
+      summary: Tenant Secret Rotation Commit
+      operationId: post-1-tenants-tenantId-secrets-rotate-commit
+      responses:
+        '200':
+          $ref: '#/components/responses/TenantSecretRotationResponse'
+      tags:
+        - Tenant Secret
+      description: |-
+        Finish rotation for a tenant secret. If `id` is specified, the assignment with that ID will be marked Archived. If `secretType` and `secretPath` are specified, the tenant's InRotation secret matching those will be marked Archived.
+        Archived secrets can still be used for decryption.
+      requestBody:
+        $ref: '#/components/requestBodies/TenantSecretRotationRequest'
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+  /1/kms/configs:
+    get:
+      summary: KMS Config List
+      tags:
+        - KMS Configuration
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigListResponse'
+        '401':
+          description: Unauthorized
+      operationId: get-kms-configs
+      description: |-
+        List the metadata of all KMS configurations owned by the calling vendor.  
+        This does not decrypt any of the sensitive KMS configuration data.
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+        - schema:
+            type: string
+            enum:
+              - assignments
+              - created
+              - updated
+            default: created
+          in: query
+          name: sortColumn
+          description: Field to use for sorting
+        - schema:
+            type: string
+            enum:
+              - AWS
+              - GCP
+              - AZURE
+          in: query
+          name: kmsType
+          description: KMS to filter results to
+        - schema:
+            type: boolean
+          in: query
+          name: leasingEnabled
+          description: Key leasing status to filter results to
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/sortDirection'
+    post:
+      summary: KMS Config Create
+      operationId: post-kms-configs
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigCreateResponse'
+        '401':
+          description: Unauthorized
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+      description: Create a new KMS configuration. This configuration will not be assigned to any tenants.
+      tags:
+        - KMS Configuration
+      requestBody:
+        $ref: '#/components/requestBodies/KmsConfigCreateRequest'
+    parameters: []
+  '/1/kms/configs/{kmsConfigId}':
+    parameters:
+      - $ref: '#/components/parameters/kmsConfigId'
+    get:
+      summary: KMS Config Get
+      tags:
+        - KMS Configuration
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigGetResponse'
+        '401':
+          description: Unauthorized
+        '422':
+          description: |-
+            Unprocessable Entity  
+            Possible causes:  
+            \- Invalid KMS configuration ID provided  
+            \- Kms configuration not owned by calling vendor
+      operationId: get-kms-configs-kmsConfigId
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+      description: |-
+        Get the specified KMS configuration. 
+        Returns metadata and, if your organization owns the configuration, the decrypted data.
+    put:
+      summary: KMS Config Update
+      operationId: put-kms-configs-kmsConfigId
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigUpdateResponse'
+        '401':
+          description: Unauthorized
+        '422':
+          description: |-
+            Unprocessable Entity
+            Possible causes:
+            \- Invalid KMS configuration ID provided
+            \- Kms configuration not owned by calling vendor
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+      description: Update the specified KMS configuration's encrypted data or enable/disable key leasing for the configuration. The configuration must be owned by the calling vendor.
+      tags:
+        - KMS Configuration
+      requestBody:
+        $ref: '#/components/requestBodies/KmsConfigUpdateRequest'
+    delete:
+      summary: KMS Config Delete
+      operationId: delete-kms-configs-kmsConfigId
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigDeleteResponse'
+        '401':
+          description: Unauthorized
+        '422':
+          description: |-
+            Unprocessable Entity  
+            Possible causes:  
+            \- Invalid KMS configuration ID provided  
+            \- Kms configuration not owned by calling vendor  
+            \- Config currently in use via an assignment
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+      description: |-
+        Delete the specified KMS configuration. In order to succeed, the configuration must be owned by the calling vendor and not have any tenant assignments.
+
+        This API allows for destructively offboarding a tenant with active secrets. Secrets are not recoverable and any downstream services (Deterministic Encryption, Cloaked Search) will fail when attempting to do things with those secrets. **We strongly advise checking for `secret_count == 0` before issuing a KMS Configuration DELETE**.
+      tags:
+        - KMS Configuration
+  '/1/kms/configs/{kmsConfigId}/assignments':
+    parameters:
+      - $ref: '#/components/parameters/kmsConfigId'
+    get:
+      summary: Configuration Assignment List
+      tags:
+        - Configuration Assignment
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigAssignmentListResponse'
+        '401':
+          description: Unauthorized
+      operationId: get-kms-configs-kmsConfigId-assignments
+      description: List the assignments associated with the provided KMS configuration.
+      parameters:
+        - schema:
+            type: string
+            enum:
+              - active
+              - primary
+              - created
+              - updated
+            default: created
+          in: query
+          name: sortColumn
+          description: Field to use for sorting
+        - schema:
+            type: string
+            enum:
+              - active
+              - disabled
+              - primary
+          in: query
+          name: status
+          description: Assignment status to filter to
+        - schema:
+            type: string
+          in: query
+          name: query
+          description: 'Tenant ID, tenant name, or KMS configuration ID to filter to'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/sortDirection'
+        - $ref: '#/components/parameters/iclRequestorId'
+  '/1/kms/configs/{kmsConfigId}/tenants/{tenantId}':
+    parameters:
+      - $ref: '#/components/parameters/kmsConfigId'
+      - $ref: '#/components/parameters/tenantId'
+    get:
+      summary: KMS Assignment Get
+      tags:
+        - Configuration Assignment
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigAssignmentGetResponse'
+        '400':
+          description: |-
+            Bad Request  
+            Possible causes:  
+            \- Invalid KMS configuration ID provided  
+            \- Invalid tenant ID provided
+        '401':
+          description: Unauthorized
+      operationId: get-kms-configs-kmsConfigId-tenants-tenantId
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+      description: Get the assignment from the KMS configuration to the provided tenant.
+    post:
+      summary: KMS Assignment Create
+      operationId: post-kms-configs-kmsConfigId-tenants-tenantId
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigAssignmentCreateResponse'
+        '400':
+          description: |-
+            Bad Request  
+            Possible causes:  
+            \- Invalid KMS configuration ID provided  
+            \- Invalid tenant ID provided
+        '401':
+          description: Unauthorized
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+      tags:
+        - Configuration Assignment
+      description: Create a new assignment from the KMS configuration to the provided tenant. The new assignment will be active but not primary.
+    put:
+      summary: KMS Assignment Update
+      operationId: put-kms-configs-kmsConfigId-tenants-tenantId
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigAssignmentUpdateResponse'
+        '400':
+          description: |-
+            Bad Request  
+            Possible causes:  
+            \- Invalid KMS configuration ID provided  
+            \- Invalid tenant ID provided
+            \- Attempting to set `primary` to `true` while `active` is `false`
+        '401':
+          description: Unauthorized
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+      tags:
+        - Configuration Assignment
+      requestBody:
+        $ref: '#/components/requestBodies/KmsConfigAssignmentUpdateRequest'
+      description: |-
+        Update the assignment from the KMS configuration to the provided tenant. In order to succeed, the tenant must not own any of their own KMS configurations.
+        The primary configuration is used for encrypt calls. Setting this configuration to primary will un-set the previous primary.
+        Active configurations are used for appropriate decrypt calls.
+    delete:
+      summary: KMS Assignment Delete
+      operationId: delete-kms-configs-kmsConfigId-tenants-tenantId
+      responses:
+        '200':
+          $ref: '#/components/responses/KmsConfigAssignmentDeleteResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+      tags:
+        - Configuration Assignment
+      description: 'Delete the assignment from the KMS configuration to the provided tenant. In order to succeed, the tenant must not own any of their own KMS configurations.'
+  /1/tags:
+    get:
+      summary: Tag List
+      responses:
+        '200':
+          $ref: '#/components/responses/TagListResponse'
+        '401':
+          description: Unauthorized
+      operationId: get-tags
+      description: List all the tags created by the current vendor organization.
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - schema:
+            type: string
+          in: query
+          name: tagText
+          description: Tag text to filter to
+        - $ref: '#/components/parameters/iclRequestorId'
+      tags:
+        - Tag
+    post:
+      summary: Tag Create
+      operationId: post-tags
+      responses:
+        '200':
+          $ref: '#/components/responses/TagCreateResponse'
+        '401':
+          description: Unauthorized
+        '422':
+          description: |-
+            Unprocessable Entity (WebDAV)
+            Provided tag name already exists.
+      tags:
+        - Tag
+      description: 'Create a new tag in the organization. This tag can then be assigned to tenants and service account configs to control access to KMS configurations. When a tag is no longer being used by an tenants or service account configs, it may be automatically deleted.'
+      requestBody:
+        $ref: '#/components/requestBodies/TagCreateRequest'
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+    parameters: []
+  '/1/tags/{tagId}/tenants':
+    parameters:
+      - $ref: '#/components/parameters/tagId'
+    post:
+      summary: Tag Assign to Tenant
+      operationId: post-tags-tagId-tenants
+      responses:
+        '200':
+          $ref: '#/components/responses/TagAssignmentModifyResponse'
+        '400':
+          description: |-
+            Bad Request  
+            Invalid Tag ID provided  
+        '401':
+          description: Unauthorized
+      description: Assign the given tag to a number of tenants.
+      requestBody:
+        $ref: '#/components/requestBodies/TagAssignmentModifyRequest'
+      tags:
+        - Tag
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+    delete:
+      summary: Tag Remove from Tenant
+      operationId: delete-tags-tagId-tenants
+      responses:
+        '200':
+          $ref: '#/components/responses/TagAssignmentModifyResponse'
+        '400':
+          description: |-
+            Bad Request  
+            Invalid Tag ID provided  
+        '401':
+          description: Unauthorized
+      description: Remove the association between the given tag and a number of tenants.
+      requestBody:
+        $ref: '#/components/requestBodies/TagAssignmentModifyRequest'
+      tags:
+        - Tag
+      parameters:
+        - $ref: '#/components/parameters/iclRequestorId'
+components:
+  schemas:
+    AwsCredentialsV1:
+      title: AwsCredentialsV1
+      type: object
+      properties:
+        accessKeyId:
+          type: string
+          description: AWS Accesss Key ID
+        secretAccessKey:
+          type: string
+          description: AWS Secret Access Key
+      required:
+        - accessKeyId
+        - secretAccessKey
+      description: AWS credentials
+      examples:
+        - accessKeyId: myAccessKeyId
+          secretAccessKey: mySecretAccessKey
+    AwsKmsConfig:
+      title: AwsKmsConfig
+      type: object
+      examples:
+        - credentials:
+            accessKeyId: myAccessKeyId
+            secretAccessKey: mySecretAccessKey
+          keyPath:
+            keyID: myKeyId
+            region: us-east
+          type: AWS
+          version: 1
+      description: AWS configuration
+      properties:
+        credentials:
+          $ref: '#/components/schemas/AwsCredentialsV1'
+        keyPath:
+          type: object
+          required:
+            - keyID
+            - region
+          description: AWS keypath
+          properties:
+            keyID:
+              type: string
+              description: AWS Key ID
+            region:
+              type: string
+              example: us-east
+              description: AWS Region
+        type:
+          type: string
+          enum:
+            - AWS
+          description: 'KMS type: AWS'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+        - credentials
+        - keyPath
+        - type
+        - version
+    AwsKmsConfigUpdate:
+      title: AwsKmsConfigUpdate
+      x-stoplight: null
+      type: object
+      examples:
+        - credentials:
+            accessKeyId: myAccessKeyId
+            secretAccessKey: mySecretAccessKey
+          type: AWS
+          version: 1
+      description: AWS configuration update. `keyPath` cannot be updated
+      properties:
+        credentials:
+          $ref: '#/components/schemas/AwsCredentialsV1'
+        type:
+          type: string
+          enum:
+            - AWS
+          description: 'KMS type: AWS'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+        - credentials
+        - type
+        - version
+    AwsKmsConfigNonsensitive:
+      title: AwsKmsConfigNonsensitive
+      type: object
+      examples:
+        - keyPath:
+            keyID: myKeyId
+            region: us-east
+          type: AWS
+          version: 1
+      description: AWS configuration without sensitive credentials
+      properties:
+        keyPath:
+          type: object
+          required:
+            - keyID
+            - region
+          description: AWS keypath
+          properties:
+            keyID:
+              type: string
+              description: AWS Key ID
+            region:
+              type: string
+              example: us-east
+              description: AWS Region
+        type:
+          type: string
+          enum:
+            - AWS
+          description: 'KMS type: AWS'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+        - keyPath
+        - type
+        - version
+    AzureCredentialsV1:
+      title: AzureCredentialsV1
+      type: object
+      properties:
+        clientId:
+          type: string
+          description: Azure Client ID
+        clientSecret:
+          type: string
+          description: Azure Client Secret
+        tenantGuid:
+          type: string
+          description: Azure Tenant GUID
+      required:
+        - clientId
+        - clientSecret
+        - tenantGuid
+      description: Azure credentials
+      examples:
+        - clientId: myClientId
+          clientSecret: myClientSecret
+          tenantGuid: myTenantGuid
+    AzureKmsConfig:
+      title: AzureKmsConfig
+      type: object
+      examples:
+        - credentials:
+            clientId: myClientId
+            clientSecret: myClientSecret
+            tenantGuid: myTenantGuid
+          keyPath:
+            keyName: myKeyName
+            vaultBaseUrl: myVaultBaseUrl
+          type: AZURE
+          version: 1
+      x-internal: false
+      description: Azure configuration
+      properties:
+        credentials:
+          $ref: '#/components/schemas/AzureCredentialsV1'
+        keyPath:
+          type: object
+          required:
+            - keyName
+            - vaultBaseUrl
+          description: Azure keypath
+          properties:
+            keyName:
+              type: string
+              description: Azure Key Name
+            vaultBaseUrl:
+              type: string
+              description: Azure Vault Base URL
+        type:
+          type: string
+          enum:
+            - AZURE
+          description: 'KMS type: Azure'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+        - credentials
+        - keyPath
+        - type
+        - version
+    AzureKmsConfigUpdate:
+      title: AzureKmsConfigUpdate
+      type: object
+      examples:
+        - credentials:
+            clientId: myClientId
+            clientSecret: myClientSecret
+            tenantGuid: myTenantGuid
+          type: AZURE
+          version: 1
+      x-internal: false
+      description: Azure configuration update. `keyPath` cannot be updated
+      properties:
+        credentials:
+          $ref: '#/components/schemas/AzureCredentialsV1'
+        type:
+          type: string
+          enum:
+            - AZURE
+          description: 'KMS type: Azure'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+        - credentials
+        - type
+        - version
+    AzureKmsConfigNonsensitive:
+      title: AzureKmsConfigNonsensitive
+      type: object
+      examples:
+        - keyPath:
+            keyName: myKeyName
+            vaultBaseUrl: myVaultBaseUrl
+          type: AZURE
+          version: 1
+      x-internal: false
+      description: Azure configuration without sensitive credentials
+      properties:
+        keyPath:
+          type: object
+          required:
+            - keyName
+            - vaultBaseUrl
+          description: Azure keypath
+          properties:
+            keyName:
+              type: string
+              description: Azure Key Name
+            vaultBaseUrl:
+              type: string
+              description: Azure Vault Base URL
+        type:
+          type: string
+          enum:
+            - AZURE
+          description: 'KMS type: Azure'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+        - keyPath
+        - type
+        - version
+    Base64:
+      type: string
+      title: Base64
+      examples:
+        - AgA4eyJfZGlkXyI6IjVkMW
+      pattern: '^[A-Za-z0-9+/=]+'
+      description: Base 64 string
+    BasicKmsConfig:
+      title: BasicKmsConfig
+      type: object
+      examples:
+        - id: 501
+          kmsType: AZURE
+          version: 1
+          createdBy:
+            id: vendor
+            name: Vendor
+            type: Vaa
+          primary: true
+          active: true
+          leasingAllowed: false
+          tenantId: tenant-icl
+          created: '2022-01-13T21:44:43.653Z'
+          updated: '2022-01-13T21:44:43.653Z'
+      description: KMS Configuration metadata
+      required:
+        - id
+        - kmsType
+        - version
+        - createdBy
+        - leasingAllowed
+        - assignmentCount
+        - secretCount
+        - created
+        - updated
+      properties:
+        id:
+          type: integer
+          description: KMS Config ID
+        kmsType:
+          $ref: '#/components/schemas/KmsType'
+        version:
+          type: integer
+          description: Config verssion
+          minimum: 1
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+        leasingAllowed:
+          type: boolean
+          description: Is key leasing enabled?
+        assignmentCount:
+          description: Number of consumers of the configuration.
+          type: integer
+        secretCount:
+          type: integer
+          x-stoplight:
+            id: 8h1q01fci9mae
+          minimum: 0
+          description: Number of active secrets associated with this configuration
+        created:
+          $ref: '#/components/schemas/Timestamp'
+        updated:
+          $ref: '#/components/schemas/Timestamp'
+    CreatedBy:
+      title: CreatedBy
+      type: object
+      examples:
+        - id: vendor
+          name: Vendor
+          type: Vaa
+      description: Metadata about creating user/service
+      properties:
+        id:
+          type: string
+          description: Creator ID
+        name:
+          type: string
+          description: Creator name
+        type:
+          $ref: '#/components/schemas/CreatedByType'
+      required:
+        - id
+        - name
+        - type
+    CreatedByType:
+      type: string
+      title: CreatedByType
+      enum:
+        - Tsp
+        - Admin
+        - Va
+      examples:
+        - Vaa
+        - Tsp
+        - Admin
+      description: Creator type
+    ErrorResponse:
+      title: ErrorResponse
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        statusCode:
+          type: integer
+          example: 401
+          description: Status code
+      description: VAB error response
+      examples:
+        - message: Invalid config ID provided
+          statusCode: 404
+    GcpCredentialsV1:
+      title: GcpCredentialsV1
+      type: object
+      description: GCP credentials
+      properties:
+        client_email:
+          type: string
+          description: GCP client email
+        private_key:
+          type: string
+          description: GCP private key
+      required:
+        - client_email
+        - private_key
+      examples:
+        - client_email: myClientEmail
+          private_key: myPrivateKey
+    GcpKmsConfig:
+      title: GcpKmsConfig
+      type: object
+      examples:
+        - credentials:
+            client_email: myClientEmail
+            private_key: myPrivateKey
+          keyPath:
+            cryptoKeyId: myCryptoKeyId
+            keyRingId: myKeyRingId
+            locationId: myLocationId
+            projectId: myProjectId
+          type: GCP
+          version: 1
+      description: GCP configuration
+      properties:
+        credentials:
+          $ref: '#/components/schemas/GcpCredentialsV1'
+        keyPath:
+          type: object
+          description: GCP keypath
+          required:
+            - cryptoKeyId
+            - keyRingId
+            - locationId
+            - projectId
+          properties:
+            cryptoKeyId:
+              type: string
+              description: GCP crypto key ID
+            keyRingId:
+              type: string
+              description: GCP key ring ID
+            locationId:
+              type: string
+              description: GCP location ID
+            projectId:
+              type: string
+              description: GCP project ID
+        type:
+          type: string
+          enum:
+            - GCP
+          description: 'KMS type: GCP'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+        - credentials
+        - keyPath
+        - type
+        - version
+    GcpKmsConfigUpdate:
+      title: GcpKmsConfigUpdate
+      type: object
+      examples:
+        - credentials:
+            client_email: myClientEmail
+            private_key: myPrivateKey
+          type: GCP
+          version: 1
+      description: GCP configuration update. `keyPath` cannot be updated
+      properties:
+        credentials:
+          $ref: '#/components/schemas/GcpCredentialsV1'
+        type:
+          type: string
+          enum:
+            - GCP
+          description: 'KMS type: GCP'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+        - credentials
+        - type
+        - version
+    GcpKmsConfigNonsensitive:
+      title: GcpKmsConfigNonsensitive
+      type: object
+      examples:
+        - keyPath:
+            cryptoKeyId: myCryptoKeyId
+            keyRingId: myKeyRingId
+            locationId: myLocationId
+            projectId: myProjectId
+          type: GCP
+          version: 1
+      description: GCP configuration without sensitive credentials
+      properties:
+        keyPath:
+          type: object
+          description: GCP keypath
+          required:
+            - cryptoKeyId
+            - keyRingId
+            - locationId
+            - projectId
+          properties:
+            cryptoKeyId:
+              type: string
+              description: GCP crypto key ID
+            keyRingId:
+              type: string
+              description: GCP key ring ID
+            locationId:
+              type: string
+              description: GCP location ID
+            projectId:
+              type: string
+              description: GCP project ID
+        type:
+          type: string
+          enum:
+            - GCP
+          description: 'KMS type: GCP'
+        version:
+          type: integer
+          description: Config version
+          minimum: 1
+      required:
+        - keyPath
+        - type
+        - version
+    KmsConfigAssignmentResponse:
+      title: KmsConfigAssignmentResponse
+      type: object
+      x-internal: false
+      properties:
+        kmsConfigId:
+          $ref: '#/components/schemas/KmsConfigId'
+        tenantId:
+          $ref: '#/components/schemas/TenantId'
+        active:
+          type: boolean
+          description: Whether the associated KMS configuration can be used to encrypt/decrypt calls.
+        primary:
+          type: boolean
+          description: Whether the associated KMS configuration will be used for encrypt calls.
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+        created:
+          $ref: '#/components/schemas/Timestamp'
+        updated:
+          $ref: '#/components/schemas/Timestamp'
+      required:
+        - kmsConfigId
+        - tenantId
+        - active
+        - primary
+        - createdBy
+        - created
+        - updated
+    KmsConfiguration:
+      title: KmsConfiguration
+      oneOf:
+        - $ref: '#/components/schemas/AwsKmsConfig'
+        - $ref: '#/components/schemas/AzureKmsConfig'
+        - $ref: '#/components/schemas/GcpKmsConfig'
+        - $ref: '#/components/schemas/ThalesKmsConfig'
+          x-stoplight:
+            id: e2tg4fjspzd23
+      examples:
+        - credentials:
+            clientId: myClientId
+            clientSecret: myClientSecret
+            tenantGuid: myTenantGuid
+          keyPath:
+            keyName: myKeyName
+            vaultBaseUrl: myVaultBaseUrl
+          type: AZURE
+          version: 1
+        - credentials:
+            accessKeyId: myAccessKeyId
+            secretAccessKey: mySecretAccessKey
+          keyPath:
+            keyID: myKeyId
+            region: us-east
+          type: AWS
+          version: 1
+        - credentials:
+            client_email: myClientEmail
+            private_key: myPrivateKey
+          keyPath:
+            cryptoKeyId: myCryptoKeyId
+            keyRingId: myKeyRingId
+            locationId: myLocationId
+            projectId: myProjectId
+          type: GCP
+          version: 1
+      description: KMS configuration
+    KmsConfigurationUpdate:
+      title: KmsConfigurationUpdate
+      oneOf:
+        - $ref: '#/components/schemas/AwsKmsConfigUpdate'
+        - $ref: '#/components/schemas/AzureKmsConfigUpdate'
+        - $ref: '#/components/schemas/GcpKmsConfigUpdate'
+        - $ref: '#/components/schemas/ThalesKmsConfigUpdate'
+          x-stoplight:
+            id: 7xcsbn867lfge
+      examples:
+        - credentials:
+            clientId: myClientId
+            clientSecret: myClientSecret
+            tenantGuid: myTenantGuid
+          type: AZURE
+          version: 1
+        - credentials:
+            accessKeyId: myAccessKeyId
+            secretAccessKey: mySecretAccessKey
+          type: AWS
+          version: 1
+        - credentials:
+            client_email: myClientEmail
+            private_key: myPrivateKey
+          keyPath:
+            cryptoKeyId: myCryptoKeyId
+            keyRingId: myKeyRingId
+            locationId: myLocationId
+            projectId: myProjectId
+          type: GCP
+          version: 1
+      description: KMS configuration update. `keyPath` cannot be updated
+    KmsConfigurationNonsensitive:
+      title: KmsConfigurationNonsensitive
+      oneOf:
+        - $ref: '#/components/schemas/AwsKmsConfigNonsensitive'
+        - $ref: '#/components/schemas/AzureKmsConfigNonsensitive'
+        - $ref: '#/components/schemas/GcpKmsConfigNonsensitive'
+        - $ref: '#/components/schemas/ThalesKmsConfigNonsensitive'
+          x-stoplight:
+            id: 3pgfp6g80ysuq
+      examples:
+        - keyPath:
+            keyName: myKeyName
+            vaultBaseUrl: myVaultBaseUrl
+          type: AZURE
+          version: 1
+        - keyPath:
+            keyID: myKeyId
+            region: us-east
+          type: AWS
+          version: 1
+        - keyPath:
+            cryptoKeyId: myCryptoKeyId
+            keyRingId: myKeyRingId
+            locationId: myLocationId
+            projectId: myProjectId
+          type: GCP
+          version: 1
+      description: KMS configuration without sensitive credentials
+    KmsConfigId:
+      type: integer
+      title: KmsConfigId
+      description: KMS configuration ID
+      minimum: 1
+      examples: []
+    KmsType:
+      type: string
+      title: KmsType
+      enum:
+        - AZURE
+        - AWS
+        - GCP
+      examples:
+        - AWS
+        - AZURE
+        - GCP
+      description: 'KMS type: AWS, Azure, or GCP'
+    TenantId:
+      title: TenantId
+      type: string
+      description: Tenant ID
+      examples:
+        - tenant-icl
+    Timestamp:
+      type: string
+      title: Timestamp
+      description: RFC3339 timestamp
+      pattern: '^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$'
+      examples:
+        - '2022-01-13T21:44:43.653Z'
+      example: '2022-01-13T21:44:43.653Z'
+    TenantGetResponse:
+      title: TenantGetResponse
+      type: object
+      description: Result of getting a tenant. Same as TenantCreateResponse but with the addition of `primaryKmsConfigId`.
+      x-internal: false
+      properties:
+        id:
+          $ref: '#/components/schemas/TenantId'
+        name:
+          type: string
+        archived:
+          type: boolean
+        tenantCreatedConfigs:
+          type: boolean
+        invited:
+          type: boolean
+          x-stoplight:
+            id: uu30m4t1s0s1l
+          description: 'If true, this tenant has been invited, but not yet accepted their invitation.'
+        keyLeasingRequired:
+          type: boolean
+          x-stoplight:
+            id: sowwm98w31jke
+          description: Whether key leasing must be enabled for all KMS configurations assigned to this tenant.
+        primaryKmsConfigId:
+          type:
+            - integer
+            - 'null'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+        created:
+          $ref: '#/components/schemas/Timestamp'
+        updated:
+          $ref: '#/components/schemas/Timestamp'
+      required:
+        - id
+        - name
+        - archived
+        - tenantCreatedConfigs
+        - invited
+        - keyLeasingRequired
+        - primaryKmsConfigId
+        - tags
+        - createdBy
+        - created
+        - updated
+    Tag:
+      title: Tag
+      x-stoplight:
+        id: 2xbpiy93efxn2
+      type: object
+      description: Tag used to associate tenants with service accounts (TSP or VA accounts)
+      properties:
+        id:
+          $ref: '#/components/schemas/TagId'
+          description: Tag ID
+        tagText:
+          type: string
+          description: Human-readable text associated with tag
+        default:
+          type: boolean
+          description: Whether this is the default tag for tenants/service accounts
+        created:
+          $ref: '#/components/schemas/Timestamp'
+          description: When this tag was created
+      required:
+        - id
+        - tagText
+        - default
+        - created
+    TagId:
+      title: TagId
+      x-stoplight:
+        id: suvs45x4i6s3z
+      type: integer
+      description: Tag ID
+      minimum: 1
+    TagAssignmentModifyFailure:
+      title: TagAssignmentModifyFailure
+      x-stoplight:
+        id: 6j7llto2bjg4f
+      type: object
+      description: Failure with modifying the tenants associated with a tag.
+      properties:
+        tenantId:
+          $ref: '#/components/schemas/TenantId'
+          description: Tenant who failed to be modified
+        message:
+          type: string
+          description: Reason for the failure
+      required:
+        - tenantId
+        - message
+    TenantSecret:
+      title: TenantSecret
+      x-stoplight:
+        id: nac6edess8wor
+      type: object
+      description: Tenant secret
+      examples: []
+      required:
+        - id
+        - encryptedSecret
+        - secretFingerprint
+        - secretPath
+        - kmsConfigId
+        - migrationStatus
+        - rotationStatus
+        - secretType
+        - created
+        - updated
+      properties:
+        id:
+          $ref: '#/components/schemas/TenantSecretId'
+          description: null
+        encryptedSecret:
+          $ref: '#/components/schemas/Base64'
+          x-stoplight:
+            id: sukmeyogx5sbv
+          description: Encrypted secret
+        secretFingerprint:
+          type: string
+          x-stoplight:
+            id: pb279d2cktd7m
+          description: Secret fingerprint
+        secretPath:
+          type: string
+          x-stoplight:
+            id: loog4cu54c1lc
+          description: Secret path
+        kmsConfigId:
+          $ref: '#/components/schemas/KmsConfigId'
+          x-stoplight:
+            id: gk35ew9a6pyca
+          description: KMS config ID associated with the secret
+        migrationStatus:
+          $ref: '#/components/schemas/TenantSecretMigrationStatus'
+          x-stoplight:
+            id: 97p44y2qkt68d
+          description: Tenant secret migration status
+        rotationStatus:
+          $ref: '#/components/schemas/TenantSecretRotationStatus'
+          x-stoplight:
+            id: u5n9owuiocu0l
+          description: Tenant secret rotation status
+        secretType:
+          $ref: '#/components/schemas/TenantSecretType'
+          x-stoplight:
+            id: z4uhgpfgcptxx
+          description: Tenant secret type
+        created:
+          $ref: '#/components/schemas/Timestamp'
+          x-stoplight:
+            id: g262o2x4op23k
+          description: When the secret was created
+        updated:
+          $ref: '#/components/schemas/Timestamp'
+          x-stoplight:
+            id: omqiwjcnjtz6k
+          description: When the secret was last updated
+    TenantSecretListResponseItem:
+      type: object
+      x-stoplight:
+        id: 433171505ae25
+      description: Tenant secret and associated tenant
+      examples: []
+      required:
+        - id
+        - encryptedSecret
+        - secretFingerprint
+        - secretPath
+        - kmsConfigId
+        - tenantId
+        - tenantTags
+        - secretType
+        - migrationStatus
+        - rotationStatus
+        - created
+        - updated
+      properties:
+        id:
+          $ref: '#/components/schemas/TenantSecretId'
+          description: null
+        encryptedSecret:
+          $ref: '#/components/schemas/Base64'
+          x-stoplight:
+            id: kwhiyztjtw6t7
+          description: Encrypted secret
+        secretFingerprint:
+          type: string
+          x-stoplight:
+            id: i91bv8ma228fk
+          description: Secret fingerprint
+        secretPath:
+          type: string
+          x-stoplight:
+            id: qbs3m5gywaz87
+          description: Secret path
+        kmsConfigId:
+          $ref: '#/components/schemas/KmsConfigId'
+          x-stoplight:
+            id: adnnt8f7p1l6a
+          description: KMS config ID associated with the secret
+        tenantId:
+          $ref: '#/components/schemas/TenantId'
+          x-stoplight:
+            id: smwov9dluskqn
+          description: Tenant ID
+        tenantTags:
+          type: array
+          x-stoplight:
+            id: s9sra6ap663qr
+          description: Tags for the associated tenant
+          items:
+            $ref: '#/components/schemas/TagId'
+            x-stoplight:
+              id: 5dcq14yuo54ui
+        secretType:
+          $ref: '#/components/schemas/TenantSecretType'
+          x-stoplight:
+            id: svl67tbe89a42
+          description: Tenant secret type
+        migrationStatus:
+          $ref: '#/components/schemas/TenantSecretMigrationStatus'
+          x-stoplight:
+            id: vchcr5pjtfwmh
+          description: Tenant secret migration status
+        rotationStatus:
+          $ref: '#/components/schemas/TenantSecretRotationStatus'
+          x-stoplight:
+            id: wwyy4ebz98pzb
+          description: Tenant secret rotation status
+        created:
+          $ref: '#/components/schemas/Timestamp'
+          x-stoplight:
+            id: jglsmymnb64xb
+          description: When the secret was created
+        updated:
+          $ref: '#/components/schemas/Timestamp'
+          x-stoplight:
+            id: s4cdbls33bqxv
+          description: When the secret was last updated
+    TenantSecretId:
+      title: TenantSecretId
+      x-stoplight:
+        id: uyvb59g8tky6a
+      type: integer
+      description: Tenant Secret ID
+      minimum: 1
+    TenantSecretMigrationStatus:
+      title: TenantSecretMigrationStatus
+      x-stoplight:
+        id: 9c7cb0oukecfv
+      type: string
+      description: Tenant secret migration status
+      enum:
+        - Current
+        - NeedsMigration
+    TenantSecretRotationStatus:
+      title: TenantSecretRotationStatus
+      x-stoplight:
+        id: r2mqglmci0t5p
+      type: string
+      description: Tenant secret rotation status
+      enum:
+        - Current
+        - InRotation
+        - Archived
+    TenantSecretType:
+      title: TenantSecretType
+      x-stoplight:
+        id: 6tsvm23gtbykk
+      type: string
+      enum:
+        - Search
+        - Deterministic
+        - Vector
+      description: Tenant secret type
+    ThalesKmsConfig:
+      title: ThalesKmsConfig
+      x-stoplight:
+        id: nb2balwsrnvqk
+      type: object
+      examples:
+        - credentials:
+            authDomain: root
+            connection: local_account
+            username: foo
+            password: bar
+          keyPath:
+            keyId: string
+            serviceUrl: string
+          type: THALES
+          version: 1
+      description: Thales configuration
+      properties:
+        credentials:
+          $ref: '#/components/schemas/ThalesCredentialsV1'
+          x-stoplight:
+            id: 196iuez1cnqvf
+          description: Thales credentials. Can be updated later
+        keyPath:
+          type: object
+          x-stoplight:
+            id: iv9l0nbray601
+          description: Thales key path. Cannot be changed later
+          required:
+            - keyId
+            - serviceUrl
+          properties:
+            keyId:
+              type: string
+              x-stoplight:
+                id: yz90v635shwkj
+              description: Thales key ID
+            serviceUrl:
+              type: string
+              x-stoplight:
+                id: irltdyh6mecj6
+              description: Thales service URL
+        type:
+          type: string
+          x-stoplight:
+            id: vui4ehfkrst3q
+          enum:
+            - THALES
+          description: 'KMS type: THALES'
+        version:
+          type: integer
+          x-stoplight:
+            id: vgqjq2aj92kfs
+          minimum: 1
+          description: Config version
+      required:
+        - credentials
+        - keyPath
+        - type
+        - version
+    ThalesKmsConfigNonsensitive:
+      title: ThalesKmsConfigNonsensitive
+      x-stoplight:
+        id: nb2balwsrnvqk
+      type: object
+      examples:
+        - keyPath:
+            keyId: string
+            serviceUrl: string
+          type: THALES
+          version: 1
+      description: Thales configuration without sensitive credentials
+      properties:
+        keyPath:
+          type: object
+          x-stoplight:
+            id: iv9l0nbray601
+          description: Thales key path. Cannot be changed later
+          required:
+            - keyId
+            - serviceUrl
+          properties:
+            keyId:
+              type: string
+              x-stoplight:
+                id: yz90v635shwkj
+              description: Thales key ID
+            serviceUrl:
+              type: string
+              x-stoplight:
+                id: irltdyh6mecj6
+              description: Thales service URL
+        type:
+          type: string
+          x-stoplight:
+            id: vui4ehfkrst3q
+          enum:
+            - THALES
+          description: 'KMS type: THALES'
+        version:
+          type: integer
+          x-stoplight:
+            id: vgqjq2aj92kfs
+          minimum: 1
+          description: Config version
+      required:
+        - keyPath
+        - type
+        - version
+    ThalesCredentialsV1:
+      title: ThalesCredentialsV1
+      x-stoplight:
+        id: 9y1giaxkl7n6i
+      type: object
+      properties:
+        authDomain:
+          type: string
+          x-stoplight:
+            id: i54hy5k27kkmy
+          description: Thales auth domain. May default to root
+        connection:
+          type: string
+          x-stoplight:
+            id: 9i96z3el8wc4f
+          description: Thales connection. May default to local_account
+        username:
+          type: string
+          x-stoplight:
+            id: i52z478me2a3c
+          description: Thales username
+        password:
+          type: string
+          x-stoplight:
+            id: qabpvzo6e57p6
+          description: Thales password
+      required:
+        - authDomain
+        - connection
+        - username
+        - password
+      description: Thales credentials
+      examples:
+        - authDomain: root
+          connection: local_account
+          username: foo
+          password: bar
+    ThalesKmsConfigUpdate:
+      title: ThalesKmsConfigUpdate
+      x-stoplight:
+        id: nb2balwsrnvqk
+      type: object
+      examples:
+        - credentials:
+            authDomain: root
+            connection: local_account
+            username: foo
+            password: bar
+          type: THALES
+          version: 1
+      description: Thales configuration update. `keyPath` cannot be updated
+      properties:
+        credentials:
+          $ref: '#/components/schemas/ThalesCredentialsV1'
+          x-stoplight:
+            id: 196iuez1cnqvf
+          description: Thales credentials. Can be updated later
+        type:
+          type: string
+          x-stoplight:
+            id: vui4ehfkrst3q
+          enum:
+            - THALES
+          description: 'KMS type: THALES'
+        version:
+          type: integer
+          x-stoplight:
+            id: vgqjq2aj92kfs
+          minimum: 1
+          description: Config version
+      required:
+        - credentials
+        - type
+        - version
+  requestBodies:
+    KmsConfigCreateRequest:
+      content:
+        application/json:
+          schema:
+            title: KmsConfigCreateRequest
+            type: object
+            examples:
+              - config:
+                  credentials:
+                    clientId: string
+                    clientSecret: string
+                    tenantGuid: string
+                  keyPath:
+                    keyName: string
+                    vaultBaseUrl: string
+                  type: AZURE
+                  version: 1
+            properties:
+              config:
+                $ref: '#/components/schemas/KmsConfiguration'
+              leasingAllowed:
+                type: boolean
+                x-stoplight:
+                  id: cipij334xvx1t
+                description: 'Optional value indicating whether KMS config leasing should be enabled for the new configuration. If undefined, defaults to false.'
+            required:
+              - config
+          examples:
+            Azure KMS configuration:
+              value:
+                config:
+                  credentials:
+                    clientId: myClientId
+                    clientSecret: myClientSecret
+                    tenantGuid: myTenantGuid
+                  keyPath:
+                    keyName: myKeyName
+                    vaultBaseUrl: myVaultBaseUrl
+                  type: AZURE
+                  version: 1
+                leasingAllowed: true
+            AWS KMS configuration:
+              value:
+                config:
+                  credentials:
+                    accessKeyId: myAccessKeyId
+                    secretAccessKey: mySecretAccessKey
+                  keyPath:
+                    keyID: myKeyId
+                    region: us-east
+                  type: AWS
+                  version: 1
+                leasingAllowed: true
+            GCP KMS configuration:
+              value:
+                config:
+                  credentials:
+                    client_email: myClientEmail
+                    private_key: myPrivateKey
+                  keyPath:
+                    cryptoKeyId: myCryptoKeyId
+                    keyRingId: myKeyRingId
+                    locationId: myLocationId
+                    projectId: myProjectId
+                  type: GCP
+                  version: 1
+                leasingAllowed: true
+      description: Encrypt a new KMS configuration
+    KmsConfigUpdateRequest:
+      content:
+        application/json:
+          schema:
+            title: KmsConfigUpdateRequest
+            type: object
+            properties:
+              config:
+                $ref: '#/components/schemas/KmsConfigurationUpdate'
+              leasingAllowed:
+                type: boolean
+                description: Wheather to allow key leasing for this configuration.
+          examples:
+            Update AWS Config:
+              value:
+                config:
+                  credentials:
+                    accessKeyId: myAccessKeyId
+                    secretAccessKey: mySecretAccessKey
+                  type: AWS
+                  version: 1
+            Update Key Leasing:
+              value:
+                leasingAllowed: true
+      description: 'Update an existing KMS configuration. The new configuration''s type and version must match the existing configuration. '
+    TenantCreateRequestV1:
+      content:
+        application/json:
+          schema:
+            title: TenantCreateRequest
+            type: object
+            examples:
+              - id: string
+                name: string
+            properties:
+              id:
+                $ref: '#/components/schemas/TenantId'
+              name:
+                type: string
+                description: Name for new tenant
+              tenantAdminEmail:
+                type: string
+                description: Optional email addresss to send tenant invite to
+            required:
+              - id
+              - name
+          examples:
+            New tenant:
+              value:
+                id: tenant-icl
+                name: IronCore Labs
+      description: Create a new tenant. The tenant will have the vendor's default tag.
+    TenantCreateRequestV2:
+      content:
+        application/json:
+          schema:
+            title: TenantCreateRequest
+            type: object
+            examples:
+              - id: string
+                name: string
+            required:
+              - id
+              - name
+            properties:
+              id:
+                $ref: '#/components/schemas/TenantId'
+              name:
+                type: string
+                description: Name for new tenant
+              tenantAdminEmail:
+                type: string
+                description: Optional email addresss to send tenant invite to
+              tags:
+                type: array
+                description: 'Tag IDs to assign to the tenant after creation. If no tags are provided, this tenant''s KMS configurations will not be sent to any TSPs.'
+                items:
+                  $ref: '#/components/schemas/TagId'
+          examples:
+            New tenant:
+              value:
+                id: tenant-icl
+                name: IronCore Labs
+                tags:
+                  - 1
+                  - 2
+      description: |-
+        Create a new tenant. The tenant will only have the tags provided in the `tags` list.
+
+        **If no tags are provided, this tenant's KMS configurations will not be sent to any TSPs.**
+    TenantUpdateRequest:
+      content:
+        application/json:
+          schema:
+            title: TenantUpdateRequest
+            type: object
+            properties:
+              name:
+                type: string
+                description: New name for tenant
+              keyLeasingRequired:
+                type: boolean
+                x-stoplight:
+                  id: i2k1vyajmro3x
+                description: Whether key leasing must be enabled for all KMS configurations assigned to this tenant.
+              tagAdditions:
+                type: array
+                description: Tags to assign to the tenant
+                items:
+                  $ref: '#/components/schemas/TagId'
+              tagRemovals:
+                type: array
+                description: Tags to unassign from the tenant
+                items:
+                  $ref: '#/components/schemas/TagId'
+          examples:
+            Change tenant name:
+              value:
+                name: ICL
+      description: Update a tenant
+    KmsConfigAssignmentUpdateRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              active:
+                type: boolean
+                description: Whether the associated KMS configuration can be used to encrypt/decrypt calls.
+              primary:
+                type: boolean
+                description: Whether the associated KMS configuration will be used for encrypt calls.
+          examples:
+            Set primary:
+              value:
+                active: true
+                primary: true
+            Disable configuration:
+              value:
+                active: false
+                primary: false
+      description: Update a KMS configuration assignment
+    TenantResendInviteRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tenantAdminEmail:
+                type: string
+            required:
+              - tenantAdminEmail
+      description: Email address to send tenant invitation to
+    TagCreateRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tagText:
+                type: string
+                description: Text used to describe the tag
+            required:
+              - tagText
+      description: Request to create a tag in the vendor's organization.
+    TagAssignmentModifyRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tenantIds:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantId'
+            required:
+              - tenantIds
+      description: Request to modify tenants for a tag.
+    TenantSecretListRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ids:
+                type: array
+                x-stoplight:
+                  id: 0t3d64ldpj52d
+                description: Tenant secret IDs to filter to
+                items:
+                  $ref: '#/components/schemas/TenantSecretId'
+                  x-stoplight:
+                    id: 9b9sqv0leq3pm
+              tags:
+                type: array
+                x-stoplight:
+                  id: s48pq66izzg54
+                items:
+                  $ref: '#/components/schemas/TagId'
+                  x-stoplight:
+                    id: pwbgrj99r85zp
+      description: 'List tenant secrets, optionally filtered to specific secret IDs'
+    TenantSecretRotationRequest:
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - properties:
+                  id:
+                    $ref: '#/components/schemas/TenantSecretId'
+                    x-stoplight:
+                      id: t6pcrolm8iuq8
+                    description: Tenant secret ID to operate on
+                required:
+                  - id
+              - x-stoplight:
+                  id: 0025qo9kg0u5u
+                properties:
+                  secretType:
+                    $ref: '#/components/schemas/TenantSecretType'
+                    x-stoplight:
+                      id: y0v05uijhgk7l
+                    description: Tenant secret type to operate on
+                  secretPath:
+                    type: string
+                    x-stoplight:
+                      id: e8fc09y0tli5x
+                    description: Tenant secret path to operate on
+                required:
+                  - secretType
+                  - secretPath
+            type: object
+      description: |-
+        Request to begin or commit a tenant secret rotation.
+        If `id` is specified, the tenant secret with that ID will be operated on.
+        If `secretType` and `secretPath` are specified, beginning rotation mark the Current tenant secret as InRotation, while committing rotation will mark the InRotation tenant secret as Archived (archived tenant secrets are still used for decryption).
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      type: apiKey
+      in: header
+      description: 'VAB authorization header. Form: `vab:1:<API_KEY>`'
+  responses:
+    KmsConfigCreateResponse:
+      description: Result of creating a KMS configuration
+      content:
+        application/json:
+          schema:
+            title: KmsConfigCreateResponse
+            type: object
+            examples:
+              - id: 1
+                encryptedConfig: string
+                kmsType: AZURE
+                version: 1
+                createdBy:
+                  id: string
+                  name: string
+                  type: Vaa
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+                leasingAllowed: true
+            required:
+              - id
+              - encryptedConfig
+              - kmsType
+              - version
+              - createdBy
+              - leasingAllowed
+              - assignmentCount
+              - secretCount
+              - created
+              - updated
+            properties:
+              id:
+                $ref: '#/components/schemas/KmsConfigId'
+              encryptedConfig:
+                $ref: '#/components/schemas/Base64'
+              kmsType:
+                $ref: '#/components/schemas/KmsType'
+              version:
+                type: integer
+                description: Config version
+                minimum: 1
+              createdBy:
+                $ref: '#/components/schemas/CreatedBy'
+              leasingAllowed:
+                type: boolean
+                description: Is key leasing enabled?
+              assignmentCount:
+                type: integer
+                description: Number of consumers of this configuration
+                minimum: 0
+              secretCount:
+                type: integer
+                x-stoplight:
+                  id: wgnyzqo5kmid0
+                minimum: 0
+                description: Number of active secrets associated with this configuration
+              created:
+                $ref: '#/components/schemas/Timestamp'
+              updated:
+                $ref: '#/components/schemas/Timestamp'
+          examples:
+            New tenant:
+              value:
+                id: 803
+                encryptedConfig: AgA4eyJfZGlkXyI6IjVkMW
+                kmsType: AZURE
+                version: 1
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                leasingAllowed: false
+                assignmentCount: 0
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+                secretCount: 0
+    KmsConfigDeleteResponse:
+      description: Result of deleting a KMS configuration
+      content:
+        application/json:
+          schema:
+            title: KmsConfigDeleteResponse
+            type: object
+            examples:
+              - id: 1
+            properties:
+              id:
+                $ref: '#/components/schemas/KmsConfigId'
+            required:
+              - id
+          examples:
+            Delete tenant:
+              value:
+                id: 803
+    KmsConfigGetResponse:
+      description: Result of decrypting a KMS configuration
+      content:
+        application/json:
+          schema:
+            title: KmsConfigGetResponse
+            type: object
+            required:
+              - id
+              - decryptedConfig
+              - createdBy
+              - leasingAllowed
+              - assignmentCount
+              - secretCount
+              - created
+              - updated
+            properties:
+              id:
+                $ref: '#/components/schemas/KmsConfigId'
+              decryptedConfig:
+                $ref: '#/components/schemas/KmsConfigurationNonsensitive'
+              createdBy:
+                $ref: '#/components/schemas/CreatedBy'
+              leasingAllowed:
+                type: boolean
+                description: Is key leasing enabled?
+              assignmentCount:
+                description: Number of consumers of the configuration.
+                type: integer
+              secretCount:
+                type: integer
+                x-stoplight:
+                  id: 3v7sbjdhyxia4
+                minimum: 0
+                description: Number of active secrets associated with this configuration
+              created:
+                $ref: '#/components/schemas/Timestamp'
+              updated:
+                $ref: '#/components/schemas/Timestamp'
+          examples:
+            Get configuration:
+              value:
+                id: 803
+                decryptedConfig:
+                  keyPath:
+                    keyName: myKeyPath
+                    vaultBaseUrl: myVaultBaseUrl
+                  type: AZURE
+                  version: 1
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                leasingAllowed: false
+                assignmentCount: 2
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+                secretCount: 0
+    KmsConfigListResponse:
+      description: Result of listing the vendor's KMS configurations
+      content:
+        application/json:
+          schema:
+            title: TenantConfigListResponse
+            type: object
+            examples:
+              - tenant_configs:
+                  - id: 1
+                    kmsType: AZURE
+                    version: 1
+                    createdBy:
+                      id: string
+                      name: string
+                      type: Vaa
+                    primary: true
+                    active: true
+                    leasingAllowed: true
+                    tenantId: string
+                    created: '2022-01-13T21:44:43.653Z'
+                    updated: '2022-01-13T21:44:43.653Z'
+                vendor_configs:
+                  - id: 1
+                    kmsType: AZURE
+                    version: 1
+                    createdBy:
+                      id: string
+                      name: string
+                      type: Vaa
+                    primary: true
+                    active: true
+                    leasingAllowed: true
+                    tenantId: string
+                    created: '2022-01-13T21:44:43.653Z'
+                    updated: '2022-01-13T21:44:43.653Z'
+            properties:
+              result:
+                type: array
+                minItems: 0
+                description: Vendor configs
+                items:
+                  $ref: '#/components/schemas/BasicKmsConfig'
+              page:
+                type: integer
+                description: Current response page number
+              totalPages:
+                type: integer
+                description: Total number of response pages
+            required:
+              - result
+              - page
+              - totalPages
+          examples:
+            List configurations:
+              value:
+                result:
+                  - id: 803
+                    kmsType: AZURE
+                    version: 1
+                    createdBy:
+                      id: vendor
+                      name: Vendor
+                      type: Va
+                    leasingAllowed: false
+                    assignmentCount: 1
+                    created: '2022-01-13T21:44:43.653Z'
+                    updated: '2022-01-13T21:44:43.653Z'
+                    secretCount: 0
+                page: 1
+                totalPages: 1
+    TenantCreateResponse:
+      description: Result of creating a tenant
+      content:
+        application/json:
+          schema:
+            title: TenantCreateResponse
+            type: object
+            examples:
+              - id: string
+                name: string
+                tenantCreatedConfigs: true
+                archived: true
+                createdBy:
+                  id: string
+                  name: string
+                  type: Vaa
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+            properties:
+              id:
+                $ref: '#/components/schemas/TenantId'
+              name:
+                type: string
+                description: Tenant name
+              tenantCreatedConfigs:
+                type: boolean
+                description: Has the tenant created their own KMS configurations?
+              emailSent:
+                type: boolean
+                description: Whether an invitation was sent to the tenant email (if provided)
+              keyLeasingRequired:
+                type: boolean
+                x-stoplight:
+                  id: jb0v17jhybtgt
+                description: Whether key leasing must be enabled for all KMS configurations assigned to this tenant.
+              archived:
+                type: boolean
+                description: Is the tenant archived?
+              tags:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+              createdBy:
+                $ref: '#/components/schemas/CreatedBy'
+              created:
+                $ref: '#/components/schemas/Timestamp'
+              updated:
+                $ref: '#/components/schemas/Timestamp'
+            required:
+              - id
+              - name
+              - tenantCreatedConfigs
+              - emailSent
+              - keyLeasingRequired
+              - archived
+              - tags
+              - createdBy
+              - created
+              - updated
+          examples:
+            Create tenant:
+              value:
+                id: tenant-icl
+                name: IronCore Labs
+                tenantCreatedConfigs: false
+                archived: false
+                emailSent: true
+                keyLeasingRequired: true
+                tags:
+                  - id: 1
+                    tagText: Default
+                    default: true
+                    created: '2022-01-13T21:44:43.653Z'
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+      headers: {}
+    TenantDeleteResponse:
+      description: Result of deleting a tenant
+      content:
+        application/json:
+          schema:
+            title: TenantDeleteResponse
+            type: object
+            examples:
+              - id: string
+            properties:
+              id:
+                $ref: '#/components/schemas/TenantId'
+            required:
+              - id
+          examples:
+            Delete tenant:
+              value:
+                id: tenant-icl
+    TenantUpdateResponse:
+      description: Result of updating a tenant
+      content:
+        application/json:
+          schema:
+            title: TenantUpdateResponse
+            type: object
+            examples:
+              - id: string
+                name: string
+                archived: true
+            properties:
+              id:
+                $ref: '#/components/schemas/TenantId'
+              name:
+                type: string
+                description: Updated tenant name
+              archived:
+                type: boolean
+                description: Is the tenant archived?
+              keyLeasingRequired:
+                type: boolean
+                x-stoplight:
+                  id: dxzgdycb9wp2e
+                description: Whether key leasing must be enabled for all KMS configurations assigned to this tenant.
+              tags:
+                type: array
+                description: Tags associated with the tenant
+                items:
+                  $ref: '#/components/schemas/Tag'
+            required:
+              - id
+              - name
+              - archived
+              - keyLeasingRequired
+              - tags
+          examples:
+            Update tenant:
+              value:
+                id: tenant-icl
+                name: ICL
+                archived: false
+                keyLeasingRequired: true
+                tags:
+                  - id: 4
+                    tagText: Default
+                    default: true
+                    created: '2022-01-13T21:44:43.653Z'
+    KmsConfigUpdateResponse:
+      description: Result of updating a KMS configuration
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - id
+              - encryptedConfig
+              - kmsType
+              - version
+              - createdBy
+              - leasingAllowed
+              - assignmentCount
+              - secretCount
+              - created
+              - updated
+            properties:
+              id:
+                $ref: '#/components/schemas/KmsConfigId'
+              encryptedConfig:
+                $ref: '#/components/schemas/Base64'
+              kmsType:
+                $ref: '#/components/schemas/KmsType'
+              version:
+                type: integer
+                description: Config version
+                minimum: 1
+              createdBy:
+                $ref: '#/components/schemas/CreatedBy'
+              leasingAllowed:
+                type: boolean
+                description: Is key leasing enabled?
+              assignmentCount:
+                type: integer
+                description: Number of consumers of this configuration
+                minimum: 0
+              secretCount:
+                type: integer
+                x-stoplight:
+                  id: ywki49gsj579o
+                minimum: 0
+                description: Number of active secrets associated with this configuration
+              created:
+                $ref: '#/components/schemas/Timestamp'
+              updated:
+                $ref: '#/components/schemas/Timestamp'
+          examples:
+            Update configuration:
+              value:
+                id: 1
+                encryptedConfig: AgA4eyJfZGlkXyI6IjVkMW
+                kmsType: AZURE
+                version: 1
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                leasingAllowed: true
+                assignmentCount: 0
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+                secretCount: 0
+    KmsConfigAssignmentCreateResponse:
+      description: Result of assigning a KMS configuration to a tenant.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KmsConfigAssignmentResponse'
+          examples:
+            New assignment:
+              value:
+                kmsConfigId: 1
+                tenantId: tenant-icl
+                active: true
+                primary: true
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+    KmsConfigAssignmentUpdateResponse:
+      description: Result of updating the assignment from a KMS configuration to a tenant.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KmsConfigAssignmentResponse'
+          examples:
+            Update Assignment:
+              value:
+                kmsConfigId: 1
+                tenantId: tenant-icl
+                active: true
+                primary: true
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+    KmsConfigAssignmentGetResponse:
+      description: Result of getting the assignment from a KMS configuration to a tenant.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KmsConfigAssignmentResponse'
+          examples:
+            Get Assignment:
+              value:
+                kmsConfigId: 1
+                tenantId: tenant-icl
+                active: true
+                primary: true
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+    KmsConfigAssignmentDeleteResponse:
+      description: Result of deleting the assignment from a KMS configuration to a tenant.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              kmsConfigId:
+                $ref: '#/components/schemas/KmsConfigId'
+              tenantId:
+                $ref: '#/components/schemas/TenantId'
+            required:
+              - kmsConfigId
+              - tenantId
+          examples:
+            Delete assignment:
+              value:
+                kmsConfigId: 1
+                tenantId: tenant-icl
+    TenantGetResponse:
+      description: Result of getting a tenant. Same as TenantCreateResponse but with the addition of `primaryKmsConfigId`.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TenantGetResponse'
+          examples:
+            Get Tenant:
+              value:
+                id: string
+                name: string
+                archived: true
+                tenantCreatedConfigs: true
+                invited: false
+                keyLeasingRequired: true
+                primaryKmsConfigId: 1
+                tags: []
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+    TenantListResponse:
+      description: Result of listing all tenants associated with the calling vendor.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              result:
+                type: array
+                description: Tenants
+                items:
+                  $ref: '#/components/schemas/TenantGetResponse'
+              page:
+                type: integer
+                description: Current response page number
+              totalPages:
+                type: integer
+                description: Total number of response pages
+            required:
+              - result
+              - page
+              - totalPages
+          examples:
+            List Tenants:
+              value:
+                result:
+                  - id: tenant-icl
+                    name: string
+                    archived: true
+                    tenantCreatedConfigs: true
+                    invited: false
+                    keyLeasingRequired: true
+                    primaryKmsConfigId: 0
+                    tags: []
+                    createdBy:
+                      id: vendor
+                      name: Vendor
+                      type: Va
+                    created: '2022-01-13T21:44:43.653Z'
+                    updated: '2022-01-13T21:44:43.653Z'
+                page: 0
+                totalPages: 0
+    KmsConfigAssignmentListResponse:
+      description: Result of listing KMS configuration assignments
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              result:
+                type: array
+                description: KMS configuration assignments
+                items:
+                  $ref: '#/components/schemas/KmsConfigAssignmentResponse'
+              page:
+                type: integer
+                description: Current response page number
+              totalPages:
+                type: integer
+                description: Total number of response pages
+            required:
+              - result
+              - page
+              - totalPages
+      headers: {}
+    TenantResendInviteResponse:
+      description: Result of sending a tenant admin invitation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              invitedTenantAdminEmail:
+                type: string
+                description: Email address the tenant invite was sent to
+            required:
+              - invitedTenantAdminEmail
+          examples:
+            Resend Invite:
+              value:
+                invitedTenantAdminEmail: foo@bar.com
+    TagListResponse:
+      description: Result of listing tags
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              result:
+                type: array
+                description: List of tags
+                items:
+                  $ref: '#/components/schemas/Tag'
+              page:
+                type: integer
+                description: Current response page number
+              totalPages:
+                type: integer
+                description: Total number of response pages
+            required:
+              - result
+              - page
+              - totalPages
+        application/javascript:
+          schema:
+            type: object
+            properties: {}
+    TagCreateResponse:
+      description: Response from creating a tag
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Tag'
+            description: Newly created tag. `default` will always be `false`.
+          examples:
+            Example 1:
+              value:
+                id: 1
+                tagText: string
+                default: true
+                created: '2022-01-13T21:44:43.653Z'
+    TagAssignmentModifyResponse:
+      description: Response of modifying the tenants associated with a tag
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              succeeded:
+                type: array
+                description: Tenants successfully modified
+                items:
+                  $ref: '#/components/schemas/TenantId'
+              failed:
+                type: array
+                description: Tenants who failed to be modified
+                items:
+                  $ref: '#/components/schemas/TagAssignmentModifyFailure'
+            required:
+              - succeeded
+              - failed
+    TenantSecretListResponse:
+      description: Result of listing tenant secrets
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - result
+              - page
+              - totalPages
+            properties:
+              result:
+                type: array
+                x-stoplight:
+                  id: 0nlg4galhu6um
+                description: Tenant secrets
+                items:
+                  $ref: '#/components/schemas/TenantSecretListResponseItem'
+                  x-stoplight:
+                    id: bdcze7yetefsm
+              page:
+                type: integer
+                x-stoplight:
+                  id: 8r26d7is9iujk
+                description: Current response page number
+              totalPages:
+                type: integer
+                x-stoplight:
+                  id: 6kjzc0mmoy9jl
+                description: Total number of response pages
+    TenantSecretRotationResponse:
+      description: Response from either a tenant secret rotation begin request or a tenant secret rotation commit request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TenantSecret'
+  parameters:
+    tenantId:
+      name: tenantId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Tenant ID
+    kmsConfigId:
+      name: kmsConfigId
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: KMS Configuration ID
+    iclRequestorId:
+      name: icl-requestor-id
+      in: header
+      required: true
+      schema:
+        type: string
+      description: ID of requesting user/service
+    pageSize:
+      name: pageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 10
+      description: Number of entries returned per page
+    page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+      description: Page number to return
+    sortDirection:
+      name: sortDirection
+      in: query
+      required: false
+      schema:
+        type: string
+        default: desc
+        enum:
+          - asc
+          - desc
+      description: Direction to sort
+    tagId:
+      name: tagId
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Tag ID
+    secretType:
+      name: secretType
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - search
+          - deterministic-encryption
+          - vector
+      description: Tenant secret type to filter to
+    migrationStatus:
+      name: migrationStatus
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - current
+          - needs-migration
+      description: Tenant secret migration status to filter to
+    rotationStatus:
+      name: rotationStatus
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - current
+          - in-rotation
+          - archived
+      description: Tenant secret rotation status to filter to
+  examples: {}
+tags:
+  - name: Configuration Assignment
+    description: Assignments between KMS configurations and tenants
+  - name: KMS Configuration
+    description: 'KMS configurations from different providers (AWS, Azure, GCP, Thales)'
+  - name: Tag
+    description: Label shared between service account configs and tenants. Controls where KMS configurations can be sent.
+  - name: Tenant
+    description: Vendor tenants managed by the Config Broker
+  - name: Tenant Secret
+    description: Tenant secrets created by the TSP and stored in the Config Broker
+security:
+  - Authorization: []

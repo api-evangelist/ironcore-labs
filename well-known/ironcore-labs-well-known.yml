@@ -1,0 +1,15 @@
+generated: '2026-07-19'
+method: searched
+host: https://ironcorelabs.com
+documents:
+  - path: /.well-known/security.txt          # RFC 9116
+    status: 200
+    file: ironcore-labs-security.txt
+  - path: /.well-known/openid-configuration   # OIDC discovery
+    status: 404
+  - path: /.well-known/oauth-authorization-server  # RFC 8414
+    status: 404
+  - path: /.well-known/api-catalog            # RFC 9727
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404

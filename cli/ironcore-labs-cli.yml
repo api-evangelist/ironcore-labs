@@ -1,0 +1,38 @@
+generated: '2026-07-19'
+method: searched
+source: >-
+  https://github.com/IronCoreLabs (ironhide, ironoxide-cli) + crates.io
+note: >-
+  These first-party CLIs belong to the Data Control Platform (end-to-end
+  encryption), not the Vendor API Bridge REST API. Captured because they are
+  real, published IronCore command-line tools.
+clis:
+  - name: ironhide
+    description: Encrypt and decrypt files to IronCore users and groups from the command line.
+    repo: https://github.com/IronCoreLabs/ironhide
+    registry: crates.io
+    package: ironhide
+    version: 1.1.0
+    install:
+      - cargo install ironhide
+    command_groups:
+      - group: file
+        commands: [encrypt, decrypt]
+      - group: group
+        commands: [create, list, add-admins, add-members, remove-members]
+      - group: user
+        commands: [list, add, remove]
+  - name: ironoxide-cli
+    description: >-
+      Command-line interface for IronOxide functions to create users, devices,
+      and groups against IronCore's Data Control Platform.
+    repo: https://github.com/IronCoreLabs/ironoxide-cli
+    install:
+      - cargo install --git https://github.com/IronCoreLabs/ironoxide-cli
+    command_groups:
+      - group: user
+        commands: [create]
+      - group: device
+        commands: [generate]
+      - group: group
+        commands: [create]

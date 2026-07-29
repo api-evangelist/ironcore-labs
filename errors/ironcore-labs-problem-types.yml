@@ -1,0 +1,41 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/ironcore-labs-vendor-bridge-openapi.yml
+format: custom-json
+media_type: application/json
+envelope:
+  schema: ErrorResponse
+  fields:
+    message: Human-readable error message
+    statusCode: HTTP status code echoed in the body
+  example:
+    message: Invalid config ID provided
+    statusCode: 404
+problems:
+  - status: 400
+    title: Bad Request
+    description: Malformed request body or invalid field values.
+    media_type: application/json
+    schema: ErrorResponse
+  - status: 401
+    title: Unauthorized
+    description: >-
+      Missing or invalid Authorization header (expected form vab:1:<API_KEY>).
+    schema: ErrorResponse
+  - status: 404
+    title: Not Found
+    description: >-
+      Referenced tenant, KMS config, tag, or secret does not exist
+      (per the ErrorResponse example).
+    schema: ErrorResponse
+  - status: 422
+    title: Unprocessable Entity
+    description: >-
+      Request was well-formed but semantically invalid (e.g. unsupported KMS
+      configuration or conflicting tenant/secret state).
+    media_type: application/json
+    schema: ErrorResponse
+notes: >-
+  Errors are a custom {message, statusCode} JSON envelope, not RFC 9457
+  application/problem+json. Titles/descriptions are derived from the OpenAPI
+  response set and the ErrorResponse schema example.

@@ -1,0 +1,23 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for IronCore Vendor API Bridge
+  version: 1.0.0
+extends: openapi/ironcore-labs-vendor-bridge-openapi.yml
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-enriched: true
+      x-apievangelist-provider: ironcore-labs
+      x-apievangelist-artifacts:
+        authentication: authentication/ironcore-labs-authentication.yml
+        conventions: conventions/ironcore-labs-conventions.yml
+        errors: errors/ironcore-labs-problem-types.yml
+        lifecycle: lifecycle/ironcore-labs-lifecycle.yml
+        changelog: changelog/ironcore-labs-changelog.yml
+        data_model: data-model/ironcore-labs-data-model.yml
+  - target: $.info
+    update:
+      x-agent-notes: >-
+        Self-hosted Vendor Bridge sidecar. Auth is a single API-key header of the
+        form 'vab:1:<API_KEY>'. Manage tenants, KMS configurations, tenant secrets,
+        and tags. No idempotency-key or pagination contract is documented.

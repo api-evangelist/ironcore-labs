@@ -1,0 +1,19 @@
+generated: '2026-07-19'
+method: searched
+probe: true
+url: https://ironcorelabs.com/trust-center/
+certifications:
+  - SOC 2
+programs:
+  - name: Bug Bounty Program
+    url: https://ironcorelabs.com/trust-center/bug-bounty-program/
+  - name: Security Advisories
+    url: https://ironcorelabs.com/trust-center/security-advisories/
+sections:
+  - {name: Security, url: 'https://ironcorelabs.com/trust-center/'}
+  - {name: Privacy, url: 'https://ironcorelabs.com/trust-center/privacy/'}
+  - {name: Reliability, url: 'https://ironcorelabs.com/trust-center/reliability/'}
+  - {name: Terms of Service, url: 'https://ironcorelabs.com/trust-center/terms-of-service/'}
+evidence:
+  - source: https://ironcorelabs.com/trust-center/
+    keywords: [soc 2, trust center, bug bounty, security advisories]

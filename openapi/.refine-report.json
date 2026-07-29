@@ -1,0 +1,22 @@
+{
+  "provider": "ironcore-labs",
+  "sources": [
+    "ironcore-labs-configuration-assignment-api-openapi.yml",
+    "ironcore-labs-kms-configuration-api-openapi.yml",
+    "ironcore-labs-tag-api-openapi.yml",
+    "ironcore-labs-tenant-api-openapi.yml",
+    "ironcore-labs-tenant-secret-api-openapi.yml"
+  ],
+  "outputs": [
+    "ironcore-labs-configuration-assignment-api-openapi.yml",
+    "ironcore-labs-kms-configuration-api-openapi.yml",
+    "ironcore-labs-tag-api-openapi.yml",
+    "ironcore-labs-tenant-api-openapi.yml",
+    "ironcore-labs-tenant-secret-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

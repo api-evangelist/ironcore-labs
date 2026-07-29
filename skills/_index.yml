@@ -1,0 +1,12 @@
+generated: '2026-07-19'
+method: generated
+source: openapi/ironcore-labs-vendor-bridge-openapi.yml
+skills:
+  - file: ironcore-labs-provision-tenant.md
+    name: Provision a SaaS Shield tenant with customer-managed keys
+    api: openapi/ironcore-labs-vendor-bridge-openapi.yml
+    operations: [post-kms-configs, post-tenants-v2, post-kms-configs-kmsConfigId-tenants-tenantId, post-tenants-tenantId-invite, get-tenants-tenantId]
+  - file: ironcore-labs-rotate-tenant-secret.md
+    name: Rotate a tenant secret
+    api: openapi/ironcore-labs-vendor-bridge-openapi.yml
+    operations: [get-tenants-tenantId, post-1-tenants-tenantId-secrets-rotate-begin, post-1-tenants-tenantId-secrets-rotate-commit, get-tenants-tenantId-assignments]

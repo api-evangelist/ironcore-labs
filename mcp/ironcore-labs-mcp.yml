@@ -1,0 +1,87 @@
+generated: '2026-07-19'
+method: derived
+status: candidate
+source: openapi/ironcore-labs-vendor-bridge-openapi.yml
+note: >-
+  No official hosted/remote IronCore MCP server was found in the docs, the
+  GitHub org, npm @modelcontextprotocol, or the MCP registries. This is a
+  candidate tool list derived one-to-one from Vendor API Bridge operations.
+server:
+  name: ironcore-vendor-bridge
+  transport: http
+tools:
+  - name: create_tenant_v2
+    description: Create a tenant (v2).
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#post-tenants-v2
+  - name: create_tenant_v1
+    description: Create a tenant (v1).
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#post-tenants-v1
+  - name: list_tenants
+    description: List tenants.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#get-tenants
+  - name: list_tenant_secrets
+    description: List tenant secrets.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#post-1-tenants-secrets
+  - name: invite_tenant_admin
+    description: Invite an admin to a tenant.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#post-tenants-tenantId-invite
+  - name: delete_tenant
+    description: Delete a tenant.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#delete-tenants-tenantId
+  - name: update_tenant
+    description: Update a tenant.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#put-tenants-tenantId
+  - name: get_tenant
+    description: Get a tenant.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#get-tenants-tenantId
+  - name: get_tenant_assignments
+    description: List a tenant's KMS assignments.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#get-tenants-tenantId-assignments
+  - name: begin_secret_rotation
+    description: Begin tenant secret rotation.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#post-1-tenants-tenantId-secrets-rotate-begin
+  - name: commit_secret_rotation
+    description: Commit tenant secret rotation.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#post-1-tenants-tenantId-secrets-rotate-commit
+  - name: list_kms_configs
+    description: List KMS configurations.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#get-kms-configs
+  - name: create_kms_config
+    description: Create a KMS configuration.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#post-kms-configs
+  - name: get_kms_config
+    description: Get a KMS configuration.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#get-kms-configs-kmsConfigId
+  - name: update_kms_config
+    description: Update a KMS configuration.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#put-kms-configs-kmsConfigId
+  - name: delete_kms_config
+    description: Delete a KMS configuration.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#delete-kms-configs-kmsConfigId
+  - name: get_kms_config_assignments
+    description: List tenants assigned to a KMS configuration.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#get-kms-configs-kmsConfigId-assignments
+  - name: get_kms_config_tenant
+    description: Get a tenant's assignment to a KMS configuration.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#get-kms-configs-kmsConfigId-tenants-tenantId
+  - name: assign_kms_config_tenant
+    description: Assign a KMS configuration to a tenant.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#post-kms-configs-kmsConfigId-tenants-tenantId
+  - name: update_kms_config_tenant
+    description: Update a tenant's KMS configuration assignment.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#put-kms-configs-kmsConfigId-tenants-tenantId
+  - name: unassign_kms_config_tenant
+    description: Remove a tenant's KMS configuration assignment.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#delete-kms-configs-kmsConfigId-tenants-tenantId
+  - name: list_tags
+    description: List tags.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#get-tags
+  - name: create_tag
+    description: Create a tag.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#post-tags
+  - name: add_tag_tenants
+    description: Add tenants to a tag.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#post-tags-tagId-tenants
+  - name: remove_tag_tenants
+    description: Remove tenants from a tag.
+    source_operation: openapi/ironcore-labs-vendor-bridge-openapi.yml#delete-tags-tagId-tenants

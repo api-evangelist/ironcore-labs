@@ -1,0 +1,48 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/ironcore-labs-vendor-bridge-openapi.yml
+api: openapi/ironcore-labs-vendor-bridge-openapi.yml
+entities:
+  - name: Tenant
+    id: TenantId
+    schema: TenantGetResponse
+    endpoints: [/1/tenants, /2/tenants, '/1/tenants/{tenantId}']
+  - name: KmsConfiguration
+    id: KmsConfigId
+    schema: KmsConfiguration
+    kinds: [AwsKmsConfig, AzureKmsConfig, GcpKmsConfig, ThalesKmsConfig]
+    endpoints: [/1/kms/configs, '/1/kms/configs/{kmsConfigId}']
+  - name: TenantSecret
+    id: TenantSecretId
+    schema: TenantSecret
+    endpoints: ['/1/tenants/{tenantId}/secrets/rotate/begin', '/1/tenants/{tenantId}/secrets/rotate/commit', /1/tenants/secrets]
+  - name: Tag
+    id: TagId
+    schema: Tag
+    endpoints: [/1/tags, '/1/tags/{tagId}/tenants']
+relationships:
+  - from: Tenant
+    to: TenantSecret
+    kind: has_many
+    via: tenantId
+    evidence: /1/tenants/{tenantId}/secrets/rotate/*
+  - from: Tenant
+    to: KmsConfiguration
+    kind: has_many
+    via: assignment
+    evidence: /1/tenants/{tenantId}/assignments, /1/kms/configs/{kmsConfigId}/tenants/{tenantId}
+  - from: KmsConfiguration
+    to: Tenant
+    kind: has_many
+    via: assignment
+    evidence: /1/kms/configs/{kmsConfigId}/assignments
+  - from: Tag
+    to: Tenant
+    kind: has_many
+    via: tagId
+    evidence: /1/tags/{tagId}/tenants
+notes: >-
+  A KMS configuration and a tenant form a many-to-many assignment relationship
+  (a tenant can be assigned KMS configs; a KMS config lists its assigned tenants).
+  Tags label and group tenants. Tenant secrets belong to a tenant and are rotated
+  via a begin/commit pair.

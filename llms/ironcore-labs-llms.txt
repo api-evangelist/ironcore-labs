@@ -1,0 +1,93 @@
+# IronCore Labs
+
+> IronCore Labs builds application-layer encryption tools that keep sensitive data private and usable. Our products cover end-to-end encryption (Data Control Platform), tenant-controlled encryption with customer-managed keys for SaaS apps (SaaS Shield), encrypted search over Elasticsearch/OpenSearch (Cloaked Search), vector-embedding encryption for AI workloads (Cloaked AI), and per-tenant encryption for Amazon S3 objects (S3 Proxy).
+
+## Start here
+
+- [Documentation home](https://ironcorelabs.com/docs/): index of all product documentation, plus a comparison table, decision tree, and use-case examples to help you choose the right product, SDK, and add-ons; read this before any other docs page if you are unsure where to start
+- [SaaS Shield overview](https://ironcorelabs.com/docs/saas-shield/): tenant-aware envelope encryption, customer-managed keys, BYOK
+- [Data Control Platform overview](https://ironcorelabs.com/docs/data-control-platform/): end-to-end encryption SDKs for apps where the end user holds the key
+- [Cloaked Search overview](https://ironcorelabs.com/docs/cloaked-search/): transparent encrypting proxy for Elasticsearch and OpenSearch
+- [Cloaked AI overview](https://ironcorelabs.com/docs/cloaked-ai/): encrypts vector embeddings while preserving similarity search
+- [VectorLens overview](https://ironcorelabs.com/docs/cloaked-ai/vectorlens/): scans vector embeddings and categorizes any found PII
+- [IronCore Alloy overview](https://ironcorelabs.com/docs/ironcore-alloy/): unified SDK for SaaS Shield, Cloaked Search, and Cloaked AI; preferred over the legacy Tenant Security Client where the language is supported
+- [SaaS Shield CMK for Amazon S3 (S3 Proxy) overview](https://ironcorelabs.com/docs/saas-shield/saas-shield-for-s3/overview/): SaaS Shield add-on that encrypts S3 objects with per-tenant keys via a transparent proxy
+
+## Integration guides
+
+- [SaaS Shield integration guides overview](https://ironcorelabs.com/docs/saas-shield/integration-guide/overview/): KMS-specific guides
+- [DCP guide](https://ironcorelabs.com/docs/data-control-platform/guide/): comprehensive walkthrough of Data Control Platform patterns and use cases
+- [DCP quickstart](https://ironcorelabs.com/docs/data-control-platform/quickstart/): the fastest path to a working DCP integration
+
+## API specifications
+
+- [Vendor Bridge OpenAPI spec (YAML)](https://ironcorelabs.com/openapi/vendor-bridge.yaml): REST API for tenant and KMS configuration management. Use this for programmatic provisioning and configuration management.
+
+## SDKs
+
+### IronCore Alloy (preferred for SaaS Shield, Cloaked Search, and Cloaked AI)
+
+- [Rust](https://ironcorelabs.com/docs/ironcore-alloy/rust/): native Rust SDK for SaaS Shield, Cloaked Search, and Cloaked AI workloads
+- [Java](https://ironcorelabs.com/docs/ironcore-alloy/java/): JVM SDK for SaaS Shield, Cloaked Search, and Cloaked AI workloads
+- [Kotlin](https://ironcorelabs.com/docs/ironcore-alloy/kotlin/): Kotlin SDK for SaaS Shield, Cloaked Search, and Cloaked AI workloads
+- [Python](https://ironcorelabs.com/docs/ironcore-alloy/python/): Python SDK for SaaS Shield, Cloaked Search, and Cloaked AI workloads
+
+### Tenant Security Client (SaaS Shield, for languages Alloy doesn't support yet)
+
+- [Node.js](https://ironcorelabs.com/docs/saas-shield/tenant-security-client/node-sdk/): Node TSC for talking to the Tenant Security Proxy
+- [PHP](https://ironcorelabs.com/docs/saas-shield/tenant-security-client/php-sdk/): PHP TSC for talking to the Tenant Security Proxy
+- [Go](https://ironcorelabs.com/docs/saas-shield/tenant-security-client/go-sdk/): Go TSC for talking to the Tenant Security Proxy
+
+### Data Control Platform
+
+- [Rust](https://ironcorelabs.com/docs/data-control-platform/rust/): native Rust SDK for end-to-end encryption with DCP
+- [JavaScript/browser (IronWeb)](https://ironcorelabs.com/docs/data-control-platform/javascript/overview/): browser SDK for end-to-end encryption in client-side web apps
+- [Node.js (IronNode)](https://ironcorelabs.com/docs/data-control-platform/nodejs/overview/): server-side Node SDK for end-to-end encryption with DCP
+- [Java](https://ironcorelabs.com/docs/data-control-platform/java/): JVM SDK for end-to-end encryption with DCP
+- [Scala](https://ironcorelabs.com/docs/data-control-platform/scala/): Scala SDK for end-to-end encryption with DCP
+- [Android](https://ironcorelabs.com/docs/data-control-platform/android/): Android SDK for end-to-end encryption with DCP
+
+## Concepts
+
+### SaaS Shield
+
+- [Configuration Broker overview](https://ironcorelabs.com/docs/saas-shield/config-broker/overview/): web UI and APIs for managing tenants and KMS configurations
+- [Tenant Security Proxy overview](https://ironcorelabs.com/docs/saas-shield/tenant-security-proxy/overview/): the service that performs envelope encryption against tenant KMS configurations
+- [Tenant Security Client overview](https://ironcorelabs.com/docs/saas-shield/tenant-security-client/overview/): legacy SDKs for talking to the TSP; prefer ironcore-alloy where supported
+- [Vendor API (Vendor Bridge) overview](https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/): programmatic tenant and KMS configuration management
+- [What is CMK?](https://ironcorelabs.com/docs/saas-shield/what-is-cmk/): customer-managed keys explainer
+- [What is Key Leasing?](https://ironcorelabs.com/docs/saas-shield/what-is-key-leasing/): explanation of optional feature to increase performance and resiliency
+- [Deterministic Encryption](https://ironcorelabs.com/docs/saas-shield/deterministic-encryption/): when and where to use deterministic encryption
+- [Data Continuity](https://ironcorelabs.com/docs/saas-shield/data-continuity/): how SaaS Shield protects against KMS outages and key loss
+- [Real-Time Security Events](https://ironcorelabs.com/docs/saas-shield/real-time-security-events/): audit events included with SaaS Shield
+- [SaaS Shield CMK for Amazon S3 (S3 Proxy)](https://ironcorelabs.com/docs/saas-shield/saas-shield-for-s3/overview/): per-tenant encryption for S3 objects via a transparent proxy
+- [S3 Proxy: creating and mapping tenants](https://ironcorelabs.com/docs/saas-shield/saas-shield-for-s3/getting-started/): S3 proxy requirements
+
+### Data Control Platform
+
+- [How it works](https://ironcorelabs.com/docs/data-control-platform/how-it-works/): architectural walkthrough of the DCP services and SDK flow
+- [Transform Encryption](https://ironcorelabs.com/docs/data-control-platform/concepts/transform-encryption/): proxy re-encryption that powers DCP's access control
+- [Envelope Encryption](https://ironcorelabs.com/docs/data-control-platform/concepts/envelope-encryption/): how DCP wraps document keys with user and group keys
+- [Orthogonal Access](https://ironcorelabs.com/docs/data-control-platform/concepts/orthogonal-access/): granting access without reissuing or rewrapping document keys
+- [Data Control](https://ironcorelabs.com/docs/data-control-platform/concepts/data-control/): policy and access-control model
+- [JWTs in DCP](https://ironcorelabs.com/docs/data-control-platform/how-it-works/jwts/): identity and authentication model
+
+### Cloaked Search
+
+- [What is Encrypted Search?](https://ironcorelabs.com/docs/cloaked-search/what-is-encrypted-search/): how Cloaked Search lets you query encrypted indexes
+- [Indexing](https://ironcorelabs.com/docs/cloaked-search/indexing/): how documents are tokenized and encrypted at index time
+- [Querying](https://ironcorelabs.com/docs/cloaked-search/querying/): supported query types and how queries map to encrypted tokens
+
+### Cloaked AI
+
+- [How it works](https://ironcorelabs.com/docs/cloaked-ai/how-it-works/): architecture of vector-embedding encryption with similarity search preserved
+- [Database integrations](https://ironcorelabs.com/docs/cloaked-ai/integrations/): supported vector databases and how to wire them up
+- [Getting started](https://ironcorelabs.com/docs/cloaked-ai/getting-started/): walkthrough for adding Cloaked AI to a vector workload
+
+### VectorLens
+
+- [VectorLens overview](https://ironcorelabs.com/docs/cloaked-ai/vectorlens/): CLI tool that scans vector embeddings (JSONL or Parquet) for PII and generates a shareable PDF report; install, usage, and export examples
+- [VectorLens product page and FAQ](https://ironcorelabs.com/products/vectorlens/): use cases, supported embedding models, and frequently asked questions
+- [Embedding attacks](https://ironcorelabs.com/docs/cloaked-ai/embedding-attacks/): the embedding-inversion and PII-leakage research VectorLens is built on
+- [Request a trial license](https://ironcorelabs.com/products/vectorlens/license/): get a key to run VectorLens against your own data
+- [Request model support or send feedback](https://ironcorelabs.com/products/vectorlens/feedback/): ask for an embedding model VectorLens doesn't support yet

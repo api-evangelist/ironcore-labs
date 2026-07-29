@@ -1,0 +1,29 @@
+generated: '2026-07-19'
+method: derived
+source: >-
+  openapi/ironcore-labs-vendor-bridge-openapi.yml +
+  https://ironcorelabs.com/trust-center/
+standards:
+  - id: openapi-3.1
+    conforms: true
+    evidence: openapi/ironcore-labs-vendor-bridge-openapi.yml declares openapi 3.1.0
+  - id: api-key-auth
+    conforms: true
+    evidence: securityScheme type apiKey in header (Authorization vab:1:<API_KEY>)
+  - id: oauth2
+    conforms: false
+  - id: openid-connect
+    conforms: false
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: errors use a custom {message, statusCode} JSON envelope, not application/problem+json
+  - id: rfc9116-security-txt
+    conforms: true
+    evidence: well-known/ironcore-labs-security.txt (200)
+  - id: soc2
+    conforms: true
+    evidence: https://ironcorelabs.com/trust-center/ states SOC 2 certified
+compliance:
+  programs:
+    - SOC 2
+  source: https://ironcorelabs.com/trust-center/

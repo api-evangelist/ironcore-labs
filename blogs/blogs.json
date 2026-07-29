@@ -1,0 +1,21 @@
+{
+  "repo": "ironcore-labs",
+  "feeds": [
+    {
+      "source": "https://ironcorelabs.com/feed.xml",
+      "feed_url": "https://ironcorelabs.com/feed.xml",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
+      "source": "https://ironcorelabs.com/docs/data-control-platform/quickstart/",
+      "feed_url": "https://ironcorelabs.com/feed.xml",
+      "title": "",
+      "saved": 0,
+      "method": "discovered"
+    }
+  ],
+  "post_count": 50,
+  "fetched": "2026-07-25T15:00:33Z"
+}

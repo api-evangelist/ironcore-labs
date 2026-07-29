@@ -1,0 +1,42 @@
+generated: '2026-07-19'
+method: derived
+source: >-
+  openapi/ironcore-labs-vendor-bridge-openapi.yml +
+  https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
+api: openapi/ironcore-labs-vendor-bridge-openapi.yml
+authentication:
+  style: api-key
+  location: header
+  header: Authorization
+  format: 'vab:1:<API_KEY>'
+  scheme_ref: authentication/ironcore-labs-authentication.yml
+versioning:
+  style: uri-path-per-resource
+  detail: >-
+    Resource families are individually versioned in the path (e.g. POST /2/tenants
+    supersedes POST /1/tenants; /1/kms/configs, /1/tags). The service itself carries
+    a semver product version (current 3.2.2) tracked in the changelog.
+  changelog: changelog/ironcore-labs-changelog.yml
+error_envelope:
+  format: custom-json
+  media_type: application/json
+  shape:
+    message: string
+    statusCode: integer
+  catalog_ref: errors/ironcore-labs-problem-types.yml
+idempotency:
+  supported: false
+  detail: No idempotency-key header/parameter is documented or present in the OpenAPI.
+pagination:
+  supported: false
+  detail: List endpoints return full collections; no cursor/offset parameters are documented.
+rate_limiting:
+  documented: false
+metadata:
+  tags: >-
+    Tenants can be grouped and filtered via Tags (/1/tags), used as a lightweight
+    label/assignment mechanism across tenants and KMS configs.
+notes: >-
+  The Vendor API Bridge is a self-hosted sidecar service that a SaaS vendor runs
+  locally; it brokers tenant + KMS configuration management against the IronCore
+  Configuration Broker. Authentication is a single API-key header, not OAuth.
