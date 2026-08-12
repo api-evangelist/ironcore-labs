@@ -115,6 +115,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/ironcore-labs-vendor-bridge-overlay.yaml
 # --- Identity / developer surface ---
 - type: Website
   url: https://ironcorelabs.com/
@@ -140,7 +142,7 @@ common:
   url: https://ironcorelabs.com/trust-center/privacy/
 # --- Artifacts ---
 - type: OpenAPI
-  url: openapi/ironcore-labs-vendor-bridge-openapi.yml
+  url: openapi/_original/ironcore-labs-vendor-bridge-openapi.yml
 - type: Authentication
   url: authentication/ironcore-labs-authentication.yml
 - type: Conventions
