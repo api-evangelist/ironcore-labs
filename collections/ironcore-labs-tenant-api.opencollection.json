@@ -1,0 +1,231 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Vendor API Bridge Configuration Assignment Tenant API",
+    "version": "3.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tenant",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Tenant Create V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/2/tenants",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new tenant with the provided ID and name.  \nIf `tenantAdminEmail` is provided, an invite email will be sent to the tenant to claim their account.\nThe Tenant ID will be needed for all subsequent tenant calls.\nThe tenant will be created with the provided tags. If no tags are provided, the tenant will be untagged and its associated KMS configs will not be sent to any TSPs.\nThe tenant will be required to support key leasing for all of its KMS configurations if set in your vendor's Organizat"
+        },
+        {
+          "info": {
+            "name": "Tenant List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:3000/api/1/tenants",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Tenant ID or name to filter to"
+              },
+              {
+                "name": "sortColumn",
+                "value": "",
+                "type": "query",
+                "description": "Field to use for sorting"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Tenant status to filter to"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction to sort"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of entries returned per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return"
+              }
+            ]
+          },
+          "docs": "List all tenants associated with the calling vendor organization."
+        },
+        {
+          "info": {
+            "name": "Tenant Create V1",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/1/tenants",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new tenant with the provided ID and name.  \nIf `tenantAdminEmail` is provided, an invite email will be sent to the tenant to claim their account.\nThe Tenant ID will be needed for all subsequent tenant calls.\nThe tenant will be created with the default tag of the vendor organization.\nThe Tenant Create V2 endpoint can be used to set tags explicitly."
+        },
+        {
+          "info": {
+            "name": "Tenant Invite Resend",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/1/tenants/:tenantId/invite",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "path",
+                "description": "Tenant ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resend an invitation for the provided tenant account to the given email address. This will allow the tenant administrator to claim their account."
+        },
+        {
+          "info": {
+            "name": "Tenant Get",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:3000/api/1/tenants/:tenantId",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "path",
+                "description": "Tenant ID"
+              }
+            ]
+          },
+          "docs": "Get information about the provided tenant."
+        },
+        {
+          "info": {
+            "name": "Tenant Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:3000/api/1/tenants/:tenantId",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "path",
+                "description": "Tenant ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a tenant's name, key leasing requirement, or the tenant's assigned tags.  "
+        },
+        {
+          "info": {
+            "name": "Tenant Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:3000/api/1/tenants/:tenantId",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "path",
+                "description": "Tenant ID"
+              }
+            ]
+          },
+          "docs": "Delete a tenant. This will sever the connection between the vendor and tenant organizations. \nIf you wish to re-invite the tenant, simply send a new invite and have the tenant admin choose to Link Organizations to reestablish the connection."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

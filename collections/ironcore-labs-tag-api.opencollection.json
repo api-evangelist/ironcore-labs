@@ -1,0 +1,142 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Vendor API Bridge Configuration Assignment Tag API",
+    "version": "3.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tag",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Tag List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:3000/api/1/tags",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of entries returned per page"
+              },
+              {
+                "name": "tagText",
+                "value": "",
+                "type": "query",
+                "description": "Tag text to filter to"
+              }
+            ]
+          },
+          "docs": "List all the tags created by the current vendor organization."
+        },
+        {
+          "info": {
+            "name": "Tag Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/1/tags",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new tag in the organization. This tag can then be assigned to tenants and service account configs to control access to KMS configurations. When a tag is no longer being used by an tenants or service account configs, it may be automatically deleted."
+        },
+        {
+          "info": {
+            "name": "Tag Assign to Tenant",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/1/tags/:tagId/tenants",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "tagId",
+                "value": "",
+                "type": "path",
+                "description": "Tag ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Assign the given tag to a number of tenants."
+        },
+        {
+          "info": {
+            "name": "Tag Remove from Tenant",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:3000/api/1/tags/:tagId/tenants",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "tagId",
+                "value": "",
+                "type": "path",
+                "description": "Tag ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove the association between the given tag and a number of tenants."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

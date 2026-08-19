@@ -1,0 +1,276 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Vendor API Bridge Configuration Assignment API",
+    "version": "3.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Configuration Assignment",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Tenant KMS Assignment List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:3000/api/1/tenants/:tenantId/assignments",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "path",
+                "description": "Tenant ID"
+              },
+              {
+                "name": "sortColumn",
+                "value": "",
+                "type": "query",
+                "description": "Field to use for sorting"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Assignment status to filter to"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Tenant ID, tenant name, or KMS configuration ID to filter to"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of entries returned per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction to sort"
+              }
+            ]
+          },
+          "docs": "List the KMS assignments associated with the provided tenant."
+        },
+        {
+          "info": {
+            "name": "Configuration Assignment List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:3000/api/1/kms/configs/:kmsConfigId/assignments",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "kmsConfigId",
+                "value": "",
+                "type": "path",
+                "description": "KMS Configuration ID"
+              },
+              {
+                "name": "sortColumn",
+                "value": "",
+                "type": "query",
+                "description": "Field to use for sorting"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Assignment status to filter to"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Tenant ID, tenant name, or KMS configuration ID to filter to"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of entries returned per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction to sort"
+              }
+            ]
+          },
+          "docs": "List the assignments associated with the provided KMS configuration."
+        },
+        {
+          "info": {
+            "name": "KMS Assignment Get",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:3000/api/1/kms/configs/:kmsConfigId/tenants/:tenantId",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "kmsConfigId",
+                "value": "",
+                "type": "path",
+                "description": "KMS Configuration ID"
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "path",
+                "description": "Tenant ID"
+              }
+            ]
+          },
+          "docs": "Get the assignment from the KMS configuration to the provided tenant."
+        },
+        {
+          "info": {
+            "name": "KMS Assignment Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/1/kms/configs/:kmsConfigId/tenants/:tenantId",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "kmsConfigId",
+                "value": "",
+                "type": "path",
+                "description": "KMS Configuration ID"
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "path",
+                "description": "Tenant ID"
+              }
+            ]
+          },
+          "docs": "Create a new assignment from the KMS configuration to the provided tenant. The new assignment will be active but not primary."
+        },
+        {
+          "info": {
+            "name": "KMS Assignment Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:3000/api/1/kms/configs/:kmsConfigId/tenants/:tenantId",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "kmsConfigId",
+                "value": "",
+                "type": "path",
+                "description": "KMS Configuration ID"
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "path",
+                "description": "Tenant ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the assignment from the KMS configuration to the provided tenant. In order to succeed, the tenant must not own any of their own KMS configurations.\nThe primary configuration is used for encrypt calls. Setting this configuration to primary will un-set the previous primary.\nActive configurations are used for appropriate decrypt calls."
+        },
+        {
+          "info": {
+            "name": "KMS Assignment Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:3000/api/1/kms/configs/:kmsConfigId/tenants/:tenantId",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "kmsConfigId",
+                "value": "",
+                "type": "path",
+                "description": "KMS Configuration ID"
+              },
+              {
+                "name": "tenantId",
+                "value": "",
+                "type": "path",
+                "description": "Tenant ID"
+              }
+            ]
+          },
+          "docs": "Delete the assignment from the KMS configuration to the provided tenant. In order to succeed, the tenant must not own any of their own KMS configurations."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

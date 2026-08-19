@@ -1,0 +1,181 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Vendor API Bridge Configuration Assignment KMS Configuration API",
+    "version": "3.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "KMS Configuration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "KMS Config List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:3000/api/1/kms/configs",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "sortColumn",
+                "value": "",
+                "type": "query",
+                "description": "Field to use for sorting"
+              },
+              {
+                "name": "kmsType",
+                "value": "",
+                "type": "query",
+                "description": "KMS to filter results to"
+              },
+              {
+                "name": "leasingEnabled",
+                "value": "",
+                "type": "query",
+                "description": "Key leasing status to filter results to"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of entries returned per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to return"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "Direction to sort"
+              }
+            ]
+          },
+          "docs": "List the metadata of all KMS configurations owned by the calling vendor.  \nThis does not decrypt any of the sensitive KMS configuration data."
+        },
+        {
+          "info": {
+            "name": "KMS Config Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/1/kms/configs",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new KMS configuration. This configuration will not be assigned to any tenants."
+        },
+        {
+          "info": {
+            "name": "KMS Config Get",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:3000/api/1/kms/configs/:kmsConfigId",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "kmsConfigId",
+                "value": "",
+                "type": "path",
+                "description": "KMS Configuration ID"
+              }
+            ]
+          },
+          "docs": "Get the specified KMS configuration. \nReturns metadata and, if your organization owns the configuration, the decrypted data."
+        },
+        {
+          "info": {
+            "name": "KMS Config Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:3000/api/1/kms/configs/:kmsConfigId",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "kmsConfigId",
+                "value": "",
+                "type": "path",
+                "description": "KMS Configuration ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the specified KMS configuration's encrypted data or enable/disable key leasing for the configuration. The configuration must be owned by the calling vendor."
+        },
+        {
+          "info": {
+            "name": "KMS Config Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:3000/api/1/kms/configs/:kmsConfigId",
+            "headers": [
+              {
+                "name": "icl-requestor-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "kmsConfigId",
+                "value": "",
+                "type": "path",
+                "description": "KMS Configuration ID"
+              }
+            ]
+          },
+          "docs": "Delete the specified KMS configuration. In order to succeed, the configuration must be owned by the calling vendor and not have any tenant assignments.\n\nThis API allows for destructively offboarding a tenant with active secrets. Secrets are not recoverable and any downstream services (Deterministic Encryption, Cloaked Search) will fail when attempting to do things with those secrets. **We strongly advise checking for `secret_count == 0` before issuing a KMS Configuration DELETE**."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
