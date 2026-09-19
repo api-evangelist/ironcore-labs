@@ -115,6 +115,8 @@ apis:
   humanURL: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
   baseURL: https://ironcorelabs.com
   tags:
+  - Tenants
+  tags_raw:
   - Tenant
   properties:
   - type: OpenAPI
