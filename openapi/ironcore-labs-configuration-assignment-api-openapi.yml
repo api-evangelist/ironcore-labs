@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Vendor API Bridge Configuration Assignment API
   version: 3.1.0
@@ -177,12 +177,6 @@ paths:
       description: Delete the assignment from the KMS configuration to the provided tenant. In order to succeed, the tenant must not own any of their own KMS configurations.
 components:
   schemas:
-    KmsConfigId:
-      type: integer
-      title: KmsConfigId
-      description: KMS configuration ID
-      minimum: 1
-      examples: []
     CreatedByType:
       type: string
       title: CreatedByType
@@ -195,20 +189,12 @@ components:
       - Tsp
       - Admin
       description: Creator type
-    Timestamp:
-      type: string
-      title: Timestamp
-      description: RFC3339 timestamp
-      pattern: ^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$
-      examples:
-      - '2022-01-13T21:44:43.653Z'
-      example: '2022-01-13T21:44:43.653Z'
-    TenantId:
-      title: TenantId
-      type: string
-      description: Tenant ID
-      examples:
-      - tenant-icl
+    KmsConfigId:
+      type: integer
+      title: KmsConfigId
+      description: KMS configuration ID
+      minimum: 1
+      examples: []
     CreatedBy:
       title: CreatedBy
       type: object
@@ -230,6 +216,20 @@ components:
       - id
       - name
       - type
+    TenantId:
+      title: TenantId
+      type: string
+      description: Tenant ID
+      examples:
+      - tenant-icl
+    Timestamp:
+      type: string
+      title: Timestamp
+      description: RFC3339 timestamp
+      pattern: ^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$
+      examples:
+      - '2022-01-13T21:44:43.653Z'
+      example: '2022-01-13T21:44:43.653Z'
     KmsConfigAssignmentResponse:
       title: KmsConfigAssignmentResponse
       type: object
@@ -260,48 +260,6 @@ components:
       - created
       - updated
   responses:
-    KmsConfigAssignmentListResponse:
-      description: Result of listing KMS configuration assignments
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              result:
-                type: array
-                description: KMS configuration assignments
-                items:
-                  $ref: '#/components/schemas/KmsConfigAssignmentResponse'
-              page:
-                type: integer
-                description: Current response page number
-              totalPages:
-                type: integer
-                description: Total number of response pages
-            required:
-            - result
-            - page
-            - totalPages
-      headers: {}
-    KmsConfigAssignmentGetResponse:
-      description: Result of getting the assignment from a KMS configuration to a tenant.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/KmsConfigAssignmentResponse'
-          examples:
-            Get Assignment:
-              value:
-                kmsConfigId: 1
-                tenantId: tenant-icl
-                active: true
-                primary: true
-                createdBy:
-                  id: vendor
-                  name: Vendor
-                  type: Va
-                created: '2022-01-13T21:44:43.653Z'
-                updated: '2022-01-13T21:44:43.653Z'
     KmsConfigAssignmentCreateResponse:
       description: Result of assigning a KMS configuration to a tenant.
       content:
@@ -359,7 +317,67 @@ components:
                   type: Va
                 created: '2022-01-13T21:44:43.653Z'
                 updated: '2022-01-13T21:44:43.653Z'
+    KmsConfigAssignmentGetResponse:
+      description: Result of getting the assignment from a KMS configuration to a tenant.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KmsConfigAssignmentResponse'
+          examples:
+            Get Assignment:
+              value:
+                kmsConfigId: 1
+                tenantId: tenant-icl
+                active: true
+                primary: true
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+    KmsConfigAssignmentListResponse:
+      description: Result of listing KMS configuration assignments
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              result:
+                type: array
+                description: KMS configuration assignments
+                items:
+                  $ref: '#/components/schemas/KmsConfigAssignmentResponse'
+              page:
+                type: integer
+                description: Current response page number
+              totalPages:
+                type: integer
+                description: Total number of response pages
+            required:
+            - result
+            - page
+            - totalPages
+      headers: {}
   parameters:
+    pageSize:
+      name: pageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 10
+      description: Number of entries returned per page
+    page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+      description: Page number to return
     sortDirection:
       name: sortDirection
       in: query
@@ -371,38 +389,6 @@ components:
         - asc
         - desc
       description: Direction to sort
-    page:
-      name: page
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 1
-        minimum: 1
-      description: Page number to return
-    iclRequestorId:
-      name: icl-requestor-id
-      in: header
-      required: true
-      schema:
-        type: string
-      description: ID of requesting user/service
-    tenantId:
-      name: tenantId
-      in: path
-      required: true
-      schema:
-        type: string
-      description: Tenant ID
-    pageSize:
-      name: pageSize
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        default: 10
-      description: Number of entries returned per page
     kmsConfigId:
       name: kmsConfigId
       in: path
@@ -410,6 +396,20 @@ components:
       schema:
         type: integer
       description: KMS Configuration ID
+    tenantId:
+      name: tenantId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Tenant ID
+    iclRequestorId:
+      name: icl-requestor-id
+      in: header
+      required: true
+      schema:
+        type: string
+      description: ID of requesting user/service
   requestBodies:
     KmsConfigAssignmentUpdateRequest:
       content:

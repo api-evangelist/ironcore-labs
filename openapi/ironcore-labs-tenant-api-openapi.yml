@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Vendor API Bridge Configuration Assignment Tenant API
+  title: Vendor API Bridge Tenant API
   version: 3.1.0
   description: API used to manage tenants and KMS configurations by communicating with the IronCore Configuration Broker on your behalf.
   contact:
@@ -28,7 +28,15 @@ paths:
           description: Unauthorized
       requestBody:
         $ref: '#/components/requestBodies/TenantCreateRequestV2'
-      description: "Create a new tenant with the provided ID and name.  \nIf `tenantAdminEmail` is provided, an invite email will be sent to the tenant to claim their account.\nThe Tenant ID will be needed for all subsequent tenant calls.\nThe tenant will be created with the provided tags. If no tags are provided, the tenant will be untagged and its associated KMS configs will not be sent to any TSPs.\nThe tenant will be required to support key leasing for all of its KMS configurations if set in your vendor's Organization Settings in the Config Broker UI (can be updated after creation from Vendor Bridge)."
+      description: 'Create a new tenant with the provided ID and name.
+
+        If `tenantAdminEmail` is provided, an invite email will be sent to the tenant to claim their account.
+
+        The Tenant ID will be needed for all subsequent tenant calls.
+
+        The tenant will be created with the provided tags. If no tags are provided, the tenant will be untagged and its associated KMS configs will not be sent to any TSPs.
+
+        The tenant will be required to support key leasing for all of its KMS configurations if set in your vendor''s Organization Settings in the Config Broker UI (can be updated after creation from Vendor Bridge).'
       parameters:
       - $ref: '#/components/parameters/iclRequestorId'
       tags:
@@ -45,7 +53,15 @@ paths:
           description: Unauthorized
       requestBody:
         $ref: '#/components/requestBodies/TenantCreateRequestV1'
-      description: "Create a new tenant with the provided ID and name.  \nIf `tenantAdminEmail` is provided, an invite email will be sent to the tenant to claim their account.\nThe Tenant ID will be needed for all subsequent tenant calls.\nThe tenant will be created with the default tag of the vendor organization.\nThe Tenant Create V2 endpoint can be used to set tags explicitly."
+      description: 'Create a new tenant with the provided ID and name.
+
+        If `tenantAdminEmail` is provided, an invite email will be sent to the tenant to claim their account.
+
+        The Tenant ID will be needed for all subsequent tenant calls.
+
+        The tenant will be created with the default tag of the vendor organization.
+
+        The Tenant Create V2 endpoint can be used to set tags explicitly.'
       parameters:
       - $ref: '#/components/parameters/iclRequestorId'
       tags:
@@ -130,7 +146,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-      description: "Delete a tenant. This will sever the connection between the vendor and tenant organizations. \nIf you wish to re-invite the tenant, simply send a new invite and have the tenant admin choose to Link Organizations to reestablish the connection."
+      description: 'Delete a tenant. This will sever the connection between the vendor and tenant organizations.
+
+        If you wish to re-invite the tenant, simply send a new invite and have the tenant admin choose to Link Organizations to reestablish the connection.'
       parameters:
       - $ref: '#/components/parameters/iclRequestorId'
       tags:
@@ -152,7 +170,7 @@ paths:
           description: Unauthorized
       requestBody:
         $ref: '#/components/requestBodies/TenantUpdateRequest'
-      description: 'Update a tenant''s name, key leasing requirement, or the tenant''s assigned tags.  '
+      description: Update a tenant's name, key leasing requirement, or the tenant's assigned tags.
       parameters:
       - $ref: '#/components/parameters/iclRequestorId'
       tags:
@@ -171,194 +189,6 @@ paths:
       parameters:
       - $ref: '#/components/parameters/iclRequestorId'
 components:
-  parameters:
-    sortDirection:
-      name: sortDirection
-      in: query
-      required: false
-      schema:
-        type: string
-        default: desc
-        enum:
-        - asc
-        - desc
-      description: Direction to sort
-    page:
-      name: page
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 1
-        minimum: 1
-      description: Page number to return
-    iclRequestorId:
-      name: icl-requestor-id
-      in: header
-      required: true
-      schema:
-        type: string
-      description: ID of requesting user/service
-    tenantId:
-      name: tenantId
-      in: path
-      required: true
-      schema:
-        type: string
-      description: Tenant ID
-    pageSize:
-      name: pageSize
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        default: 10
-      description: Number of entries returned per page
-  schemas:
-    Tag:
-      title: Tag
-      x-stoplight:
-        id: 2xbpiy93efxn2
-      type: object
-      description: Tag used to associate tenants with service accounts (TSP or VA accounts)
-      properties:
-        id:
-          $ref: '#/components/schemas/TagId'
-          description: Tag ID
-        tagText:
-          type: string
-          description: Human-readable text associated with tag
-        default:
-          type: boolean
-          description: Whether this is the default tag for tenants/service accounts
-        created:
-          $ref: '#/components/schemas/Timestamp'
-          description: When this tag was created
-      required:
-      - id
-      - tagText
-      - default
-      - created
-    CreatedByType:
-      type: string
-      title: CreatedByType
-      enum:
-      - Tsp
-      - Admin
-      - Va
-      examples:
-      - Vaa
-      - Tsp
-      - Admin
-      description: Creator type
-    ErrorResponse:
-      title: ErrorResponse
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message
-        statusCode:
-          type: integer
-          example: 401
-          description: Status code
-      description: VAB error response
-      examples:
-      - message: Invalid config ID provided
-        statusCode: 404
-    TenantGetResponse:
-      title: TenantGetResponse
-      type: object
-      description: Result of getting a tenant. Same as TenantCreateResponse but with the addition of `primaryKmsConfigId`.
-      x-internal: false
-      properties:
-        id:
-          $ref: '#/components/schemas/TenantId'
-        name:
-          type: string
-        archived:
-          type: boolean
-        tenantCreatedConfigs:
-          type: boolean
-        invited:
-          type: boolean
-          x-stoplight:
-            id: uu30m4t1s0s1l
-          description: If true, this tenant has been invited, but not yet accepted their invitation.
-        keyLeasingRequired:
-          type: boolean
-          x-stoplight:
-            id: sowwm98w31jke
-          description: Whether key leasing must be enabled for all KMS configurations assigned to this tenant.
-        primaryKmsConfigId:
-          type:
-          - integer
-          - 'null'
-        tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tag'
-        createdBy:
-          $ref: '#/components/schemas/CreatedBy'
-        created:
-          $ref: '#/components/schemas/Timestamp'
-        updated:
-          $ref: '#/components/schemas/Timestamp'
-      required:
-      - id
-      - name
-      - archived
-      - tenantCreatedConfigs
-      - invited
-      - keyLeasingRequired
-      - primaryKmsConfigId
-      - tags
-      - createdBy
-      - created
-      - updated
-    CreatedBy:
-      title: CreatedBy
-      type: object
-      examples:
-      - id: vendor
-        name: Vendor
-        type: Vaa
-      description: Metadata about creating user/service
-      properties:
-        id:
-          type: string
-          description: Creator ID
-        name:
-          type: string
-          description: Creator name
-        type:
-          $ref: '#/components/schemas/CreatedByType'
-      required:
-      - id
-      - name
-      - type
-    TagId:
-      title: TagId
-      x-stoplight:
-        id: suvs45x4i6s3z
-      type: integer
-      description: Tag ID
-      minimum: 1
-    Timestamp:
-      type: string
-      title: Timestamp
-      description: RFC3339 timestamp
-      pattern: ^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$
-      examples:
-      - '2022-01-13T21:44:43.653Z'
-      example: '2022-01-13T21:44:43.653Z'
-    TenantId:
-      title: TenantId
-      type: string
-      description: Tenant ID
-      examples:
-      - tenant-icl
   responses:
     TenantResendInviteResponse:
       description: Result of sending a tenant admin invitation
@@ -376,54 +206,48 @@ components:
             Resend Invite:
               value:
                 invitedTenantAdminEmail: foo@bar.com
-    TenantUpdateResponse:
-      description: Result of updating a tenant
+    TenantListResponse:
+      description: Result of listing all tenants associated with the calling vendor.
       content:
         application/json:
           schema:
-            title: TenantUpdateResponse
             type: object
-            examples:
-            - id: string
-              name: string
-              archived: true
             properties:
-              id:
-                $ref: '#/components/schemas/TenantId'
-              name:
-                type: string
-                description: Updated tenant name
-              archived:
-                type: boolean
-                description: Is the tenant archived?
-              keyLeasingRequired:
-                type: boolean
-                x-stoplight:
-                  id: dxzgdycb9wp2e
-                description: Whether key leasing must be enabled for all KMS configurations assigned to this tenant.
-              tags:
+              result:
                 type: array
-                description: Tags associated with the tenant
+                description: Tenants
                 items:
-                  $ref: '#/components/schemas/Tag'
+                  $ref: '#/components/schemas/TenantGetResponse'
+              page:
+                type: integer
+                description: Current response page number
+              totalPages:
+                type: integer
+                description: Total number of response pages
             required:
-            - id
-            - name
-            - archived
-            - keyLeasingRequired
-            - tags
+            - result
+            - page
+            - totalPages
           examples:
-            Update tenant:
+            List Tenants:
               value:
-                id: tenant-icl
-                name: ICL
-                archived: false
-                keyLeasingRequired: true
-                tags:
-                - id: 4
-                  tagText: Default
-                  default: true
+                result:
+                - id: tenant-icl
+                  name: string
+                  archived: true
+                  tenantCreatedConfigs: true
+                  invited: false
+                  keyLeasingRequired: true
+                  primaryKmsConfigId: 0
+                  tags: []
+                  createdBy:
+                    id: vendor
+                    name: Vendor
+                    type: Va
                   created: '2022-01-13T21:44:43.653Z'
+                  updated: '2022-01-13T21:44:43.653Z'
+                page: 0
+                totalPages: 0
     TenantCreateResponse:
       description: Result of creating a tenant
       content:
@@ -527,48 +351,54 @@ components:
                   type: Va
                 created: '2022-01-13T21:44:43.653Z'
                 updated: '2022-01-13T21:44:43.653Z'
-    TenantListResponse:
-      description: Result of listing all tenants associated with the calling vendor.
+    TenantUpdateResponse:
+      description: Result of updating a tenant
       content:
         application/json:
           schema:
+            title: TenantUpdateResponse
             type: object
+            examples:
+            - id: string
+              name: string
+              archived: true
             properties:
-              result:
+              id:
+                $ref: '#/components/schemas/TenantId'
+              name:
+                type: string
+                description: Updated tenant name
+              archived:
+                type: boolean
+                description: Is the tenant archived?
+              keyLeasingRequired:
+                type: boolean
+                x-stoplight:
+                  id: dxzgdycb9wp2e
+                description: Whether key leasing must be enabled for all KMS configurations assigned to this tenant.
+              tags:
                 type: array
-                description: Tenants
+                description: Tags associated with the tenant
                 items:
-                  $ref: '#/components/schemas/TenantGetResponse'
-              page:
-                type: integer
-                description: Current response page number
-              totalPages:
-                type: integer
-                description: Total number of response pages
+                  $ref: '#/components/schemas/Tag'
             required:
-            - result
-            - page
-            - totalPages
+            - id
+            - name
+            - archived
+            - keyLeasingRequired
+            - tags
           examples:
-            List Tenants:
+            Update tenant:
               value:
-                result:
-                - id: tenant-icl
-                  name: string
-                  archived: true
-                  tenantCreatedConfigs: true
-                  invited: false
-                  keyLeasingRequired: true
-                  primaryKmsConfigId: 0
-                  tags: []
-                  createdBy:
-                    id: vendor
-                    name: Vendor
-                    type: Va
+                id: tenant-icl
+                name: ICL
+                archived: false
+                keyLeasingRequired: true
+                tags:
+                - id: 4
+                  tagText: Default
+                  default: true
                   created: '2022-01-13T21:44:43.653Z'
-                  updated: '2022-01-13T21:44:43.653Z'
-                page: 0
-                totalPages: 0
     TenantDeleteResponse:
       description: Result of deleting a tenant
       content:
@@ -587,6 +417,194 @@ components:
             Delete tenant:
               value:
                 id: tenant-icl
+  parameters:
+    sortDirection:
+      name: sortDirection
+      in: query
+      required: false
+      schema:
+        type: string
+        default: desc
+        enum:
+        - asc
+        - desc
+      description: Direction to sort
+    iclRequestorId:
+      name: icl-requestor-id
+      in: header
+      required: true
+      schema:
+        type: string
+      description: ID of requesting user/service
+    page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+      description: Page number to return
+    tenantId:
+      name: tenantId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Tenant ID
+    pageSize:
+      name: pageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 10
+      description: Number of entries returned per page
+  schemas:
+    ErrorResponse:
+      title: ErrorResponse
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        statusCode:
+          type: integer
+          example: 401
+          description: Status code
+      description: VAB error response
+      examples:
+      - message: Invalid config ID provided
+        statusCode: 404
+    CreatedBy:
+      title: CreatedBy
+      type: object
+      examples:
+      - id: vendor
+        name: Vendor
+        type: Vaa
+      description: Metadata about creating user/service
+      properties:
+        id:
+          type: string
+          description: Creator ID
+        name:
+          type: string
+          description: Creator name
+        type:
+          $ref: '#/components/schemas/CreatedByType'
+      required:
+      - id
+      - name
+      - type
+    TenantId:
+      title: TenantId
+      type: string
+      description: Tenant ID
+      examples:
+      - tenant-icl
+    Tag:
+      title: Tag
+      x-stoplight:
+        id: 2xbpiy93efxn2
+      type: object
+      description: Tag used to associate tenants with service accounts (TSP or VA accounts)
+      properties:
+        id:
+          $ref: '#/components/schemas/TagId'
+          description: Tag ID
+        tagText:
+          type: string
+          description: Human-readable text associated with tag
+        default:
+          type: boolean
+          description: Whether this is the default tag for tenants/service accounts
+        created:
+          $ref: '#/components/schemas/Timestamp'
+          description: When this tag was created
+      required:
+      - id
+      - tagText
+      - default
+      - created
+    Timestamp:
+      type: string
+      title: Timestamp
+      description: RFC3339 timestamp
+      pattern: ^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$
+      examples:
+      - '2022-01-13T21:44:43.653Z'
+      example: '2022-01-13T21:44:43.653Z'
+    CreatedByType:
+      type: string
+      title: CreatedByType
+      enum:
+      - Tsp
+      - Admin
+      - Va
+      examples:
+      - Vaa
+      - Tsp
+      - Admin
+      description: Creator type
+    TagId:
+      title: TagId
+      x-stoplight:
+        id: suvs45x4i6s3z
+      type: integer
+      description: Tag ID
+      minimum: 1
+    TenantGetResponse:
+      title: TenantGetResponse
+      type: object
+      description: Result of getting a tenant. Same as TenantCreateResponse but with the addition of `primaryKmsConfigId`.
+      x-internal: false
+      properties:
+        id:
+          $ref: '#/components/schemas/TenantId'
+        name:
+          type: string
+        archived:
+          type: boolean
+        tenantCreatedConfigs:
+          type: boolean
+        invited:
+          type: boolean
+          x-stoplight:
+            id: uu30m4t1s0s1l
+          description: If true, this tenant has been invited, but not yet accepted their invitation.
+        keyLeasingRequired:
+          type: boolean
+          x-stoplight:
+            id: sowwm98w31jke
+          description: Whether key leasing must be enabled for all KMS configurations assigned to this tenant.
+        primaryKmsConfigId:
+          type:
+          - integer
+          - 'null'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+        created:
+          $ref: '#/components/schemas/Timestamp'
+        updated:
+          $ref: '#/components/schemas/Timestamp'
+      required:
+      - id
+      - name
+      - archived
+      - tenantCreatedConfigs
+      - invited
+      - keyLeasingRequired
+      - primaryKmsConfigId
+      - tags
+      - createdBy
+      - created
+      - updated
   requestBodies:
     TenantCreateRequestV1:
       content:
@@ -615,6 +633,36 @@ components:
                 id: tenant-icl
                 name: IronCore Labs
       description: Create a new tenant. The tenant will have the vendor's default tag.
+    TenantUpdateRequest:
+      content:
+        application/json:
+          schema:
+            title: TenantUpdateRequest
+            type: object
+            properties:
+              name:
+                type: string
+                description: New name for tenant
+              keyLeasingRequired:
+                type: boolean
+                x-stoplight:
+                  id: i2k1vyajmro3x
+                description: Whether key leasing must be enabled for all KMS configurations assigned to this tenant.
+              tagAdditions:
+                type: array
+                description: Tags to assign to the tenant
+                items:
+                  $ref: '#/components/schemas/TagId'
+              tagRemovals:
+                type: array
+                description: Tags to unassign from the tenant
+                items:
+                  $ref: '#/components/schemas/TagId'
+          examples:
+            Change tenant name:
+              value:
+                name: ICL
+      description: Update a tenant
     TenantResendInviteRequest:
       content:
         application/json:
@@ -664,36 +712,6 @@ components:
 
 
         **If no tags are provided, this tenant''s KMS configurations will not be sent to any TSPs.**'
-    TenantUpdateRequest:
-      content:
-        application/json:
-          schema:
-            title: TenantUpdateRequest
-            type: object
-            properties:
-              name:
-                type: string
-                description: New name for tenant
-              keyLeasingRequired:
-                type: boolean
-                x-stoplight:
-                  id: i2k1vyajmro3x
-                description: Whether key leasing must be enabled for all KMS configurations assigned to this tenant.
-              tagAdditions:
-                type: array
-                description: Tags to assign to the tenant
-                items:
-                  $ref: '#/components/schemas/TagId'
-              tagRemovals:
-                type: array
-                description: Tags to unassign from the tenant
-                items:
-                  $ref: '#/components/schemas/TagId'
-          examples:
-            Change tenant name:
-              value:
-                name: ICL
-      description: Update a tenant
   securitySchemes:
     Authorization:
       name: Authorization

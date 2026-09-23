@@ -1,11 +1,7 @@
 {
   "provider": "ironcore-labs",
   "sources": [
-    "ironcore-labs-configuration-assignment-api-openapi.yml",
-    "ironcore-labs-kms-configuration-api-openapi.yml",
-    "ironcore-labs-tag-api-openapi.yml",
-    "ironcore-labs-tenant-api-openapi.yml",
-    "ironcore-labs-tenant-secret-api-openapi.yml"
+    "_original/ironcore-labs-vendor-bridge-openapi.yml"
   ],
   "outputs": [
     "ironcore-labs-configuration-assignment-api-openapi.yml",
@@ -17,6 +13,16 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "ironcore-labs-vendor-bridge-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "ironcore-labs-configuration-assignment-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ironcore-labs-kms-configuration-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ironcore-labs-tag-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ironcore-labs-tenant-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "ironcore-labs-tenant-secret-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

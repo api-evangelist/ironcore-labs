@@ -1,0 +1,33 @@
+# Front Door AI Index — ironcore-labs — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: ironcore-labs
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: ironcorelabs.com
+  final_host: ironcorelabs.com
+  ownership: own
+  owner: ironcore-labs
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 61
+  host_score: 61
+  density: 36.68
+  words: 1663
+  tiers:
+    agentic: 25
+    core: 36
+    model: 0
+  ambiguous: 3
+  top_terms:
+    AI: 35
+    embedding: 13
+    vector database: 5
+    RAG: 4
+    agent: 2
+    prompts: 2
+    generative ai: 1
+    inference: 1
+    predictive: 1
