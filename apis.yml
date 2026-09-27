@@ -51,7 +51,7 @@ modified: '2026-07-19'
 tags:
 - Company
 - Encryption
-- Data Privacy
+- Privacy
 - Security
 - Application-Layer Encryption
 - Key Management
@@ -75,7 +75,6 @@ apis:
   name: IronCore Labs Configuration Assignment API
   description: Assignments between KMS configurations and tenants
   humanURL: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
-  baseURL: https://ironcorelabs.com
   tags:
   - Configuration Assignment
   properties:
@@ -87,7 +86,6 @@ apis:
   name: IronCore Labs KMS Configuration API
   description: KMS configurations from different providers (AWS, Azure, GCP, Thales)
   humanURL: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
-  baseURL: https://ironcorelabs.com
   tags:
   - KMS Configuration
   properties:
@@ -101,7 +99,6 @@ apis:
     Label shared between service account configs and tenants. Controls where KMS configurations can be
     sent.
   humanURL: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
-  baseURL: https://ironcorelabs.com
   tags:
   - Tag
   properties:
@@ -113,7 +110,6 @@ apis:
   name: IronCore Labs Tenant API
   description: Vendor tenants managed by the Config Broker
   humanURL: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
-  baseURL: https://ironcorelabs.com
   tags:
   - Tenants
   tags_raw:
@@ -127,7 +123,6 @@ apis:
   name: IronCore Labs Tenant Secret API
   description: Tenant secrets created by the TSP and stored in the Config Broker
   humanURL: https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/
-  baseURL: https://ironcorelabs.com
   tags:
   - Tenant Secret
   properties:
