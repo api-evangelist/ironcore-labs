@@ -96,95 +96,21 @@ paths:
       parameters:
       - $ref: '#/components/parameters/iclRequestorId'
 components:
-  requestBodies:
-    TagAssignmentModifyRequest:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              tenantIds:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TenantId'
-            required:
-            - tenantIds
-      description: Request to modify tenants for a tag.
-    TagCreateRequest:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              tagText:
-                type: string
-                description: Text used to describe the tag
-            required:
-            - tagText
-      description: Request to create a tag in the vendor's organization.
-  schemas:
-    Timestamp:
-      type: string
-      title: Timestamp
-      description: RFC3339 timestamp
-      pattern: ^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$
-      examples:
-      - '2022-01-13T21:44:43.653Z'
-      example: '2022-01-13T21:44:43.653Z'
-    TagId:
-      title: TagId
-      x-stoplight:
-        id: suvs45x4i6s3z
-      type: integer
-      description: Tag ID
-      minimum: 1
-    Tag:
-      title: Tag
-      x-stoplight:
-        id: 2xbpiy93efxn2
-      type: object
-      description: Tag used to associate tenants with service accounts (TSP or VA accounts)
-      properties:
-        id:
-          $ref: '#/components/schemas/TagId'
-          description: Tag ID
-        tagText:
-          type: string
-          description: Human-readable text associated with tag
-        default:
-          type: boolean
-          description: Whether this is the default tag for tenants/service accounts
-        created:
-          $ref: '#/components/schemas/Timestamp'
-          description: When this tag was created
-      required:
-      - id
-      - tagText
-      - default
-      - created
-    TagAssignmentModifyFailure:
-      title: TagAssignmentModifyFailure
-      x-stoplight:
-        id: 6j7llto2bjg4f
-      type: object
-      description: Failure with modifying the tenants associated with a tag.
-      properties:
-        tenantId:
-          $ref: '#/components/schemas/TenantId'
-          description: Tenant who failed to be modified
-        message:
-          type: string
-          description: Reason for the failure
-      required:
-      - tenantId
-      - message
-    TenantId:
-      title: TenantId
-      type: string
-      description: Tenant ID
-      examples:
-      - tenant-icl
   parameters:
+    iclRequestorId:
+      name: icl-requestor-id
+      in: header
+      required: true
+      schema:
+        type: string
+      description: ID of requesting user/service
+    tagId:
+      name: tagId
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Tag ID
     page:
       name: page
       in: query
@@ -194,13 +120,6 @@ components:
         default: 1
         minimum: 1
       description: Page number to return
-    iclRequestorId:
-      name: icl-requestor-id
-      in: header
-      required: true
-      schema:
-        type: string
-      description: ID of requesting user/service
     pageSize:
       name: pageSize
       in: query
@@ -210,13 +129,6 @@ components:
         minimum: 1
         default: 10
       description: Number of entries returned per page
-    tagId:
-      name: tagId
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: Tag ID
   responses:
     TagCreateResponse:
       description: Response from creating a tag
@@ -232,26 +144,6 @@ components:
                 tagText: string
                 default: true
                 created: '2022-01-13T21:44:43.653Z'
-    TagAssignmentModifyResponse:
-      description: Response of modifying the tenants associated with a tag
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              succeeded:
-                type: array
-                description: Tenants successfully modified
-                items:
-                  $ref: '#/components/schemas/TenantId'
-              failed:
-                type: array
-                description: Tenants who failed to be modified
-                items:
-                  $ref: '#/components/schemas/TagAssignmentModifyFailure'
-            required:
-            - succeeded
-            - failed
     TagListResponse:
       description: Result of listing tags
       content:
@@ -278,6 +170,114 @@ components:
           schema:
             type: object
             properties: {}
+    TagAssignmentModifyResponse:
+      description: Response of modifying the tenants associated with a tag
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              succeeded:
+                type: array
+                description: Tenants successfully modified
+                items:
+                  $ref: '#/components/schemas/TenantId'
+              failed:
+                type: array
+                description: Tenants who failed to be modified
+                items:
+                  $ref: '#/components/schemas/TagAssignmentModifyFailure'
+            required:
+            - succeeded
+            - failed
+  schemas:
+    TagId:
+      title: TagId
+      x-stoplight:
+        id: suvs45x4i6s3z
+      type: integer
+      description: Tag ID
+      minimum: 1
+    TenantId:
+      title: TenantId
+      type: string
+      description: Tenant ID
+      examples:
+      - tenant-icl
+    TagAssignmentModifyFailure:
+      title: TagAssignmentModifyFailure
+      x-stoplight:
+        id: 6j7llto2bjg4f
+      type: object
+      description: Failure with modifying the tenants associated with a tag.
+      properties:
+        tenantId:
+          $ref: '#/components/schemas/TenantId'
+          description: Tenant who failed to be modified
+        message:
+          type: string
+          description: Reason for the failure
+      required:
+      - tenantId
+      - message
+    Tag:
+      title: Tag
+      x-stoplight:
+        id: 2xbpiy93efxn2
+      type: object
+      description: Tag used to associate tenants with service accounts (TSP or VA accounts)
+      properties:
+        id:
+          $ref: '#/components/schemas/TagId'
+          description: Tag ID
+        tagText:
+          type: string
+          description: Human-readable text associated with tag
+        default:
+          type: boolean
+          description: Whether this is the default tag for tenants/service accounts
+        created:
+          $ref: '#/components/schemas/Timestamp'
+          description: When this tag was created
+      required:
+      - id
+      - tagText
+      - default
+      - created
+    Timestamp:
+      type: string
+      title: Timestamp
+      description: RFC3339 timestamp
+      pattern: ^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$
+      examples:
+      - '2022-01-13T21:44:43.653Z'
+      example: '2022-01-13T21:44:43.653Z'
+  requestBodies:
+    TagCreateRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tagText:
+                type: string
+                description: Text used to describe the tag
+            required:
+            - tagText
+      description: Request to create a tag in the vendor's organization.
+    TagAssignmentModifyRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tenantIds:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TenantId'
+            required:
+            - tenantIds
+      description: Request to modify tenants for a tag.
   securitySchemes:
     Authorization:
       name: Authorization
