@@ -177,59 +177,6 @@ paths:
       description: Delete the assignment from the KMS configuration to the provided tenant. In order to succeed, the tenant must not own any of their own KMS configurations.
 components:
   schemas:
-    CreatedBy:
-      title: CreatedBy
-      type: object
-      examples:
-      - id: vendor
-        name: Vendor
-        type: Vaa
-      description: Metadata about creating user/service
-      properties:
-        id:
-          type: string
-          description: Creator ID
-        name:
-          type: string
-          description: Creator name
-        type:
-          $ref: '#/components/schemas/CreatedByType'
-      required:
-      - id
-      - name
-      - type
-    CreatedByType:
-      type: string
-      title: CreatedByType
-      enum:
-      - Tsp
-      - Admin
-      - Va
-      examples:
-      - Vaa
-      - Tsp
-      - Admin
-      description: Creator type
-    KmsConfigId:
-      type: integer
-      title: KmsConfigId
-      description: KMS configuration ID
-      minimum: 1
-      examples: []
-    TenantId:
-      title: TenantId
-      type: string
-      description: Tenant ID
-      examples:
-      - tenant-icl
-    Timestamp:
-      type: string
-      title: Timestamp
-      description: RFC3339 timestamp
-      pattern: ^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$
-      examples:
-      - '2022-01-13T21:44:43.653Z'
-      example: '2022-01-13T21:44:43.653Z'
     KmsConfigAssignmentResponse:
       title: KmsConfigAssignmentResponse
       type: object
@@ -259,14 +206,85 @@ components:
       - createdBy
       - created
       - updated
+    CreatedBy:
+      title: CreatedBy
+      type: object
+      examples:
+      - id: vendor
+        name: Vendor
+        type: Vaa
+      description: Metadata about creating user/service
+      properties:
+        id:
+          type: string
+          description: Creator ID
+        name:
+          type: string
+          description: Creator name
+        type:
+          $ref: '#/components/schemas/CreatedByType'
+      required:
+      - id
+      - name
+      - type
+    Timestamp:
+      type: string
+      title: Timestamp
+      description: RFC3339 timestamp
+      pattern: ^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$
+      examples:
+      - '2022-01-13T21:44:43.653Z'
+      example: '2022-01-13T21:44:43.653Z'
+    CreatedByType:
+      type: string
+      title: CreatedByType
+      enum:
+      - Tsp
+      - Admin
+      - Va
+      examples:
+      - Vaa
+      - Tsp
+      - Admin
+      description: Creator type
+    KmsConfigId:
+      type: integer
+      title: KmsConfigId
+      description: KMS configuration ID
+      minimum: 1
+      examples: []
+    TenantId:
+      title: TenantId
+      type: string
+      description: Tenant ID
+      examples:
+      - tenant-icl
   parameters:
-    iclRequestorId:
-      name: icl-requestor-id
-      in: header
+    tenantId:
+      name: tenantId
+      in: path
       required: true
       schema:
         type: string
-      description: ID of requesting user/service
+      description: Tenant ID
+    page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+      description: Page number to return
+    pageSize:
+      name: pageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 10
+      description: Number of entries returned per page
     sortDirection:
       name: sortDirection
       in: query
@@ -285,63 +303,60 @@ components:
       schema:
         type: integer
       description: KMS Configuration ID
-    page:
-      name: page
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 1
-        minimum: 1
-      description: Page number to return
-    tenantId:
-      name: tenantId
-      in: path
+    iclRequestorId:
+      name: icl-requestor-id
+      in: header
       required: true
       schema:
         type: string
-      description: Tenant ID
-    pageSize:
-      name: pageSize
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        default: 10
-      description: Number of entries returned per page
-  requestBodies:
-    KmsConfigAssignmentUpdateRequest:
+      description: ID of requesting user/service
+  responses:
+    KmsConfigAssignmentDeleteResponse:
+      description: Result of deleting the assignment from a KMS configuration to a tenant.
       content:
         application/json:
           schema:
             type: object
             properties:
-              active:
-                type: boolean
-                description: Whether the associated KMS configuration can be used to encrypt/decrypt calls.
-              primary:
-                type: boolean
-                description: Whether the associated KMS configuration will be used for encrypt calls.
+              kmsConfigId:
+                $ref: '#/components/schemas/KmsConfigId'
+              tenantId:
+                $ref: '#/components/schemas/TenantId'
+            required:
+            - kmsConfigId
+            - tenantId
           examples:
-            Set primary:
+            Delete assignment:
               value:
-                active: true
-                primary: true
-            Disable configuration:
-              value:
-                active: false
-                primary: false
-      description: Update a KMS configuration assignment
-  responses:
-    KmsConfigAssignmentUpdateResponse:
-      description: Result of updating the assignment from a KMS configuration to a tenant.
+                kmsConfigId: 1
+                tenantId: tenant-icl
+    KmsConfigAssignmentCreateResponse:
+      description: Result of assigning a KMS configuration to a tenant.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/KmsConfigAssignmentResponse'
           examples:
-            Update Assignment:
+            New assignment:
+              value:
+                kmsConfigId: 1
+                tenantId: tenant-icl
+                active: true
+                primary: true
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+    KmsConfigAssignmentGetResponse:
+      description: Result of getting the assignment from a KMS configuration to a tenant.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KmsConfigAssignmentResponse'
+          examples:
+            Get Assignment:
               value:
                 kmsConfigId: 1
                 tenantId: tenant-icl
@@ -376,63 +391,48 @@ components:
             - page
             - totalPages
       headers: {}
-    KmsConfigAssignmentDeleteResponse:
-      description: Result of deleting the assignment from a KMS configuration to a tenant.
+    KmsConfigAssignmentUpdateResponse:
+      description: Result of updating the assignment from a KMS configuration to a tenant.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KmsConfigAssignmentResponse'
+          examples:
+            Update Assignment:
+              value:
+                kmsConfigId: 1
+                tenantId: tenant-icl
+                active: true
+                primary: true
+                createdBy:
+                  id: vendor
+                  name: Vendor
+                  type: Va
+                created: '2022-01-13T21:44:43.653Z'
+                updated: '2022-01-13T21:44:43.653Z'
+  requestBodies:
+    KmsConfigAssignmentUpdateRequest:
       content:
         application/json:
           schema:
             type: object
             properties:
-              kmsConfigId:
-                $ref: '#/components/schemas/KmsConfigId'
-              tenantId:
-                $ref: '#/components/schemas/TenantId'
-            required:
-            - kmsConfigId
-            - tenantId
+              active:
+                type: boolean
+                description: Whether the associated KMS configuration can be used to encrypt/decrypt calls.
+              primary:
+                type: boolean
+                description: Whether the associated KMS configuration will be used for encrypt calls.
           examples:
-            Delete assignment:
+            Set primary:
               value:
-                kmsConfigId: 1
-                tenantId: tenant-icl
-    KmsConfigAssignmentGetResponse:
-      description: Result of getting the assignment from a KMS configuration to a tenant.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/KmsConfigAssignmentResponse'
-          examples:
-            Get Assignment:
-              value:
-                kmsConfigId: 1
-                tenantId: tenant-icl
                 active: true
                 primary: true
-                createdBy:
-                  id: vendor
-                  name: Vendor
-                  type: Va
-                created: '2022-01-13T21:44:43.653Z'
-                updated: '2022-01-13T21:44:43.653Z'
-    KmsConfigAssignmentCreateResponse:
-      description: Result of assigning a KMS configuration to a tenant.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/KmsConfigAssignmentResponse'
-          examples:
-            New assignment:
+            Disable configuration:
               value:
-                kmsConfigId: 1
-                tenantId: tenant-icl
-                active: true
-                primary: true
-                createdBy:
-                  id: vendor
-                  name: Vendor
-                  type: Va
-                created: '2022-01-13T21:44:43.653Z'
-                updated: '2022-01-13T21:44:43.653Z'
+                active: false
+                primary: false
+      description: Update a KMS configuration assignment
   securitySchemes:
     Authorization:
       name: Authorization
