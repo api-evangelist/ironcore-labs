@@ -57,7 +57,6 @@ tags:
 - Key Management
 - Cryptography
 - Artificial Intelligence
-- Vector Database
 - Software-as-a-Service
 tags_raw:
 - Company
@@ -68,7 +67,6 @@ tags_raw:
 - Key Management
 - Cryptography
 - AI
-- Vector Database
 - SaaS
 apis:
 - aid: ironcore-labs:ironcore-labs-configuration-assignment-api
@@ -136,6 +134,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/ironcore-labs-capability-edges.yml
+  name: IronCore Labs Business Capability Map
 - type: Overlay
   url: overlays/ironcore-labs-vendor-bridge-overlay.yaml
 # --- Identity / developer surface ---
@@ -215,3 +216,5 @@ x-enrichment:
   status: backfilled
   pass: local-v1
   note: backfilled from .gitignore signal + verified work evidence
+x-tags-removed:
+- Vector Database
