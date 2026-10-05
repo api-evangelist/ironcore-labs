@@ -1,0 +1,12 @@
+{
+ "url": "https://ironcorelabs.com/openapi/vendor-bridge.yaml",
+ "requested_url": "https://ironcorelabs.com/openapi/vendor-bridge.yaml",
+ "status": 200,
+ "content_type": "text/yaml; charset=utf-8",
+ "bytes": 92204,
+ "sha256": "5c0e553ffa2173f580b86df6e09e6da0e7d17ed8e476734d903c2b05f8c5b541",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
