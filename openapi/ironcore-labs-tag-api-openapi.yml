@@ -97,6 +97,15 @@ paths:
       - $ref: '#/components/parameters/iclRequestorId'
 components:
   parameters:
+    pageSize:
+      name: pageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 10
+      description: Number of entries returned per page
     tagId:
       name: tagId
       in: path
@@ -113,15 +122,6 @@ components:
         default: 1
         minimum: 1
       description: Page number to return
-    pageSize:
-      name: pageSize
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        default: 10
-      description: Number of entries returned per page
     iclRequestorId:
       name: icl-requestor-id
       in: header
@@ -130,27 +130,6 @@ components:
         type: string
       description: ID of requesting user/service
   schemas:
-    TenantId:
-      title: TenantId
-      type: string
-      description: Tenant ID
-      examples:
-      - tenant-icl
-    Timestamp:
-      type: string
-      title: Timestamp
-      description: RFC3339 timestamp
-      pattern: ^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$
-      examples:
-      - '2022-01-13T21:44:43.653Z'
-      example: '2022-01-13T21:44:43.653Z'
-    TagId:
-      title: TagId
-      x-stoplight:
-        id: suvs45x4i6s3z
-      type: integer
-      description: Tag ID
-      minimum: 1
     TagAssignmentModifyFailure:
       title: TagAssignmentModifyFailure
       x-stoplight:
@@ -167,6 +146,20 @@ components:
       required:
       - tenantId
       - message
+    Timestamp:
+      type: string
+      title: Timestamp
+      description: RFC3339 timestamp
+      pattern: ^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$
+      examples:
+      - '2022-01-13T21:44:43.653Z'
+      example: '2022-01-13T21:44:43.653Z'
+    TenantId:
+      title: TenantId
+      type: string
+      description: Tenant ID
+      examples:
+      - tenant-icl
     Tag:
       title: Tag
       x-stoplight:
@@ -191,7 +184,40 @@ components:
       - tagText
       - default
       - created
+    TagId:
+      title: TagId
+      x-stoplight:
+        id: suvs45x4i6s3z
+      type: integer
+      description: Tag ID
+      minimum: 1
   responses:
+    TagListResponse:
+      description: Result of listing tags
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              result:
+                type: array
+                description: List of tags
+                items:
+                  $ref: '#/components/schemas/Tag'
+              page:
+                type: integer
+                description: Current response page number
+              totalPages:
+                type: integer
+                description: Total number of response pages
+            required:
+            - result
+            - page
+            - totalPages
+        application/javascript:
+          schema:
+            type: object
+            properties: {}
     TagCreateResponse:
       description: Response from creating a tag
       content:
@@ -226,33 +252,19 @@ components:
             required:
             - succeeded
             - failed
-    TagListResponse:
-      description: Result of listing tags
+  requestBodies:
+    TagCreateRequest:
       content:
         application/json:
           schema:
             type: object
             properties:
-              result:
-                type: array
-                description: List of tags
-                items:
-                  $ref: '#/components/schemas/Tag'
-              page:
-                type: integer
-                description: Current response page number
-              totalPages:
-                type: integer
-                description: Total number of response pages
+              tagText:
+                type: string
+                description: Text used to describe the tag
             required:
-            - result
-            - page
-            - totalPages
-        application/javascript:
-          schema:
-            type: object
-            properties: {}
-  requestBodies:
+            - tagText
+      description: Request to create a tag in the vendor's organization.
     TagAssignmentModifyRequest:
       content:
         application/json:
@@ -266,18 +278,6 @@ components:
             required:
             - tenantIds
       description: Request to modify tenants for a tag.
-    TagCreateRequest:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              tagText:
-                type: string
-                description: Text used to describe the tag
-            required:
-            - tagText
-      description: Request to create a tag in the vendor's organization.
   securitySchemes:
     Authorization:
       name: Authorization
