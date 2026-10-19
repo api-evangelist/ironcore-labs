@@ -1,0 +1,190 @@
+edges:
+- partner_name: Go module proxy
+  partner: null
+  partner_match: null
+  type: register
+  direction: provider-built
+  category: official SDK (Go)
+  evidence: https://pkg.go.dev/github.com/IronCoreLabs/tenant-security-client-go
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: Go module proxy (public registry JSON)
+    spec_file: null
+    language: Go
+    packages:
+    - name: github.com/IronCoreLabs/tenant-security-client-go
+      version: v0.6.0
+      released: '2025-12-05'
+      released_field: Time
+      lapsed: false
+      page: https://pkg.go.dev/github.com/IronCoreLabs/tenant-security-client-go
+      repo_leg: github-org:ironcorelabs
+      publisher_leg: org:ironcorelabs
+      matched_by: github-org
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+- partner_name: Maven Central
+  partner: maven-central
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (Java/JVM)
+  evidence: https://central.sonatype.com/artifact/com.ironcorelabs/cloaked-ai
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: Maven Central (public registry JSON)
+    spec_file: null
+    language: Java/JVM
+    packages:
+    - name: com.ironcorelabs:cloaked-ai
+      version: 0.4.3
+      released: '2023-10-20'
+      released_field: lastUpdated
+      lapsed: true
+      page: https://central.sonatype.com/artifact/com.ironcorelabs/cloaked-ai
+      repo_leg: domain:ironcorelabs.com
+      publisher_leg: groupId:ironcorelabs.com
+      matched_by: domain
+    - name: com.ironcorelabs:ironcore-alloy
+      version: 0.16.1
+      released: '2026-09-24'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/com.ironcorelabs/ironcore-alloy
+      repo_leg: domain:ironcorelabs.com
+      publisher_leg: groupId:ironcorelabs.com
+      matched_by: domain
+    - name: com.ironcorelabs:ironcore-alloy-java
+      version: 0.16.1
+      released: '2026-09-24'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/com.ironcorelabs/ironcore-alloy-java
+      repo_leg: domain:ironcorelabs.com
+      publisher_leg: groupId:ironcorelabs.com
+      matched_by: domain
+    - name: com.ironcorelabs:ironoxide-android
+      version: 2.2.1
+      released: '2026-08-27'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/com.ironcorelabs/ironoxide-android
+      repo_leg: github-org:ironcorelabs
+      publisher_leg: groupId:ironcorelabs.com
+      matched_by: domain
+    - name: com.ironcorelabs:ironoxide-java
+      version: 2.2.1
+      released: '2026-08-27'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/com.ironcorelabs/ironoxide-java
+      repo_leg: github-org:ironcorelabs
+      publisher_leg: groupId:ironcorelabs.com
+      matched_by: domain
+    - name: com.ironcorelabs:ironoxide-scala_2.13
+      version: 0.19.0
+      released: '2026-09-30'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/com.ironcorelabs/ironoxide-scala_2.13
+      repo_leg: github-org:ironcorelabs
+      publisher_leg: groupId:ironcorelabs.com
+      matched_by: domain
+    - name: com.ironcorelabs:recrypt-core_2.13
+      version: 6.0.1
+      released: '2025-06-12'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/com.ironcorelabs/recrypt-core_2.13
+      repo_leg: github-org:ironcorelabs
+      publisher_leg: groupId:ironcorelabs.com
+      matched_by: domain
+    - name: com.ironcorelabs:tenant-security-java
+      version: 8.1.1
+      released: '2026-07-02'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/com.ironcorelabs/tenant-security-java
+      repo_leg: domain:ironcorelabs.com
+      publisher_leg: groupId:ironcorelabs.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+- partner_name: npm registry
+  partner: npm
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (JavaScript/TypeScript)
+  evidence: https://www.npmjs.com/package/@ironcorelabs/ironnode
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: npm registry (public registry JSON)
+    spec_file: null
+    language: JavaScript/TypeScript
+    packages:
+    - name: '@ironcorelabs/ironnode'
+      version: 1.3.0
+      released: '2026-10-16'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@ironcorelabs/ironnode
+      repo_leg: domain:ironcorelabs.com
+      publisher_leg: email:ironcorelabs.com
+      matched_by: domain
+    - name: '@ironcorelabs/ironweb'
+      version: 5.0.3
+      released: '2026-09-22'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@ironcorelabs/ironweb
+      repo_leg: github-org:ironcorelabs
+      publisher_leg: email:ironcorelabs.com
+      matched_by: domain
+    - name: '@ironcorelabs/tenant-security-nodejs'
+      version: 4.1.3
+      released: '2026-09-10'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@ironcorelabs/tenant-security-nodejs
+      repo_leg: domain:ironcorelabs.com
+      publisher_leg: email:ironcorelabs.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+generated: '2026-10-18'
+method: searched
+source:
+- https://api.nuget.org/v3
+- https://crates.io/api/v1
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
+checked:
+- https://api.nuget.org/v3
+- https://crates.io/api/v1
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
