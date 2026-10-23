@@ -720,3 +720,9 @@ components:
       description: 'VAB authorization header. Form: `vab:1:<API_KEY>`'
 x-stoplight:
   id: jiu0tsbmtfigo
+x-provenance:
+  method: harvested
+  publisher: IronCore Labs
+  source: https://ironcorelabs.com/openapi/vendor-bridge.yaml
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
