@@ -134,6 +134,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: PostmanWorkspace
+  url: https://www.postman.com/kinlaneapi/ironcore-labs/overview
 - type: CapabilityMap
   url: capabilities/ironcore-labs-capability-edges.yml
   name: IronCore Labs Business Capability Map
