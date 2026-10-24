@@ -1,1357 +1,1409 @@
 {
+  "info": {
+    "_postman_id": "2714d32d-e614-4ea1-8eea-b264ae9efe92",
+    "name": "Vendor API Bridge Tenant API",
+    "description": "API used to manage tenants and KMS configurations by communicating with the IronCore Configuration Broker on your behalf.\n\nContact Support:\n Name: IronCore Labs\n Email: info@ironcorelabs.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T02:05:19.000Z",
+    "updatedAt": "2026-10-22T02:05:20.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-2714d32d-e614-4ea1-8eea-b264ae9efe92"
+  },
   "item": [
     {
-      "id": "1829988d-d178-4d31-b759-d8f570830d8a",
-      "name": "Tenant",
-      "description": {
-        "content": "Vendor tenants managed by the Config Broker",
-        "type": "text/plain"
-      },
+      "name": "2",
       "item": [
         {
-          "id": "0058c310-dbbc-4d28-8a86-6ed3ebd8bd8a",
-          "name": "Tenant Create V2",
-          "request": {
-            "name": "Tenant Create V2",
-            "description": {
-              "content": "Create a new tenant with the provided ID and name.  \nIf `tenantAdminEmail` is provided, an invite email will be sent to the tenant to claim their account.\nThe Tenant ID will be needed for all subsequent tenant calls.\nThe tenant will be created with the provided tags. If no tags are provided, the tenant will be untagged and its associated KMS configs will not be sent to any TSPs.\nThe tenant will be required to support key leasing for all of its KMS configurations if set in your vendor's Organization Settings in the Config Broker UI (can be updated after creation from Vendor Bridge).",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "2",
-                "tenants"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"tenantAdminEmail\": \"<string>\",\n  \"tags\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
+          "name": "tenants",
+          "item": [
             {
-              "id": "131b97a7-08a2-4baf-bd82-5c6faebd754a",
-              "name": "Result of creating a tenant",
-              "originalRequest": {
+              "name": "Tenant Create V2",
+              "id": "c6ca69ed-91ff-4f95-845f-91b835aa6b5f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) ID of requesting user/service",
+                    "key": "icl-requestor-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"tenantAdminEmail\": \"<string>\",\n  \"tags\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
+                  "raw": "{{baseUrl}}/2/tenants",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
                   "path": [
                     "2",
                     "tenants"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
+                  ]
                 },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
+                "description": "Create a new tenant with the provided ID and name.\nIf `tenantAdminEmail` is provided, an invite email will be sent to the tenant to claim their account.\nThe Tenant ID will be needed for all subsequent tenant calls.\nThe tenant will be created with the provided tags. If no tags are provided, the tenant will be untagged and its associated KMS configs will not be sent to any TSPs.\nThe tenant will be required to support key leasing for all of its KMS configurations if set in your vendor's Organization Settings in the Config Broker UI (can be updated after creation from Vendor Bridge)."
               },
-              "status": "OK",
-              "code": 200,
-              "header": [
+              "response": [
                 {
-                  "key": "Content-Type",
-                  "value": "application/json"
+                  "id": "e4c8d93f-caef-4e58-b372-acb4993d8a06",
+                  "name": "Result of creating a tenant",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"tenantAdminEmail\": \"<string>\",\n  \"tags\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/2/tenants",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "2",
+                        "tenants"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"tenantCreatedConfigs\": \"<boolean>\",\n  \"emailSent\": \"<boolean>\",\n  \"keyLeasingRequired\": \"<boolean>\",\n  \"archived\": \"<boolean>\",\n  \"tags\": [\n    {\n      \"id\": \"<integer>\",\n      \"tagText\": \"<string>\",\n      \"default\": \"<boolean>\",\n      \"created\": \"4623-84-30T19:64:06.5373\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"tagText\": \"<string>\",\n      \"default\": \"<boolean>\",\n      \"created\": \"5046-78-32T33:69:02.11+56:08\"\n    }\n  ],\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"type\": \"Va\"\n  },\n  \"created\": \"8144-65-03T27:63:66-79:12\",\n  \"updated\": \"0984-25-01T68:82:71\"\n}",
+                  "createdAt": "2026-10-22T02:05:20.000Z",
+                  "updatedAt": "2026-10-22T02:05:20.000Z",
+                  "uid": "35240-e4c8d93f-caef-4e58-b372-acb4993d8a06"
+                },
+                {
+                  "id": "b8a1f275-0d7d-4c89-b02f-fdcfc3477292",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"tenantAdminEmail\": \"<string>\",\n  \"tags\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/2/tenants",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "2",
+                        "tenants"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-22T02:05:20.000Z",
+                  "updatedAt": "2026-10-22T02:05:20.000Z",
+                  "uid": "35240-b8a1f275-0d7d-4c89-b02f-fdcfc3477292"
                 }
               ],
-              "body": "{\n  \"id\": \"tenant-icl\",\n  \"name\": \"IronCore Labs\",\n  \"tenantCreatedConfigs\": false,\n  \"archived\": false,\n  \"emailSent\": true,\n  \"keyLeasingRequired\": true,\n  \"tags\": [\n    {\n      \"id\": 1,\n      \"tagText\": \"Default\",\n      \"default\": true,\n      \"created\": \"2022-01-13T21:44:43.653Z\"\n    }\n  ],\n  \"createdBy\": {\n    \"id\": \"vendor\",\n    \"name\": \"Vendor\",\n    \"type\": \"Va\"\n  },\n  \"created\": \"2022-01-13T21:44:43.653Z\",\n  \"updated\": \"2022-01-13T21:44:43.653Z\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "67cca86d-e5f5-4c05-9dac-13b8f7962ccf",
-              "name": "Unauthorized",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "2",
-                    "tenants"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
+              "createdAt": "2026-10-22T02:05:20.000Z",
+              "updatedAt": "2026-10-22T02:05:20.000Z",
+              "uid": "35240-c6ca69ed-91ff-4f95-845f-91b835aa6b5f"
             }
           ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "17291aab-ba2a-4491-a571-50028cd24613",
-          "name": "Tenant Create V1",
-          "request": {
-            "name": "Tenant Create V1",
-            "description": {
-              "content": "Create a new tenant with the provided ID and name.  \nIf `tenantAdminEmail` is provided, an invite email will be sent to the tenant to claim their account.\nThe Tenant ID will be needed for all subsequent tenant calls.\nThe tenant will be created with the default tag of the vendor organization.\nThe Tenant Create V2 endpoint can be used to set tags explicitly.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "tenants"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"tenantAdminEmail\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
-            {
-              "id": "229ca0dd-4d8e-4f5c-8657-2c2bac2a4791",
-              "name": "Result of creating a tenant",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tenants"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": \"tenant-icl\",\n  \"name\": \"IronCore Labs\",\n  \"tenantCreatedConfigs\": false,\n  \"archived\": false,\n  \"emailSent\": true,\n  \"keyLeasingRequired\": true,\n  \"tags\": [\n    {\n      \"id\": 1,\n      \"tagText\": \"Default\",\n      \"default\": true,\n      \"created\": \"2022-01-13T21:44:43.653Z\"\n    }\n  ],\n  \"createdBy\": {\n    \"id\": \"vendor\",\n    \"name\": \"Vendor\",\n    \"type\": \"Va\"\n  },\n  \"created\": \"2022-01-13T21:44:43.653Z\",\n  \"updated\": \"2022-01-13T21:44:43.653Z\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "54b89cc9-9af6-40c2-a144-316592c879b5",
-              "name": "Unauthorized",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tenants"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "306b3282-a21e-4f69-aef6-faf6cfca039c",
-          "name": "Tenant List",
-          "request": {
-            "name": "Tenant List",
-            "description": {
-              "content": "List all tenants associated with the calling vendor organization.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "tenants"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "disabled": false,
-                  "key": "query",
-                  "value": "<string>",
-                  "description": "Tenant ID or name to filter to"
-                },
-                {
-                  "disabled": false,
-                  "key": "sortColumn",
-                  "value": "created",
-                  "description": "Field to use for sorting"
-                },
-                {
-                  "disabled": false,
-                  "key": "status",
-                  "value": "<string>",
-                  "description": "Tenant status to filter to"
-                },
-                {
-                  "disabled": false,
-                  "key": "sortDirection",
-                  "value": "desc",
-                  "description": "Direction to sort"
-                },
-                {
-                  "disabled": false,
-                  "key": "pageSize",
-                  "value": "10",
-                  "description": "Number of entries returned per page"
-                },
-                {
-                  "disabled": false,
-                  "key": "page",
-                  "value": "1",
-                  "description": "Page number to return"
-                }
-              ],
-              "variable": []
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "298ac142-b11a-4a1a-8fd1-5245e96f786f",
-              "name": "Result of listing all tenants associated with the calling vendor.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tenants"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [
-                    {
-                      "key": "query",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "sortColumn",
-                      "value": "created"
-                    },
-                    {
-                      "key": "status",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "sortDirection",
-                      "value": "desc"
-                    },
-                    {
-                      "key": "pageSize",
-                      "value": "10"
-                    },
-                    {
-                      "key": "page",
-                      "value": "1"
-                    }
-                  ],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"result\": [\n    {\n      \"id\": \"tenant-icl\",\n      \"name\": \"string\",\n      \"archived\": true,\n      \"tenantCreatedConfigs\": true,\n      \"invited\": false,\n      \"keyLeasingRequired\": true,\n      \"primaryKmsConfigId\": 0,\n      \"tags\": [],\n      \"createdBy\": {\n        \"id\": \"vendor\",\n        \"name\": \"Vendor\",\n        \"type\": \"Va\"\n      },\n      \"created\": \"2022-01-13T21:44:43.653Z\",\n      \"updated\": \"2022-01-13T21:44:43.653Z\"\n    }\n  ],\n  \"page\": 0,\n  \"totalPages\": 0\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "e3726b70-da59-4447-9266-c08a5a641dde",
-              "name": "Unauthorized",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tenants"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [
-                    {
-                      "key": "query",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "sortColumn",
-                      "value": "created"
-                    },
-                    {
-                      "key": "status",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "sortDirection",
-                      "value": "desc"
-                    },
-                    {
-                      "key": "pageSize",
-                      "value": "10"
-                    },
-                    {
-                      "key": "page",
-                      "value": "1"
-                    }
-                  ],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "af9957a9-a201-4314-b8fb-150e62e52876",
-          "name": "Tenant Invite Resend",
-          "request": {
-            "name": "Tenant Invite Resend",
-            "description": {
-              "content": "Resend an invitation for the provided tenant account to the given email address. This will allow the tenant administrator to claim their account.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "tenants",
-                ":tenantId",
-                "invite"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "tenantId",
-                  "description": "(Required) Tenant ID"
-                }
-              ]
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"tenantAdminEmail\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
-            {
-              "id": "220817c4-0c19-4801-ad94-90c7a22d70f5",
-              "name": "Result of sending a tenant admin invitation",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tenants",
-                    ":tenantId",
-                    "invite"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "tenantId",
-                      "description": "(Required) Tenant ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"invitedTenantAdminEmail\": \"foo@bar.com\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "1493cfac-f977-4231-8f9d-503fc149e74a",
-              "name": "Unprocessable Entity\nTenant does not exist or has already accepted an invitation\n",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tenants",
-                    ":tenantId",
-                    "invite"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "tenantId",
-                      "description": "(Required) Tenant ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-              "code": 422,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "ee81514e-d074-4359-bd24-43396fe04e69",
-          "name": "Tenant Delete",
-          "request": {
-            "name": "Tenant Delete",
-            "description": {
-              "content": "Delete a tenant. This will sever the connection between the vendor and tenant organizations. \nIf you wish to re-invite the tenant, simply send a new invite and have the tenant admin choose to Link Organizations to reestablish the connection.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "tenants",
-                ":tenantId"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "tenantId",
-                  "description": "(Required) Tenant ID"
-                }
-              ]
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "DELETE",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "5ad437dc-cc66-40cc-b942-acd2510e4c8a",
-              "name": "Result of deleting a tenant",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tenants",
-                    ":tenantId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "tenantId",
-                      "description": "(Required) Tenant ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "DELETE",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": \"tenant-icl\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "cfe20d0d-f54c-4cfe-93ca-25b5db53d5e2",
-              "name": "Unauthorized",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tenants",
-                    ":tenantId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "tenantId",
-                      "description": "(Required) Tenant ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "DELETE",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            },
-            {
-              "id": "86dcae1a-1780-4f9c-b582-036b7a8f34e3",
-              "name": "Unprocessable Entity  \nPossible causes:\n\\- Invalid tenant ID provided  \n\\- Tenant has taken control of their account (must archive tenant instead)  \n\\- Tenant has KMS configurations. Note that you must wait 36 hours after deleting all KMS configurations before deleting a tenant.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tenants",
-                    ":tenantId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "tenantId",
-                      "description": "(Required) Tenant ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "DELETE",
-                "body": {}
-              },
-              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-              "code": 422,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"message\": \"Invalid config ID provided\",\n  \"statusCode\": 404\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "f7725845-344a-47a4-a149-b862a7f1ecef",
-          "name": "Tenant Update",
-          "request": {
-            "name": "Tenant Update",
-            "description": {
-              "content": "Update a tenant's name, key leasing requirement, or the tenant's assigned tags.  ",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "tenants",
-                ":tenantId"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "tenantId",
-                  "description": "(Required) Tenant ID"
-                }
-              ]
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "PUT",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"<string>\",\n  \"keyLeasingRequired\": \"<boolean>\",\n  \"tagAdditions\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"tagRemovals\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
-            {
-              "id": "cad01632-89a2-457d-8244-4fe0083c516d",
-              "name": "Result of updating a tenant",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tenants",
-                    ":tenantId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "tenantId",
-                      "description": "(Required) Tenant ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "PUT",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": \"tenant-icl\",\n  \"name\": \"ICL\",\n  \"archived\": false,\n  \"keyLeasingRequired\": true,\n  \"tags\": [\n    {\n      \"id\": 4,\n      \"tagText\": \"Default\",\n      \"default\": true,\n      \"created\": \"2022-01-13T21:44:43.653Z\"\n    }\n  ]\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "fb1a620f-0785-4d77-bc7e-7bca3031ed6a",
-              "name": "Bad Request  \nPossible causes:  \n\\- Invalid tenant ID provided  \n\\- Attempting to un-archive a tenant  \n\\- Attempting to archive an unclaimed tenant (must delete tenant instead)",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tenants",
-                    ":tenantId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "tenantId",
-                      "description": "(Required) Tenant ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "PUT",
-                "body": {}
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"message\": \"Invalid config ID provided\",\n  \"statusCode\": 404\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "cbdbfeb0-3fb8-44ea-8ec6-a3cb492774bc",
-              "name": "Unauthorized",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tenants",
-                    ":tenantId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "tenantId",
-                      "description": "(Required) Tenant ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "PUT",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "2d203af3-0116-4f90-b2d0-f7f66e970f1c",
-          "name": "Tenant Get",
-          "request": {
-            "name": "Tenant Get",
-            "description": {
-              "content": "Get information about the provided tenant.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "tenants",
-                ":tenantId"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "tenantId",
-                  "description": "(Required) Tenant ID"
-                }
-              ]
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "a5d747f9-b0a4-44e9-abb3-9d68ae7b1322",
-              "name": "Result of getting a tenant. Same as TenantCreateResponse but with the addition of `primaryKmsConfigId`.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tenants",
-                    ":tenantId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "tenantId",
-                      "description": "(Required) Tenant ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"archived\": true,\n  \"tenantCreatedConfigs\": true,\n  \"invited\": false,\n  \"keyLeasingRequired\": true,\n  \"primaryKmsConfigId\": 1,\n  \"tags\": [],\n  \"createdBy\": {\n    \"id\": \"vendor\",\n    \"name\": \"Vendor\",\n    \"type\": \"Va\"\n  },\n  \"created\": \"2022-01-13T21:44:43.653Z\",\n  \"updated\": \"2022-01-13T21:44:43.653Z\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "61627e9d-e6f7-402d-80c4-3df9a6f9b384",
-              "name": "Unauthorized",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tenants",
-                    ":tenantId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<string>",
-                      "key": "tenantId",
-                      "description": "(Required) Tenant ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
+          "id": "73859c4e-18ab-4199-a848-6fd43da6ab1c",
+          "createdAt": "2026-10-22T02:05:20.000Z",
+          "updatedAt": "2026-10-22T02:05:20.000Z",
+          "uid": "35240-73859c4e-18ab-4199-a848-6fd43da6ab1c"
         }
       ],
-      "event": []
-    }
-  ],
-  "event": [],
-  "variable": [
+      "id": "412067fa-fae9-4759-9c00-9bddf2071b0e",
+      "createdAt": "2026-10-22T02:05:20.000Z",
+      "updatedAt": "2026-10-22T02:05:20.000Z",
+      "uid": "35240-412067fa-fae9-4759-9c00-9bddf2071b0e"
+    },
     {
-      "type": "string",
-      "value": "http://localhost:3000/api",
-      "key": "baseUrl"
+      "name": "1",
+      "item": [
+        {
+          "name": "tenants",
+          "item": [
+            {
+              "name": "{tenantId}",
+              "item": [
+                {
+                  "name": "invite",
+                  "item": [
+                    {
+                      "name": "Tenant Invite Resend",
+                      "id": "3c1bdf2d-179a-4f1d-b72a-6a01e4ee125a",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"tenantAdminEmail\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/1/tenants/:tenantId/invite",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "tenants",
+                            ":tenantId",
+                            "invite"
+                          ],
+                          "variable": [
+                            {
+                              "id": "23e5f143-3c56-41e4-8a60-b6dcd87ada28",
+                              "key": "tenantId",
+                              "value": "<string>",
+                              "description": "(Required) Tenant ID"
+                            }
+                          ]
+                        },
+                        "description": "Resend an invitation for the provided tenant account to the given email address. This will allow the tenant administrator to claim their account."
+                      },
+                      "response": [
+                        {
+                          "id": "f1e8fa00-89ab-4b97-a2de-283bce1a43fd",
+                          "name": "Result of sending a tenant admin invitation",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"tenantAdminEmail\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/1/tenants/:tenantId/invite",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "tenants",
+                                ":tenantId",
+                                "invite"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"invitedTenantAdminEmail\": \"<string>\"\n}",
+                          "createdAt": "2026-10-22T02:05:20.000Z",
+                          "updatedAt": "2026-10-22T02:05:20.000Z",
+                          "uid": "35240-f1e8fa00-89ab-4b97-a2de-283bce1a43fd"
+                        },
+                        {
+                          "id": "ca2e4ba7-d817-45ab-855d-def93941da09",
+                          "name": "Unprocessable Entity\nTenant does not exist or has already accepted an invitation\n",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"tenantAdminEmail\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/1/tenants/:tenantId/invite",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "tenants",
+                                ":tenantId",
+                                "invite"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                          "code": 422,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:05:20.000Z",
+                          "updatedAt": "2026-10-22T02:05:20.000Z",
+                          "uid": "35240-ca2e4ba7-d817-45ab-855d-def93941da09"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:05:20.000Z",
+                      "updatedAt": "2026-10-22T02:05:20.000Z",
+                      "uid": "35240-3c1bdf2d-179a-4f1d-b72a-6a01e4ee125a"
+                    }
+                  ],
+                  "id": "b85a3532-6fe2-40bc-a5d1-a19b22c6ed99",
+                  "createdAt": "2026-10-22T02:05:20.000Z",
+                  "updatedAt": "2026-10-22T02:05:20.000Z",
+                  "uid": "35240-b85a3532-6fe2-40bc-a5d1-a19b22c6ed99"
+                },
+                {
+                  "name": "Tenant Delete",
+                  "id": "fafa83c1-1e7c-4093-964b-7ac60bc332e2",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/1/tenants/:tenantId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "1",
+                        "tenants",
+                        ":tenantId"
+                      ],
+                      "variable": [
+                        {
+                          "id": "26b82389-d544-40a3-a605-0efd1235d684",
+                          "key": "tenantId",
+                          "value": "<string>",
+                          "description": "(Required) Tenant ID"
+                        }
+                      ]
+                    },
+                    "description": "Delete a tenant. This will sever the connection between the vendor and tenant organizations.\nIf you wish to re-invite the tenant, simply send a new invite and have the tenant admin choose to Link Organizations to reestablish the connection."
+                  },
+                  "response": [
+                    {
+                      "id": "43fae7d4-1d9d-49fb-aeae-e6a0f3532d99",
+                      "name": "Result of deleting a tenant",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/1/tenants/:tenantId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "tenants",
+                            ":tenantId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\"\n}",
+                      "createdAt": "2026-10-22T02:05:20.000Z",
+                      "updatedAt": "2026-10-22T02:05:20.000Z",
+                      "uid": "35240-43fae7d4-1d9d-49fb-aeae-e6a0f3532d99"
+                    },
+                    {
+                      "id": "38466923-7a52-4b9b-9092-3bbabd30ae37",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/1/tenants/:tenantId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "tenants",
+                            ":tenantId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-10-22T02:05:20.000Z",
+                      "updatedAt": "2026-10-22T02:05:20.000Z",
+                      "uid": "35240-38466923-7a52-4b9b-9092-3bbabd30ae37"
+                    },
+                    {
+                      "id": "3baedbca-d5be-4cfd-98d3-b6022769c1ec",
+                      "name": "Unprocessable Entity  \nPossible causes:\n\\- Invalid tenant ID provided  \n\\- Tenant has taken control of their account (must archive tenant instead)  \n\\- Tenant has KMS configurations. Note that you must wait 36 hours after deleting all KMS configurations b",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/1/tenants/:tenantId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "tenants",
+                            ":tenantId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"statusCode\": \"<integer>\"\n}",
+                      "createdAt": "2026-10-22T02:05:20.000Z",
+                      "updatedAt": "2026-10-22T02:05:20.000Z",
+                      "uid": "35240-3baedbca-d5be-4cfd-98d3-b6022769c1ec"
+                    }
+                  ],
+                  "createdAt": "2026-10-22T02:05:20.000Z",
+                  "updatedAt": "2026-10-22T02:05:20.000Z",
+                  "uid": "35240-fafa83c1-1e7c-4093-964b-7ac60bc332e2"
+                },
+                {
+                  "name": "Tenant Update",
+                  "id": "6b516d27-ced2-499b-b697-6b0efb249979",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"keyLeasingRequired\": \"<boolean>\",\n  \"tagAdditions\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"tagRemovals\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/1/tenants/:tenantId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "1",
+                        "tenants",
+                        ":tenantId"
+                      ],
+                      "variable": [
+                        {
+                          "id": "16c0357e-0e17-41dc-8075-a14f0c564924",
+                          "key": "tenantId",
+                          "value": "<string>",
+                          "description": "(Required) Tenant ID"
+                        }
+                      ]
+                    },
+                    "description": "Update a tenant's name, key leasing requirement, or the tenant's assigned tags."
+                  },
+                  "response": [
+                    {
+                      "id": "d71e3011-39f6-488d-97b7-e72594d086c7",
+                      "name": "Result of updating a tenant",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"keyLeasingRequired\": \"<boolean>\",\n  \"tagAdditions\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"tagRemovals\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/1/tenants/:tenantId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "tenants",
+                            ":tenantId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"archived\": \"<boolean>\",\n  \"keyLeasingRequired\": \"<boolean>\",\n  \"tags\": [\n    {\n      \"id\": \"<integer>\",\n      \"tagText\": \"<string>\",\n      \"default\": \"<boolean>\",\n      \"created\": \"0311-73-40T63:69:43.10-66:59\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"tagText\": \"<string>\",\n      \"default\": \"<boolean>\",\n      \"created\": \"5937-07-61T42:80:75.32234818Z\"\n    }\n  ]\n}",
+                      "createdAt": "2026-10-22T02:05:20.000Z",
+                      "updatedAt": "2026-10-22T02:05:20.000Z",
+                      "uid": "35240-d71e3011-39f6-488d-97b7-e72594d086c7"
+                    },
+                    {
+                      "id": "2e115ffd-e343-41f1-bfe5-4c6789984025",
+                      "name": "Bad Request  \nPossible causes:  \n\\- Invalid tenant ID provided  \n\\- Attempting to un-archive a tenant  \n\\- Attempting to archive an unclaimed tenant (must delete tenant instead)",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"keyLeasingRequired\": \"<boolean>\",\n  \"tagAdditions\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"tagRemovals\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/1/tenants/:tenantId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "tenants",
+                            ":tenantId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"statusCode\": \"<integer>\"\n}",
+                      "createdAt": "2026-10-22T02:05:20.000Z",
+                      "updatedAt": "2026-10-22T02:05:20.000Z",
+                      "uid": "35240-2e115ffd-e343-41f1-bfe5-4c6789984025"
+                    },
+                    {
+                      "id": "2f52938f-7b09-4426-be68-1dafcf8de896",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"<string>\",\n  \"keyLeasingRequired\": \"<boolean>\",\n  \"tagAdditions\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"tagRemovals\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/1/tenants/:tenantId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "tenants",
+                            ":tenantId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-10-22T02:05:20.000Z",
+                      "updatedAt": "2026-10-22T02:05:20.000Z",
+                      "uid": "35240-2f52938f-7b09-4426-be68-1dafcf8de896"
+                    }
+                  ],
+                  "createdAt": "2026-10-22T02:05:20.000Z",
+                  "updatedAt": "2026-10-22T02:05:20.000Z",
+                  "uid": "35240-6b516d27-ced2-499b-b697-6b0efb249979"
+                },
+                {
+                  "name": "Tenant Get",
+                  "id": "93e5c7c8-7801-4fc0-b156-3f121b3784b5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/1/tenants/:tenantId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "1",
+                        "tenants",
+                        ":tenantId"
+                      ],
+                      "variable": [
+                        {
+                          "id": "4956b65c-0267-426b-8668-cec53014ecac",
+                          "key": "tenantId",
+                          "value": "<string>",
+                          "description": "(Required) Tenant ID"
+                        }
+                      ]
+                    },
+                    "description": "Get information about the provided tenant."
+                  },
+                  "response": [
+                    {
+                      "id": "30baaf32-324c-4f2c-a7fb-b794557e5921",
+                      "name": "Result of getting a tenant. Same as TenantCreateResponse but with the addition of `primaryKmsConfigId`.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/1/tenants/:tenantId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "tenants",
+                            ":tenantId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"archived\": \"<boolean>\",\n  \"tenantCreatedConfigs\": \"<boolean>\",\n  \"invited\": \"<boolean>\",\n  \"keyLeasingRequired\": \"<boolean>\",\n  \"primaryKmsConfigId\": \"<integer,null>\",\n  \"tags\": [\n    {\n      \"id\": \"<integer>\",\n      \"tagText\": \"<string>\",\n      \"default\": \"<boolean>\",\n      \"created\": \"6788-02-93T84:60:64.4\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"tagText\": \"<string>\",\n      \"default\": \"<boolean>\",\n      \"created\": \"1608-23-60T10:45:14\"\n    }\n  ],\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"type\": \"Tsp\"\n  },\n  \"created\": \"8846-37-11T15:43:19.92\",\n  \"updated\": \"6174-62-63T24:43:30+58:06\"\n}",
+                      "createdAt": "2026-10-22T02:05:20.000Z",
+                      "updatedAt": "2026-10-22T02:05:20.000Z",
+                      "uid": "35240-30baaf32-324c-4f2c-a7fb-b794557e5921"
+                    },
+                    {
+                      "id": "071a9b3f-16a9-4298-8172-051085528843",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/1/tenants/:tenantId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "tenants",
+                            ":tenantId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-10-22T02:05:20.000Z",
+                      "updatedAt": "2026-10-22T02:05:20.000Z",
+                      "uid": "35240-071a9b3f-16a9-4298-8172-051085528843"
+                    }
+                  ],
+                  "createdAt": "2026-10-22T02:05:20.000Z",
+                  "updatedAt": "2026-10-22T02:05:20.000Z",
+                  "uid": "35240-93e5c7c8-7801-4fc0-b156-3f121b3784b5"
+                }
+              ],
+              "id": "184196a9-6b66-4f86-8039-6e937819afe7",
+              "createdAt": "2026-10-22T02:05:20.000Z",
+              "updatedAt": "2026-10-22T02:05:20.000Z",
+              "uid": "35240-184196a9-6b66-4f86-8039-6e937819afe7"
+            },
+            {
+              "name": "Tenant Create V1",
+              "id": "418cc6cf-d0d8-487b-8b80-f85b360b17bc",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) ID of requesting user/service",
+                    "key": "icl-requestor-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"tenantAdminEmail\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/1/tenants",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "1",
+                    "tenants"
+                  ]
+                },
+                "description": "Create a new tenant with the provided ID and name.\nIf `tenantAdminEmail` is provided, an invite email will be sent to the tenant to claim their account.\nThe Tenant ID will be needed for all subsequent tenant calls.\nThe tenant will be created with the default tag of the vendor organization.\nThe Tenant Create V2 endpoint can be used to set tags explicitly."
+              },
+              "response": [
+                {
+                  "id": "b970bb36-f04d-4907-9f48-aaf2ff153843",
+                  "name": "Result of creating a tenant",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"tenantAdminEmail\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/1/tenants",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "1",
+                        "tenants"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"tenantCreatedConfigs\": \"<boolean>\",\n  \"emailSent\": \"<boolean>\",\n  \"keyLeasingRequired\": \"<boolean>\",\n  \"archived\": \"<boolean>\",\n  \"tags\": [\n    {\n      \"id\": \"<integer>\",\n      \"tagText\": \"<string>\",\n      \"default\": \"<boolean>\",\n      \"created\": \"4623-84-30T19:64:06.5373\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"tagText\": \"<string>\",\n      \"default\": \"<boolean>\",\n      \"created\": \"5046-78-32T33:69:02.11+56:08\"\n    }\n  ],\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"type\": \"Va\"\n  },\n  \"created\": \"8144-65-03T27:63:66-79:12\",\n  \"updated\": \"0984-25-01T68:82:71\"\n}",
+                  "createdAt": "2026-10-22T02:05:20.000Z",
+                  "updatedAt": "2026-10-22T02:05:20.000Z",
+                  "uid": "35240-b970bb36-f04d-4907-9f48-aaf2ff153843"
+                },
+                {
+                  "id": "1b5d71e4-5092-4eb9-90d3-26c55f8fcc32",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"tenantAdminEmail\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/1/tenants",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "1",
+                        "tenants"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-22T02:05:20.000Z",
+                  "updatedAt": "2026-10-22T02:05:20.000Z",
+                  "uid": "35240-1b5d71e4-5092-4eb9-90d3-26c55f8fcc32"
+                }
+              ],
+              "createdAt": "2026-10-22T02:05:20.000Z",
+              "updatedAt": "2026-10-22T02:05:20.000Z",
+              "uid": "35240-418cc6cf-d0d8-487b-8b80-f85b360b17bc"
+            },
+            {
+              "name": "Tenant List",
+              "id": "d8c8d6e0-2d80-430e-9161-ca5a6660a159",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) ID of requesting user/service",
+                    "key": "icl-requestor-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/1/tenants?query=<string>&sortColumn=created&status=archived&sortDirection=desc&pageSize=10&page=1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "1",
+                    "tenants"
+                  ],
+                  "query": [
+                    {
+                      "description": "Tenant ID or name to filter to",
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Field to use for sorting",
+                      "key": "sortColumn",
+                      "value": "created"
+                    },
+                    {
+                      "description": "Tenant status to filter to",
+                      "key": "status",
+                      "value": "archived"
+                    },
+                    {
+                      "description": "Direction to sort",
+                      "key": "sortDirection",
+                      "value": "desc"
+                    },
+                    {
+                      "description": "Number of entries returned per page",
+                      "key": "pageSize",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Page number to return",
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ]
+                },
+                "description": "List all tenants associated with the calling vendor organization."
+              },
+              "response": [
+                {
+                  "id": "a7286403-1707-4750-93d4-bf3bceabeb15",
+                  "name": "Result of listing all tenants associated with the calling vendor.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/1/tenants?query=<string>&sortColumn=created&status=archived&sortDirection=desc&pageSize=10&page=1",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "1",
+                        "tenants"
+                      ],
+                      "query": [
+                        {
+                          "description": "Tenant ID or name to filter to",
+                          "key": "query",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Field to use for sorting",
+                          "key": "sortColumn",
+                          "value": "created"
+                        },
+                        {
+                          "description": "Tenant status to filter to",
+                          "key": "status",
+                          "value": "archived"
+                        },
+                        {
+                          "description": "Direction to sort",
+                          "key": "sortDirection",
+                          "value": "desc"
+                        },
+                        {
+                          "description": "Number of entries returned per page",
+                          "key": "pageSize",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Page number to return",
+                          "key": "page",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"result\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"archived\": \"<boolean>\",\n      \"tenantCreatedConfigs\": \"<boolean>\",\n      \"invited\": \"<boolean>\",\n      \"keyLeasingRequired\": \"<boolean>\",\n      \"primaryKmsConfigId\": \"<integer,null>\",\n      \"tags\": [\n        {\n          \"id\": \"<integer>\",\n          \"tagText\": \"<string>\",\n          \"default\": \"<boolean>\",\n          \"created\": \"4352-40-36T35:75:75\"\n        },\n        {\n          \"id\": \"<integer>\",\n          \"tagText\": \"<string>\",\n          \"default\": \"<boolean>\",\n          \"created\": \"0892-02-70T86:53:48\"\n        }\n      ],\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"type\": \"Tsp\"\n      },\n      \"created\": \"4393-69-14T19:30:63.4091+21:77\",\n      \"updated\": \"6829-10-83T01:05:41\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"archived\": \"<boolean>\",\n      \"tenantCreatedConfigs\": \"<boolean>\",\n      \"invited\": \"<boolean>\",\n      \"keyLeasingRequired\": \"<boolean>\",\n      \"primaryKmsConfigId\": \"<integer,null>\",\n      \"tags\": [\n        {\n          \"id\": \"<integer>\",\n          \"tagText\": \"<string>\",\n          \"default\": \"<boolean>\",\n          \"created\": \"6874-31-59T07:71:07.9396359\"\n        },\n        {\n          \"id\": \"<integer>\",\n          \"tagText\": \"<string>\",\n          \"default\": \"<boolean>\",\n          \"created\": \"3409-00-66T76:63:23Z\"\n        }\n      ],\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"type\": \"Admin\"\n      },\n      \"created\": \"2512-02-24T46:82:01\",\n      \"updated\": \"9479-93-33T23:90:64.461179366\"\n    }\n  ],\n  \"page\": \"<integer>\",\n  \"totalPages\": \"<integer>\"\n}",
+                  "createdAt": "2026-10-22T02:05:20.000Z",
+                  "updatedAt": "2026-10-22T02:05:20.000Z",
+                  "uid": "35240-a7286403-1707-4750-93d4-bf3bceabeb15"
+                },
+                {
+                  "id": "009a2b79-56d4-433d-8d5a-a7bf58df6d05",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/1/tenants?query=<string>&sortColumn=created&status=archived&sortDirection=desc&pageSize=10&page=1",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "1",
+                        "tenants"
+                      ],
+                      "query": [
+                        {
+                          "description": "Tenant ID or name to filter to",
+                          "key": "query",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Field to use for sorting",
+                          "key": "sortColumn",
+                          "value": "created"
+                        },
+                        {
+                          "description": "Tenant status to filter to",
+                          "key": "status",
+                          "value": "archived"
+                        },
+                        {
+                          "description": "Direction to sort",
+                          "key": "sortDirection",
+                          "value": "desc"
+                        },
+                        {
+                          "description": "Number of entries returned per page",
+                          "key": "pageSize",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Page number to return",
+                          "key": "page",
+                          "value": "1"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-22T02:05:20.000Z",
+                  "updatedAt": "2026-10-22T02:05:20.000Z",
+                  "uid": "35240-009a2b79-56d4-433d-8d5a-a7bf58df6d05"
+                }
+              ],
+              "createdAt": "2026-10-22T02:05:20.000Z",
+              "updatedAt": "2026-10-22T02:05:20.000Z",
+              "uid": "35240-d8c8d6e0-2d80-430e-9161-ca5a6660a159"
+            }
+          ],
+          "id": "40b7f33c-d0d7-4b6e-970d-630be6a71432",
+          "createdAt": "2026-10-22T02:05:20.000Z",
+          "updatedAt": "2026-10-22T02:05:20.000Z",
+          "uid": "35240-40b7f33c-d0d7-4b6e-970d-630be6a71432"
+        }
+      ],
+      "id": "493f2e76-a7ec-450d-877a-eafa0fbf49e7",
+      "createdAt": "2026-10-22T02:05:20.000Z",
+      "updatedAt": "2026-10-22T02:05:20.000Z",
+      "uid": "35240-493f2e76-a7ec-450d-877a-eafa0fbf49e7"
     }
   ],
   "auth": {
@@ -1359,25 +1411,25 @@
     "apikey": [
       {
         "key": "key",
-        "value": "Authorization"
+        "value": "Authorization",
+        "type": "string"
       },
       {
         "key": "value",
-        "value": "{{apiKey}}"
+        "value": "{{apiKey}}",
+        "type": "string"
       },
       {
         "key": "in",
-        "value": "header"
+        "value": "header",
+        "type": "string"
       }
     ]
   },
-  "info": {
-    "_postman_id": "5698996d-b805-4e87-b8b5-aa5eedfa81c7",
-    "name": "Vendor API Bridge Configuration Assignment Tenant API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": {
-      "content": "API used to manage tenants and KMS configurations by communicating with the IronCore Configuration Broker on your behalf.\n\nContact Support:\n Name: IronCore Labs\n Email: info@ironcorelabs.com",
-      "type": "text/plain"
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
     }
-  }
+  ]
 }

@@ -1,1090 +1,1080 @@
 {
+  "info": {
+    "_postman_id": "1741f6d6-5fb4-4604-aaab-f1222dba8b14",
+    "name": "Vendor API Bridge KMS Configuration API",
+    "description": "API used to manage tenants and KMS configurations by communicating with the IronCore Configuration Broker on your behalf.\n\nContact Support:\n Name: IronCore Labs\n Email: info@ironcorelabs.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T02:05:12.000Z",
+    "updatedAt": "2026-10-22T02:05:12.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-1741f6d6-5fb4-4604-aaab-f1222dba8b14"
+  },
   "item": [
     {
-      "id": "3c5d4015-6dfc-4546-b4b7-c29b65970d7c",
-      "name": "KMS Configuration",
-      "description": {
-        "content": "KMS configurations from different providers (AWS, Azure, GCP, Thales)",
-        "type": "text/plain"
-      },
+      "name": "1",
       "item": [
         {
-          "id": "f407aa03-eda2-4f83-93a1-2bffd605916f",
-          "name": "KMS Config List",
-          "request": {
-            "name": "KMS Config List",
-            "description": {
-              "content": "List the metadata of all KMS configurations owned by the calling vendor.  \nThis does not decrypt any of the sensitive KMS configuration data.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "kms",
-                "configs"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "disabled": false,
-                  "key": "sortColumn",
-                  "value": "created",
-                  "description": "Field to use for sorting"
-                },
-                {
-                  "disabled": false,
-                  "key": "kmsType",
-                  "value": "<string>",
-                  "description": "KMS to filter results to"
-                },
-                {
-                  "disabled": false,
-                  "key": "leasingEnabled",
-                  "value": "<boolean>",
-                  "description": "Key leasing status to filter results to"
-                },
-                {
-                  "disabled": false,
-                  "key": "pageSize",
-                  "value": "10",
-                  "description": "Number of entries returned per page"
-                },
-                {
-                  "disabled": false,
-                  "key": "page",
-                  "value": "1",
-                  "description": "Page number to return"
-                },
-                {
-                  "disabled": false,
-                  "key": "sortDirection",
-                  "value": "desc",
-                  "description": "Direction to sort"
-                }
-              ],
-              "variable": []
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET",
-            "auth": null
-          },
-          "response": [
+          "name": "kms",
+          "item": [
             {
-              "id": "4f24b59f-2b9f-450f-ba74-dacfe1b07aea",
-              "name": "Result of listing the vendor's KMS configurations",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "kms",
-                    "configs"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [
+              "name": "configs",
+              "item": [
+                {
+                  "name": "{kmsConfigId}",
+                  "item": [
                     {
-                      "key": "sortColumn",
-                      "value": "created"
+                      "name": "KMS Config Get",
+                      "id": "6ead974a-a1f3-4d21-a989-e0faf25c3dc8",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/1/kms/configs/:kmsConfigId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "kms",
+                            "configs",
+                            ":kmsConfigId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "b3a2a271-e378-4432-a5fa-fb6273e30376",
+                              "key": "kmsConfigId",
+                              "value": "<integer>",
+                              "description": "(Required) KMS Configuration ID"
+                            }
+                          ]
+                        },
+                        "description": "Get the specified KMS configuration.\nReturns metadata and, if your organization owns the configuration, the decrypted data."
+                      },
+                      "response": [
+                        {
+                          "id": "a2883fd5-2e67-4688-86e6-ed76b50903fc",
+                          "name": "Result of decrypting a KMS configuration",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/1/kms/configs/:kmsConfigId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "kms",
+                                "configs",
+                                ":kmsConfigId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "kmsConfigId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<integer>\",\n  \"decryptedConfig\": {\n    \"keyPath\": {\n      \"keyID\": \"<string>\",\n      \"region\": \"<string>\"\n    },\n    \"type\": \"AWS\",\n    \"version\": \"<integer>\"\n  },\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"type\": \"Tsp\"\n  },\n  \"leasingAllowed\": \"<boolean>\",\n  \"assignmentCount\": \"<integer>\",\n  \"secretCount\": \"<integer>\",\n  \"created\": \"1184-85-73T09:14:40Z\",\n  \"updated\": \"6435-29-67T20:55:89.94Z\"\n}",
+                          "createdAt": "2026-10-22T02:05:13.000Z",
+                          "updatedAt": "2026-10-22T02:05:13.000Z",
+                          "uid": "35240-a2883fd5-2e67-4688-86e6-ed76b50903fc"
+                        },
+                        {
+                          "id": "3fa2a672-9b16-4e7b-b3ff-83190148307e",
+                          "name": "Unauthorized",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/1/kms/configs/:kmsConfigId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "kms",
+                                "configs",
+                                ":kmsConfigId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "kmsConfigId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:05:13.000Z",
+                          "updatedAt": "2026-10-22T02:05:13.000Z",
+                          "uid": "35240-3fa2a672-9b16-4e7b-b3ff-83190148307e"
+                        },
+                        {
+                          "id": "8be5904e-da41-4efc-951c-43f13e6e737d",
+                          "name": "Unprocessable Entity  \nPossible causes:  \n\\- Invalid KMS configuration ID provided  \n\\- Kms configuration not owned by calling vendor",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/1/kms/configs/:kmsConfigId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "kms",
+                                "configs",
+                                ":kmsConfigId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "kmsConfigId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                          "code": 422,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:05:13.000Z",
+                          "updatedAt": "2026-10-22T02:05:13.000Z",
+                          "uid": "35240-8be5904e-da41-4efc-951c-43f13e6e737d"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:05:13.000Z",
+                      "updatedAt": "2026-10-22T02:05:13.000Z",
+                      "uid": "35240-6ead974a-a1f3-4d21-a989-e0faf25c3dc8"
                     },
                     {
-                      "key": "kmsType",
-                      "value": "<string>"
+                      "name": "KMS Config Update",
+                      "id": "4856c527-cdd3-4bb1-8d7d-a1f51a7dfacd",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"config\": {\n    \"credentials\": {\n      \"accessKeyId\": \"<string>\",\n      \"secretAccessKey\": \"<string>\"\n    },\n    \"type\": \"AWS\",\n    \"version\": \"<integer>\"\n  },\n  \"leasingAllowed\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/1/kms/configs/:kmsConfigId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "kms",
+                            "configs",
+                            ":kmsConfigId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "51a363b2-145a-4824-b5d8-4b6ac84deb0c",
+                              "key": "kmsConfigId",
+                              "value": "<integer>",
+                              "description": "(Required) KMS Configuration ID"
+                            }
+                          ]
+                        },
+                        "description": "Update the specified KMS configuration's encrypted data or enable/disable key leasing for the configuration. The configuration must be owned by the calling vendor."
+                      },
+                      "response": [
+                        {
+                          "id": "2a0c01eb-b724-4921-b0f9-d5756357cad0",
+                          "name": "Result of updating a KMS configuration",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"config\": {\n    \"credentials\": {\n      \"accessKeyId\": \"<string>\",\n      \"secretAccessKey\": \"<string>\"\n    },\n    \"type\": \"AWS\",\n    \"version\": \"<integer>\"\n  },\n  \"leasingAllowed\": \"<boolean>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/1/kms/configs/:kmsConfigId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "kms",
+                                "configs",
+                                ":kmsConfigId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "kmsConfigId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<integer>\",\n  \"encryptedConfig\": \"mFno5R3bRVJ\",\n  \"kmsType\": \"AZURE\",\n  \"version\": \"<integer>\",\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"type\": \"Va\"\n  },\n  \"leasingAllowed\": \"<boolean>\",\n  \"assignmentCount\": \"<integer>\",\n  \"secretCount\": \"<integer>\",\n  \"created\": \"2695-10-24T29:74:34Z\",\n  \"updated\": \"8991-95-68T91:27:04\"\n}",
+                          "createdAt": "2026-10-22T02:05:13.000Z",
+                          "updatedAt": "2026-10-22T02:05:13.000Z",
+                          "uid": "35240-2a0c01eb-b724-4921-b0f9-d5756357cad0"
+                        },
+                        {
+                          "id": "991fb214-2cb8-4ea4-acf1-92875c035fda",
+                          "name": "Unauthorized",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"config\": {\n    \"credentials\": {\n      \"accessKeyId\": \"<string>\",\n      \"secretAccessKey\": \"<string>\"\n    },\n    \"type\": \"AWS\",\n    \"version\": \"<integer>\"\n  },\n  \"leasingAllowed\": \"<boolean>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/1/kms/configs/:kmsConfigId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "kms",
+                                "configs",
+                                ":kmsConfigId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "kmsConfigId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:05:13.000Z",
+                          "updatedAt": "2026-10-22T02:05:13.000Z",
+                          "uid": "35240-991fb214-2cb8-4ea4-acf1-92875c035fda"
+                        },
+                        {
+                          "id": "faf44623-7fb4-4f28-8f25-9e62867f85ee",
+                          "name": "Unprocessable Entity\nPossible causes:\n\\- Invalid KMS configuration ID provided\n\\- Kms configuration not owned by calling vendor",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"config\": {\n    \"credentials\": {\n      \"accessKeyId\": \"<string>\",\n      \"secretAccessKey\": \"<string>\"\n    },\n    \"type\": \"AWS\",\n    \"version\": \"<integer>\"\n  },\n  \"leasingAllowed\": \"<boolean>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/1/kms/configs/:kmsConfigId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "kms",
+                                "configs",
+                                ":kmsConfigId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "kmsConfigId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                          "code": 422,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:05:13.000Z",
+                          "updatedAt": "2026-10-22T02:05:13.000Z",
+                          "uid": "35240-faf44623-7fb4-4f28-8f25-9e62867f85ee"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:05:13.000Z",
+                      "updatedAt": "2026-10-22T02:05:13.000Z",
+                      "uid": "35240-4856c527-cdd3-4bb1-8d7d-a1f51a7dfacd"
                     },
                     {
-                      "key": "leasingEnabled",
-                      "value": "<boolean>"
-                    },
-                    {
-                      "key": "pageSize",
-                      "value": "10"
-                    },
-                    {
-                      "key": "page",
-                      "value": "1"
-                    },
-                    {
-                      "key": "sortDirection",
-                      "value": "desc"
+                      "name": "KMS Config Delete",
+                      "id": "b92d9c39-9259-46a1-94da-2ac377a07157",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/1/kms/configs/:kmsConfigId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "kms",
+                            "configs",
+                            ":kmsConfigId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "da1dc03f-a964-4caa-98d8-c38f1ee334dc",
+                              "key": "kmsConfigId",
+                              "value": "<integer>",
+                              "description": "(Required) KMS Configuration ID"
+                            }
+                          ]
+                        },
+                        "description": "Delete the specified KMS configuration. In order to succeed, the configuration must be owned by the calling vendor and not have any tenant assignments.\n\nThis API allows for destructively offboarding a tenant with active secrets. Secrets are not recoverable and any downstream services (Deterministic Encryption, Cloaked Search) will fail when attempting to do things with those secrets. **We strongly advise checking for `secret_count == 0` before issuing a KMS Configuration DELETE**."
+                      },
+                      "response": [
+                        {
+                          "id": "e1f85911-1923-49d4-9f66-bd10aa2e8a93",
+                          "name": "Result of deleting a KMS configuration",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/1/kms/configs/:kmsConfigId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "kms",
+                                "configs",
+                                ":kmsConfigId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "kmsConfigId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<integer>\"\n}",
+                          "createdAt": "2026-10-22T02:05:13.000Z",
+                          "updatedAt": "2026-10-22T02:05:13.000Z",
+                          "uid": "35240-e1f85911-1923-49d4-9f66-bd10aa2e8a93"
+                        },
+                        {
+                          "id": "f854d36c-52b9-4947-a3bb-bdf09b9fd351",
+                          "name": "Unauthorized",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/1/kms/configs/:kmsConfigId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "kms",
+                                "configs",
+                                ":kmsConfigId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "kmsConfigId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:05:13.000Z",
+                          "updatedAt": "2026-10-22T02:05:13.000Z",
+                          "uid": "35240-f854d36c-52b9-4947-a3bb-bdf09b9fd351"
+                        },
+                        {
+                          "id": "934590eb-a2c0-4176-bd96-ec4361a21019",
+                          "name": "Unprocessable Entity  \nPossible causes:  \n\\- Invalid KMS configuration ID provided  \n\\- Kms configuration not owned by calling vendor  \n\\- Config currently in use via an assignment",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/1/kms/configs/:kmsConfigId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "kms",
+                                "configs",
+                                ":kmsConfigId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "kmsConfigId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                          "code": 422,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:05:13.000Z",
+                          "updatedAt": "2026-10-22T02:05:13.000Z",
+                          "uid": "35240-934590eb-a2c0-4176-bd96-ec4361a21019"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:05:13.000Z",
+                      "updatedAt": "2026-10-22T02:05:13.000Z",
+                      "uid": "35240-b92d9c39-9259-46a1-94da-2ac377a07157"
                     }
                   ],
-                  "variable": []
+                  "id": "38bb7148-41f0-4f12-9640-277561cb7360",
+                  "createdAt": "2026-10-22T02:05:13.000Z",
+                  "updatedAt": "2026-10-22T02:05:13.000Z",
+                  "uid": "35240-38bb7148-41f0-4f12-9640-277561cb7360"
                 },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
                 {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"result\": [\n    {\n      \"id\": 803,\n      \"kmsType\": \"AZURE\",\n      \"version\": 1,\n      \"createdBy\": {\n        \"id\": \"vendor\",\n        \"name\": \"Vendor\",\n        \"type\": \"Va\"\n      },\n      \"leasingAllowed\": false,\n      \"assignmentCount\": 1,\n      \"created\": \"2022-01-13T21:44:43.653Z\",\n      \"updated\": \"2022-01-13T21:44:43.653Z\",\n      \"secretCount\": 0\n    }\n  ],\n  \"page\": 1,\n  \"totalPages\": 1\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "fb2cd048-3101-4afd-b423-cad3c675bfe4",
-              "name": "Unauthorized",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "kms",
-                    "configs"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [
+                  "name": "KMS Config List",
+                  "id": "bdbb8acc-9a35-4237-a308-b069e734847a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/1/kms/configs?sortColumn=created&kmsType=AZURE&leasingEnabled=<boolean>&pageSize=10&page=1&sortDirection=desc",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "1",
+                        "kms",
+                        "configs"
+                      ],
+                      "query": [
+                        {
+                          "description": "Field to use for sorting",
+                          "key": "sortColumn",
+                          "value": "created"
+                        },
+                        {
+                          "description": "KMS to filter results to",
+                          "key": "kmsType",
+                          "value": "AZURE"
+                        },
+                        {
+                          "description": "Key leasing status to filter results to",
+                          "key": "leasingEnabled",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "description": "Number of entries returned per page",
+                          "key": "pageSize",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Page number to return",
+                          "key": "page",
+                          "value": "1"
+                        },
+                        {
+                          "description": "Direction to sort",
+                          "key": "sortDirection",
+                          "value": "desc"
+                        }
+                      ]
+                    },
+                    "description": "List the metadata of all KMS configurations owned by the calling vendor.\nThis does not decrypt any of the sensitive KMS configuration data."
+                  },
+                  "response": [
                     {
-                      "key": "sortColumn",
-                      "value": "created"
+                      "id": "d50eefb8-68c4-44e5-8e74-74f76532f9b1",
+                      "name": "Result of listing the vendor's KMS configurations",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/1/kms/configs?sortColumn=created&kmsType=AZURE&leasingEnabled=<boolean>&pageSize=10&page=1&sortDirection=desc",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "kms",
+                            "configs"
+                          ],
+                          "query": [
+                            {
+                              "description": "Field to use for sorting",
+                              "key": "sortColumn",
+                              "value": "created"
+                            },
+                            {
+                              "description": "KMS to filter results to",
+                              "key": "kmsType",
+                              "value": "AZURE"
+                            },
+                            {
+                              "description": "Key leasing status to filter results to",
+                              "key": "leasingEnabled",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "description": "Number of entries returned per page",
+                              "key": "pageSize",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Page number to return",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Direction to sort",
+                              "key": "sortDirection",
+                              "value": "desc"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"result\": [\n    {\n      \"id\": \"<integer>\",\n      \"kmsType\": \"AZURE\",\n      \"version\": \"<integer>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"type\": \"Admin\"\n      },\n      \"leasingAllowed\": \"<boolean>\",\n      \"assignmentCount\": \"<integer>\",\n      \"secretCount\": \"<integer>\",\n      \"created\": \"3055-48-65T78:78:40.2611337\",\n      \"updated\": \"3473-33-75T70:18:85.5705Z\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"kmsType\": \"AWS\",\n      \"version\": \"<integer>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"type\": \"Admin\"\n      },\n      \"leasingAllowed\": \"<boolean>\",\n      \"assignmentCount\": \"<integer>\",\n      \"secretCount\": \"<integer>\",\n      \"created\": \"0569-20-15T21:01:58.0128-19:85\",\n      \"updated\": \"5452-44-77T43:45:06.18245823\"\n    }\n  ],\n  \"page\": \"<integer>\",\n  \"totalPages\": \"<integer>\"\n}",
+                      "createdAt": "2026-10-22T02:05:13.000Z",
+                      "updatedAt": "2026-10-22T02:05:13.000Z",
+                      "uid": "35240-d50eefb8-68c4-44e5-8e74-74f76532f9b1"
                     },
                     {
-                      "key": "kmsType",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "leasingEnabled",
-                      "value": "<boolean>"
-                    },
-                    {
-                      "key": "pageSize",
-                      "value": "10"
-                    },
-                    {
-                      "key": "page",
-                      "value": "1"
-                    },
-                    {
-                      "key": "sortDirection",
-                      "value": "desc"
+                      "id": "1d3cc4e2-1647-4f31-8d83-ed2f68bd2090",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/1/kms/configs?sortColumn=created&kmsType=AZURE&leasingEnabled=<boolean>&pageSize=10&page=1&sortDirection=desc",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "kms",
+                            "configs"
+                          ],
+                          "query": [
+                            {
+                              "description": "Field to use for sorting",
+                              "key": "sortColumn",
+                              "value": "created"
+                            },
+                            {
+                              "description": "KMS to filter results to",
+                              "key": "kmsType",
+                              "value": "AZURE"
+                            },
+                            {
+                              "description": "Key leasing status to filter results to",
+                              "key": "leasingEnabled",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "description": "Number of entries returned per page",
+                              "key": "pageSize",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Page number to return",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Direction to sort",
+                              "key": "sortDirection",
+                              "value": "desc"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-10-22T02:05:13.000Z",
+                      "updatedAt": "2026-10-22T02:05:13.000Z",
+                      "uid": "35240-1d3cc4e2-1647-4f31-8d83-ed2f68bd2090"
                     }
                   ],
-                  "variable": []
+                  "createdAt": "2026-10-22T02:05:13.000Z",
+                  "updatedAt": "2026-10-22T02:05:13.000Z",
+                  "uid": "35240-bdbb8acc-9a35-4237-a308-b069e734847a"
                 },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
                 {
-                  "key": "Content-Type",
-                  "value": "text/plain"
+                  "name": "KMS Config Create",
+                  "id": "9bf120a1-cfa9-4a6a-afcf-edd1a1a30aaf",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"config\": {\n    \"credentials\": {\n      \"accessKeyId\": \"<string>\",\n      \"secretAccessKey\": \"<string>\"\n    },\n    \"keyPath\": {\n      \"keyID\": \"<string>\",\n      \"region\": \"<string>\"\n    },\n    \"type\": \"AWS\",\n    \"version\": \"<integer>\"\n  },\n  \"leasingAllowed\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/1/kms/configs",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "1",
+                        "kms",
+                        "configs"
+                      ]
+                    },
+                    "description": "Create a new KMS configuration. This configuration will not be assigned to any tenants."
+                  },
+                  "response": [
+                    {
+                      "id": "be824c7f-cd61-40e4-83b0-d297b8cda298",
+                      "name": "Result of creating a KMS configuration",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"config\": {\n    \"credentials\": {\n      \"accessKeyId\": \"<string>\",\n      \"secretAccessKey\": \"<string>\"\n    },\n    \"keyPath\": {\n      \"keyID\": \"<string>\",\n      \"region\": \"<string>\"\n    },\n    \"type\": \"AWS\",\n    \"version\": \"<integer>\"\n  },\n  \"leasingAllowed\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/1/kms/configs",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "kms",
+                            "configs"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<integer>\",\n  \"encryptedConfig\": \"=l\",\n  \"kmsType\": \"GCP\",\n  \"version\": \"<integer>\",\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"type\": \"Tsp\"\n  },\n  \"leasingAllowed\": \"<boolean>\",\n  \"assignmentCount\": \"<integer>\",\n  \"secretCount\": \"<integer>\",\n  \"created\": \"3778-59-66T31:60:19\",\n  \"updated\": \"1914-64-59T87:25:08.8492266425\"\n}",
+                      "createdAt": "2026-10-22T02:05:13.000Z",
+                      "updatedAt": "2026-10-22T02:05:13.000Z",
+                      "uid": "35240-be824c7f-cd61-40e4-83b0-d297b8cda298"
+                    },
+                    {
+                      "id": "b5c69c65-4a91-4eab-9fb5-ae6423e2ce3c",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"config\": {\n    \"credentials\": {\n      \"accessKeyId\": \"<string>\",\n      \"secretAccessKey\": \"<string>\"\n    },\n    \"keyPath\": {\n      \"keyID\": \"<string>\",\n      \"region\": \"<string>\"\n    },\n    \"type\": \"AWS\",\n    \"version\": \"<integer>\"\n  },\n  \"leasingAllowed\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/1/kms/configs",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "kms",
+                            "configs"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-10-22T02:05:13.000Z",
+                      "updatedAt": "2026-10-22T02:05:13.000Z",
+                      "uid": "35240-b5c69c65-4a91-4eab-9fb5-ae6423e2ce3c"
+                    }
+                  ],
+                  "createdAt": "2026-10-22T02:05:13.000Z",
+                  "updatedAt": "2026-10-22T02:05:13.000Z",
+                  "uid": "35240-9bf120a1-cfa9-4a6a-afcf-edd1a1a30aaf"
                 }
               ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
+              "id": "98a690a3-4a0d-41e8-b3a5-cfbe625893eb",
+              "createdAt": "2026-10-22T02:05:13.000Z",
+              "updatedAt": "2026-10-22T02:05:13.000Z",
+              "uid": "35240-98a690a3-4a0d-41e8-b3a5-cfbe625893eb"
             }
           ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "cf80ff79-b289-47c1-a17d-a9006b945164",
-          "name": "KMS Config Create",
-          "request": {
-            "name": "KMS Config Create",
-            "description": {
-              "content": "Create a new KMS configuration. This configuration will not be assigned to any tenants.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "kms",
-                "configs"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"config\": {\n    \"credentials\": {\n      \"accessKeyId\": \"<string>\",\n      \"secretAccessKey\": \"<string>\"\n    },\n    \"keyPath\": {\n      \"keyID\": \"<string>\",\n      \"region\": \"<string>\"\n    },\n    \"type\": \"<string>\",\n    \"version\": \"<integer>\"\n  },\n  \"leasingAllowed\": \"<boolean>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
-            {
-              "id": "6db8d1af-3dc8-47d4-ba01-15e2b825e227",
-              "name": "Result of creating a KMS configuration",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "kms",
-                    "configs"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": 803,\n  \"encryptedConfig\": \"AgA4eyJfZGlkXyI6IjVkMW\",\n  \"kmsType\": \"AZURE\",\n  \"version\": 1,\n  \"createdBy\": {\n    \"id\": \"vendor\",\n    \"name\": \"Vendor\",\n    \"type\": \"Va\"\n  },\n  \"leasingAllowed\": false,\n  \"assignmentCount\": 0,\n  \"created\": \"2022-01-13T21:44:43.653Z\",\n  \"updated\": \"2022-01-13T21:44:43.653Z\",\n  \"secretCount\": 0\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "4134add4-2c1c-4e46-8f40-3b2fd5dbd75e",
-              "name": "Unauthorized",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "kms",
-                    "configs"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "27a0f4d8-0b9a-422b-bf50-2ad49aad70c7",
-          "name": "KMS Config Get",
-          "request": {
-            "name": "KMS Config Get",
-            "description": {
-              "content": "Get the specified KMS configuration. \nReturns metadata and, if your organization owns the configuration, the decrypted data.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "kms",
-                "configs",
-                ":kmsConfigId"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<integer>",
-                  "key": "kmsConfigId",
-                  "description": "(Required) KMS Configuration ID"
-                }
-              ]
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "bdded961-a045-4b78-8d27-e9108b912353",
-              "name": "Result of decrypting a KMS configuration",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "kms",
-                    "configs",
-                    ":kmsConfigId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "kmsConfigId",
-                      "description": "(Required) KMS Configuration ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": 803,\n  \"decryptedConfig\": {\n    \"keyPath\": {\n      \"keyName\": \"myKeyPath\",\n      \"vaultBaseUrl\": \"myVaultBaseUrl\"\n    },\n    \"type\": \"AZURE\",\n    \"version\": 1\n  },\n  \"createdBy\": {\n    \"id\": \"vendor\",\n    \"name\": \"Vendor\",\n    \"type\": \"Va\"\n  },\n  \"leasingAllowed\": false,\n  \"assignmentCount\": 2,\n  \"created\": \"2022-01-13T21:44:43.653Z\",\n  \"updated\": \"2022-01-13T21:44:43.653Z\",\n  \"secretCount\": 0\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "95ce21f0-b07e-4c68-b23d-53cb5d7ae988",
-              "name": "Unauthorized",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "kms",
-                    "configs",
-                    ":kmsConfigId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "kmsConfigId",
-                      "description": "(Required) KMS Configuration ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            },
-            {
-              "id": "1d82f47f-9862-4a73-8bde-e4772587456f",
-              "name": "Unprocessable Entity  \nPossible causes:  \n\\- Invalid KMS configuration ID provided  \n\\- Kms configuration not owned by calling vendor",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "kms",
-                    "configs",
-                    ":kmsConfigId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "kmsConfigId",
-                      "description": "(Required) KMS Configuration ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-              "code": 422,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "8a0c5d6f-7144-435e-b27e-bca6fe9d1a58",
-          "name": "KMS Config Update",
-          "request": {
-            "name": "KMS Config Update",
-            "description": {
-              "content": "Update the specified KMS configuration's encrypted data or enable/disable key leasing for the configuration. The configuration must be owned by the calling vendor.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "kms",
-                "configs",
-                ":kmsConfigId"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<integer>",
-                  "key": "kmsConfigId",
-                  "description": "(Required) KMS Configuration ID"
-                }
-              ]
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "PUT",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"config\": {\n    \"credentials\": {\n      \"accessKeyId\": \"<string>\",\n      \"secretAccessKey\": \"<string>\"\n    },\n    \"type\": \"<string>\",\n    \"version\": \"<integer>\"\n  },\n  \"leasingAllowed\": \"<boolean>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
-            {
-              "id": "5dd0f01a-934f-4b48-b7f8-922c3259863f",
-              "name": "Result of updating a KMS configuration",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "kms",
-                    "configs",
-                    ":kmsConfigId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "kmsConfigId",
-                      "description": "(Required) KMS Configuration ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "PUT",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": 1,\n  \"encryptedConfig\": \"AgA4eyJfZGlkXyI6IjVkMW\",\n  \"kmsType\": \"AZURE\",\n  \"version\": 1,\n  \"createdBy\": {\n    \"id\": \"vendor\",\n    \"name\": \"Vendor\",\n    \"type\": \"Va\"\n  },\n  \"leasingAllowed\": true,\n  \"assignmentCount\": 0,\n  \"created\": \"2022-01-13T21:44:43.653Z\",\n  \"updated\": \"2022-01-13T21:44:43.653Z\",\n  \"secretCount\": 0\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "134fbff9-318c-463a-b7e8-a9d76dc96d3e",
-              "name": "Unauthorized",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "kms",
-                    "configs",
-                    ":kmsConfigId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "kmsConfigId",
-                      "description": "(Required) KMS Configuration ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "PUT",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            },
-            {
-              "id": "35ec2733-4bd8-4097-adf0-077f73c66583",
-              "name": "Unprocessable Entity\nPossible causes:\n\\- Invalid KMS configuration ID provided\n\\- Kms configuration not owned by calling vendor",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "kms",
-                    "configs",
-                    ":kmsConfigId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "kmsConfigId",
-                      "description": "(Required) KMS Configuration ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "PUT",
-                "body": {}
-              },
-              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-              "code": 422,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "c53ec96f-8732-4298-be7e-8a3d496f6853",
-          "name": "KMS Config Delete",
-          "request": {
-            "name": "KMS Config Delete",
-            "description": {
-              "content": "Delete the specified KMS configuration. In order to succeed, the configuration must be owned by the calling vendor and not have any tenant assignments.\n\nThis API allows for destructively offboarding a tenant with active secrets. Secrets are not recoverable and any downstream services (Deterministic Encryption, Cloaked Search) will fail when attempting to do things with those secrets. **We strongly advise checking for `secret_count == 0` before issuing a KMS Configuration DELETE**.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "kms",
-                "configs",
-                ":kmsConfigId"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<integer>",
-                  "key": "kmsConfigId",
-                  "description": "(Required) KMS Configuration ID"
-                }
-              ]
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "DELETE",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "8349af4d-7d4a-4359-b263-959b9e3ae339",
-              "name": "Result of deleting a KMS configuration",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "kms",
-                    "configs",
-                    ":kmsConfigId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "kmsConfigId",
-                      "description": "(Required) KMS Configuration ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "DELETE",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": 803\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "e9e11c8a-5c4f-4756-b03e-58fe2f9d864d",
-              "name": "Unauthorized",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "kms",
-                    "configs",
-                    ":kmsConfigId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "kmsConfigId",
-                      "description": "(Required) KMS Configuration ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "DELETE",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            },
-            {
-              "id": "6099cf70-2b81-4b8e-816f-dcb76789bcf0",
-              "name": "Unprocessable Entity  \nPossible causes:  \n\\- Invalid KMS configuration ID provided  \n\\- Kms configuration not owned by calling vendor  \n\\- Config currently in use via an assignment",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "kms",
-                    "configs",
-                    ":kmsConfigId"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "kmsConfigId",
-                      "description": "(Required) KMS Configuration ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "DELETE",
-                "body": {}
-              },
-              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-              "code": 422,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
+          "id": "e326304e-fc7e-49fb-9f20-8ba45a7f6ecc",
+          "createdAt": "2026-10-22T02:05:13.000Z",
+          "updatedAt": "2026-10-22T02:05:13.000Z",
+          "uid": "35240-e326304e-fc7e-49fb-9f20-8ba45a7f6ecc"
         }
       ],
-      "event": []
-    }
-  ],
-  "event": [],
-  "variable": [
-    {
-      "type": "string",
-      "value": "http://localhost:3000/api",
-      "key": "baseUrl"
+      "id": "0952bc53-1895-487c-b397-b1b321821cb4",
+      "createdAt": "2026-10-22T02:05:13.000Z",
+      "updatedAt": "2026-10-22T02:05:13.000Z",
+      "uid": "35240-0952bc53-1895-487c-b397-b1b321821cb4"
     }
   ],
   "auth": {
@@ -1092,25 +1082,25 @@
     "apikey": [
       {
         "key": "key",
-        "value": "Authorization"
+        "value": "Authorization",
+        "type": "string"
       },
       {
         "key": "value",
-        "value": "{{apiKey}}"
+        "value": "{{apiKey}}",
+        "type": "string"
       },
       {
         "key": "in",
-        "value": "header"
+        "value": "header",
+        "type": "string"
       }
     ]
   },
-  "info": {
-    "_postman_id": "d300aa78-4c75-41f9-8593-213f200d258c",
-    "name": "Vendor API Bridge Configuration Assignment KMS Configuration API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": {
-      "content": "API used to manage tenants and KMS configurations by communicating with the IronCore Configuration Broker on your behalf.\n\nContact Support:\n Name: IronCore Labs\n Email: info@ironcorelabs.com",
-      "type": "text/plain"
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
     }
-  }
+  ]
 }

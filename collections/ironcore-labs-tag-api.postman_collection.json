@@ -1,877 +1,944 @@
 {
+  "info": {
+    "_postman_id": "86882401-c26b-46dd-b7f2-bf86504fb5b1",
+    "name": "Vendor API Bridge Tag API",
+    "description": "API used to manage tenants and KMS configurations by communicating with the IronCore Configuration Broker on your behalf.\n\nContact Support:\n Name: IronCore Labs\n Email: info@ironcorelabs.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-22T02:05:16.000Z",
+    "updatedAt": "2026-10-22T02:05:17.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-86882401-c26b-46dd-b7f2-bf86504fb5b1"
+  },
   "item": [
     {
-      "id": "652938a2-ea4f-4982-b664-8ab9e8d6b08a",
-      "name": "Tag",
-      "description": {
-        "content": "Label shared between service account configs and tenants. Controls where KMS configurations can be sent.",
-        "type": "text/plain"
-      },
+      "name": "1",
       "item": [
         {
-          "id": "d851642d-e8f1-40e7-a3a6-e388646ec415",
-          "name": "Tag List",
-          "request": {
-            "name": "Tag List",
-            "description": {
-              "content": "List all the tags created by the current vendor organization.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "tags"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
+          "name": "tags",
+          "item": [
+            {
+              "name": "{tagId}",
+              "item": [
                 {
-                  "disabled": false,
-                  "key": "page",
-                  "value": "1",
-                  "description": "Page number to return"
-                },
-                {
-                  "disabled": false,
-                  "key": "pageSize",
-                  "value": "10",
-                  "description": "Number of entries returned per page"
-                },
-                {
-                  "disabled": false,
-                  "key": "tagText",
-                  "value": "<string>",
-                  "description": "Tag text to filter to"
+                  "name": "tenants",
+                  "item": [
+                    {
+                      "name": "Tag Assign to Tenant",
+                      "id": "fc1f8e1e-87fe-4ec5-adbf-c8c7e0e53ada",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"tenantIds\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/1/tags/:tagId/tenants",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "tags",
+                            ":tagId",
+                            "tenants"
+                          ],
+                          "variable": [
+                            {
+                              "id": "9bc33fbf-03ff-4367-b5d5-7eee65e68d90",
+                              "key": "tagId",
+                              "value": "<integer>",
+                              "description": "(Required) Tag ID"
+                            }
+                          ]
+                        },
+                        "description": "Assign the given tag to a number of tenants."
+                      },
+                      "response": [
+                        {
+                          "id": "d9d4efbc-7329-460c-8841-ab963ea07ace",
+                          "name": "Response of modifying the tenants associated with a tag",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"tenantIds\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/1/tags/:tagId/tenants",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "tags",
+                                ":tagId",
+                                "tenants"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tagId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"succeeded\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"failed\": [\n    {\n      \"tenantId\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"tenantId\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-10-22T02:05:17.000Z",
+                          "updatedAt": "2026-10-22T02:05:17.000Z",
+                          "uid": "35240-d9d4efbc-7329-460c-8841-ab963ea07ace"
+                        },
+                        {
+                          "id": "f36a3210-0051-4dcd-b075-27f937dd2e93",
+                          "name": "Bad Request  \nInvalid Tag ID provided  ",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"tenantIds\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/1/tags/:tagId/tenants",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "tags",
+                                ":tagId",
+                                "tenants"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tagId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:05:17.000Z",
+                          "updatedAt": "2026-10-22T02:05:17.000Z",
+                          "uid": "35240-f36a3210-0051-4dcd-b075-27f937dd2e93"
+                        },
+                        {
+                          "id": "3f9ee890-e383-4472-9aff-b2b5609ee0d8",
+                          "name": "Unauthorized",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"tenantIds\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/1/tags/:tagId/tenants",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "tags",
+                                ":tagId",
+                                "tenants"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tagId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:05:17.000Z",
+                          "updatedAt": "2026-10-22T02:05:17.000Z",
+                          "uid": "35240-3f9ee890-e383-4472-9aff-b2b5609ee0d8"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:05:17.000Z",
+                      "updatedAt": "2026-10-22T02:05:17.000Z",
+                      "uid": "35240-fc1f8e1e-87fe-4ec5-adbf-c8c7e0e53ada"
+                    },
+                    {
+                      "name": "Tag Remove from Tenant",
+                      "id": "1061c927-4ccd-4f34-9f79-ed30036a1d1e",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "(Required) ID of requesting user/service",
+                            "key": "icl-requestor-id",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"tenantIds\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/1/tags/:tagId/tenants",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "1",
+                            "tags",
+                            ":tagId",
+                            "tenants"
+                          ],
+                          "variable": [
+                            {
+                              "id": "f7cdb164-207d-44fb-81e5-dde150d9d727",
+                              "key": "tagId",
+                              "value": "<integer>",
+                              "description": "(Required) Tag ID"
+                            }
+                          ]
+                        },
+                        "description": "Remove the association between the given tag and a number of tenants."
+                      },
+                      "response": [
+                        {
+                          "id": "8c4127fc-bd1b-4983-a8da-ef401558e335",
+                          "name": "Response of modifying the tenants associated with a tag",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"tenantIds\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/1/tags/:tagId/tenants",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "tags",
+                                ":tagId",
+                                "tenants"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tagId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"succeeded\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"failed\": [\n    {\n      \"tenantId\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"tenantId\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-10-22T02:05:17.000Z",
+                          "updatedAt": "2026-10-22T02:05:17.000Z",
+                          "uid": "35240-8c4127fc-bd1b-4983-a8da-ef401558e335"
+                        },
+                        {
+                          "id": "acc35958-013b-4303-8088-cc1658b0dcf2",
+                          "name": "Bad Request  \nInvalid Tag ID provided  ",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"tenantIds\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/1/tags/:tagId/tenants",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "tags",
+                                ":tagId",
+                                "tenants"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tagId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:05:17.000Z",
+                          "updatedAt": "2026-10-22T02:05:17.000Z",
+                          "uid": "35240-acc35958-013b-4303-8088-cc1658b0dcf2"
+                        },
+                        {
+                          "id": "c5460b8a-894a-4dd2-b466-cc8748255897",
+                          "name": "Unauthorized",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) ID of requesting user/service",
+                                "key": "icl-requestor-id",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"tenantIds\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/1/tags/:tagId/tenants",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "1",
+                                "tags",
+                                ":tagId",
+                                "tenants"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tagId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-10-22T02:05:17.000Z",
+                          "updatedAt": "2026-10-22T02:05:17.000Z",
+                          "uid": "35240-c5460b8a-894a-4dd2-b466-cc8748255897"
+                        }
+                      ],
+                      "createdAt": "2026-10-22T02:05:17.000Z",
+                      "updatedAt": "2026-10-22T02:05:17.000Z",
+                      "uid": "35240-1061c927-4ccd-4f34-9f79-ed30036a1d1e"
+                    }
+                  ],
+                  "id": "5e29b871-7e77-451a-9d96-73073b398408",
+                  "createdAt": "2026-10-22T02:05:17.000Z",
+                  "updatedAt": "2026-10-22T02:05:17.000Z",
+                  "uid": "35240-5e29b871-7e77-451a-9d96-73073b398408"
                 }
               ],
-              "variable": []
+              "id": "7b57e58a-da54-4a61-b39d-37247a2eec69",
+              "createdAt": "2026-10-22T02:05:17.000Z",
+              "updatedAt": "2026-10-22T02:05:17.000Z",
+              "uid": "35240-7b57e58a-da54-4a61-b39d-37247a2eec69"
             },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET",
-            "auth": null
-          },
-          "response": [
             {
-              "id": "e8518fcf-0e7f-4c92-a517-3f34ee4190fe",
-              "name": "Result of listing tags",
-              "originalRequest": {
+              "name": "Tag List",
+              "id": "fea76808-38bb-486e-aa98-50a480378190",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) ID of requesting user/service",
+                    "key": "icl-requestor-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
                 "url": {
+                  "raw": "{{baseUrl}}/1/tags?page=1&pageSize=10&tagText=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
                   "path": [
                     "1",
                     "tags"
                   ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
                   "query": [
                     {
+                      "description": "Page number to return",
                       "key": "page",
                       "value": "1"
                     },
                     {
+                      "description": "Number of entries returned per page",
                       "key": "pageSize",
                       "value": "10"
                     },
                     {
+                      "description": "Tag text to filter to",
                       "key": "tagText",
                       "value": "<string>"
                     }
-                  ],
-                  "variable": []
+                  ]
                 },
+                "description": "List all the tags created by the current vendor organization."
+              },
+              "response": [
+                {
+                  "id": "74afb6d7-85e1-4801-b56f-ee6f60f3f05c",
+                  "name": "Result of listing tags",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/1/tags?page=1&pageSize=10&tagText=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "1",
+                        "tags"
+                      ],
+                      "query": [
+                        {
+                          "description": "Page number to return",
+                          "key": "page",
+                          "value": "1"
+                        },
+                        {
+                          "description": "Number of entries returned per page",
+                          "key": "pageSize",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Tag text to filter to",
+                          "key": "tagText",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/javascript"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-10-22T02:05:17.000Z",
+                  "updatedAt": "2026-10-22T02:05:17.000Z",
+                  "uid": "35240-74afb6d7-85e1-4801-b56f-ee6f60f3f05c"
+                },
+                {
+                  "id": "63f8e680-da74-4b3e-ada9-1d11156c9b64",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/1/tags?page=1&pageSize=10&tagText=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "1",
+                        "tags"
+                      ],
+                      "query": [
+                        {
+                          "description": "Page number to return",
+                          "key": "page",
+                          "value": "1"
+                        },
+                        {
+                          "description": "Number of entries returned per page",
+                          "key": "pageSize",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Tag text to filter to",
+                          "key": "tagText",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-22T02:05:17.000Z",
+                  "updatedAt": "2026-10-22T02:05:17.000Z",
+                  "uid": "35240-63f8e680-da74-4b3e-ada9-1d11156c9b64"
+                }
+              ],
+              "createdAt": "2026-10-22T02:05:17.000Z",
+              "updatedAt": "2026-10-22T02:05:17.000Z",
+              "uid": "35240-fea76808-38bb-486e-aa98-50a480378190"
+            },
+            {
+              "name": "Tag Create",
+              "id": "5da7801b-3c2d-467c-9372-32ff02f6f05e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
                 "header": [
                   {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
                     "description": "(Required) ID of requesting user/service",
                     "key": "icl-requestor-id",
                     "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
                   },
                   {
                     "key": "Accept",
                     "value": "application/json"
                   }
                 ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"result\": [\n    {\n      \"id\": 8070,\n      \"tagText\": \"string\",\n      \"default\": true,\n      \"created\": \"2022-01-13T21:44:43.653Z\"\n    },\n    {\n      \"id\": 5335,\n      \"tagText\": \"string\",\n      \"default\": true,\n      \"created\": \"2022-01-13T21:44:43.653Z\"\n    }\n  ],\n  \"page\": 8087,\n  \"totalPages\": 8088\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "a97e7445-b4cd-4d5a-b415-b98934cb61ff",
-              "name": "Unauthorized",
-              "originalRequest": {
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tagText\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
+                  "raw": "{{baseUrl}}/1/tags",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
                   "path": [
                     "1",
                     "tags"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [
-                    {
-                      "key": "page",
-                      "value": "1"
+                  ]
+                },
+                "description": "Create a new tag in the organization. This tag can then be assigned to tenants and service account configs to control access to KMS configurations. When a tag is no longer being used by an tenants or service account configs, it may be automatically deleted."
+              },
+              "response": [
+                {
+                  "id": "a34add69-1695-4e32-8f96-334399505a78",
+                  "name": "Response from creating a tag",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"tagText\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
                     },
+                    "url": {
+                      "raw": "{{baseUrl}}/1/tags",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "1",
+                        "tags"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
                     {
-                      "key": "pageSize",
-                      "value": "10"
-                    },
-                    {
-                      "key": "tagText",
-                      "value": "<string>"
+                      "key": "Content-Type",
+                      "value": "application/json"
                     }
                   ],
-                  "variable": []
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<integer>\",\n  \"tagText\": \"<string>\",\n  \"default\": \"<boolean>\",\n  \"created\": \"8475-24-00T79:56:59.4-08:88\"\n}",
+                  "createdAt": "2026-10-22T02:05:17.000Z",
+                  "updatedAt": "2026-10-22T02:05:17.000Z",
+                  "uid": "35240-a34add69-1695-4e32-8f96-334399505a78"
                 },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
                 {
-                  "key": "Content-Type",
-                  "value": "text/plain"
+                  "id": "cdba319e-42e1-4778-ac8e-cc3e45a17d2f",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"tagText\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/1/tags",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "1",
+                        "tags"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-22T02:05:17.000Z",
+                  "updatedAt": "2026-10-22T02:05:17.000Z",
+                  "uid": "35240-cdba319e-42e1-4778-ac8e-cc3e45a17d2f"
+                },
+                {
+                  "id": "d4dc2ed5-b001-4d66-9d49-5d67559d0a21",
+                  "name": "Unprocessable Entity (WebDAV)\nProvided tag name already exists.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) ID of requesting user/service",
+                        "key": "icl-requestor-id",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"tagText\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/1/tags",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "1",
+                        "tags"
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-10-22T02:05:17.000Z",
+                  "updatedAt": "2026-10-22T02:05:17.000Z",
+                  "uid": "35240-d4dc2ed5-b001-4d66-9d49-5d67559d0a21"
                 }
               ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
+              "createdAt": "2026-10-22T02:05:17.000Z",
+              "updatedAt": "2026-10-22T02:05:17.000Z",
+              "uid": "35240-5da7801b-3c2d-467c-9372-32ff02f6f05e"
             }
           ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "6e249296-6f92-4cd3-9e03-45ca9f8cca58",
-          "name": "Tag Create",
-          "request": {
-            "name": "Tag Create",
-            "description": {
-              "content": "Create a new tag in the organization. This tag can then be assigned to tenants and service account configs to control access to KMS configurations. When a tag is no longer being used by an tenants or service account configs, it may be automatically deleted.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "tags"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"tagText\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
-            {
-              "id": "6b767a20-4b77-4b1f-8216-b38dc2a0566c",
-              "name": "Response from creating a tag",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tags"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"id\": 1,\n  \"tagText\": \"string\",\n  \"default\": true,\n  \"created\": \"2022-01-13T21:44:43.653Z\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "cbe542fb-bc79-47ae-9bac-178fed026ad9",
-              "name": "Unauthorized",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tags"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            },
-            {
-              "id": "923b2094-f719-48e3-9d78-bd74c27a14fc",
-              "name": "Unprocessable Entity (WebDAV)\nProvided tag name already exists.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tags"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-              "code": 422,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "3ffe2066-dc69-4143-af79-f49be59200df",
-          "name": "Tag Assign to Tenant",
-          "request": {
-            "name": "Tag Assign to Tenant",
-            "description": {
-              "content": "Assign the given tag to a number of tenants.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "tags",
-                ":tagId",
-                "tenants"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<integer>",
-                  "key": "tagId",
-                  "description": "(Required) Tag ID"
-                }
-              ]
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"tenantIds\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
-            {
-              "id": "51164aff-c41d-4a35-89d4-c41c5735ba29",
-              "name": "Response of modifying the tenants associated with a tag",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tags",
-                    ":tagId",
-                    "tenants"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "tagId",
-                      "description": "(Required) Tag ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"succeeded\": [\n    \"tenant-icl\",\n    \"tenant-icl\"\n  ],\n  \"failed\": [\n    {\n      \"tenantId\": \"tenant-icl\",\n      \"message\": \"string\"\n    },\n    {\n      \"tenantId\": \"tenant-icl\",\n      \"message\": \"string\"\n    }\n  ]\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "4e726b38-086b-4265-91f4-288488921561",
-              "name": "Bad Request  \nInvalid Tag ID provided  ",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tags",
-                    ":tagId",
-                    "tenants"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "tagId",
-                      "description": "(Required) Tag ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            },
-            {
-              "id": "17b6f722-4802-4c77-b2b6-a0308e146516",
-              "name": "Unauthorized",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tags",
-                    ":tagId",
-                    "tenants"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "tagId",
-                      "description": "(Required) Tag ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "7eb761de-8df6-410f-882f-d1ef5eeeb57b",
-          "name": "Tag Remove from Tenant",
-          "request": {
-            "name": "Tag Remove from Tenant",
-            "description": {
-              "content": "Remove the association between the given tag and a number of tenants.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "1",
-                "tags",
-                ":tagId",
-                "tenants"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<integer>",
-                  "key": "tagId",
-                  "description": "(Required) Tag ID"
-                }
-              ]
-            },
-            "header": [
-              {
-                "disabled": false,
-                "description": "(Required) ID of requesting user/service",
-                "key": "icl-requestor-id",
-                "value": "<string>"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "DELETE",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"tenantIds\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
-            {
-              "id": "879a7a26-51ea-493b-9bef-7102f147f53f",
-              "name": "Response of modifying the tenants associated with a tag",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tags",
-                    ":tagId",
-                    "tenants"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "tagId",
-                      "description": "(Required) Tag ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "DELETE",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"succeeded\": [\n    \"tenant-icl\",\n    \"tenant-icl\"\n  ],\n  \"failed\": [\n    {\n      \"tenantId\": \"tenant-icl\",\n      \"message\": \"string\"\n    },\n    {\n      \"tenantId\": \"tenant-icl\",\n      \"message\": \"string\"\n    }\n  ]\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "fb071b21-cd8c-4a71-bafc-69a8ec9ae559",
-              "name": "Bad Request  \nInvalid Tag ID provided  ",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tags",
-                    ":tagId",
-                    "tenants"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "tagId",
-                      "description": "(Required) Tag ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "DELETE",
-                "body": {}
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            },
-            {
-              "id": "c101ff31-d9d2-472d-94ff-78dd92549f7b",
-              "name": "Unauthorized",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "1",
-                    "tags",
-                    ":tagId",
-                    "tenants"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "disabled": false,
-                      "type": "any",
-                      "value": "<integer>",
-                      "key": "tagId",
-                      "description": "(Required) Tag ID"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "description": "(Required) ID of requesting user/service",
-                    "key": "icl-requestor-id",
-                    "value": "<string>"
-                  }
-                ],
-                "method": "DELETE",
-                "body": {}
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
+          "id": "42e212aa-fc7c-4d38-a9ae-3823452f205c",
+          "createdAt": "2026-10-22T02:05:17.000Z",
+          "updatedAt": "2026-10-22T02:05:17.000Z",
+          "uid": "35240-42e212aa-fc7c-4d38-a9ae-3823452f205c"
         }
       ],
-      "event": []
-    }
-  ],
-  "event": [],
-  "variable": [
-    {
-      "type": "string",
-      "value": "http://localhost:3000/api",
-      "key": "baseUrl"
+      "id": "118685ca-3e7b-49ba-9f22-260f5e804a07",
+      "createdAt": "2026-10-22T02:05:17.000Z",
+      "updatedAt": "2026-10-22T02:05:17.000Z",
+      "uid": "35240-118685ca-3e7b-49ba-9f22-260f5e804a07"
     }
   ],
   "auth": {
@@ -879,25 +946,25 @@
     "apikey": [
       {
         "key": "key",
-        "value": "Authorization"
+        "value": "Authorization",
+        "type": "string"
       },
       {
         "key": "value",
-        "value": "{{apiKey}}"
+        "value": "{{apiKey}}",
+        "type": "string"
       },
       {
         "key": "in",
-        "value": "header"
+        "value": "header",
+        "type": "string"
       }
     ]
   },
-  "info": {
-    "_postman_id": "1632eef3-1790-4c9a-a51b-f421ddf7f53e",
-    "name": "Vendor API Bridge Configuration Assignment Tag API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": {
-      "content": "API used to manage tenants and KMS configurations by communicating with the IronCore Configuration Broker on your behalf.\n\nContact Support:\n Name: IronCore Labs\n Email: info@ironcorelabs.com",
-      "type": "text/plain"
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
     }
-  }
+  ]
 }
