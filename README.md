@@ -64,6 +64,127 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-IronCore Labs is a company surfaced as a portfolio company of techstars and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+IronCore Labs builds application-layer encryption tools that keep sensitive data private while it stays usable. Its products include SaaS Shield (tenant-controlled envelope encryption with customer-managed keys / BYOK for multi-tenant SaaS), Cloaked Search (a transparent encrypting proxy for Elasticsearch and OpenSearch), Cloaked AI (encryption of vector embeddings for AI/RAG workloads while preserving similarity search), the Data Control Platform (end-to-end encryption SDKs where the end user holds the key), and an S3 Proxy for per-tenant object encryption. Developers integrate through the unified IronCore Alloy SDK (Rust, Python, Java, Kotlin), the legacy Tenant Security Client (Node.js, Go, PHP), and the self-hosted Vendor API Bridge REST API for programmatic tenant and KMS configuration management.
 
-Backed by: techstars — https://ironcorelabs.com/
+**Areas:** Company · Encryption · Privacy · Security · Application-Layer Encryption · Key Management · Cryptography · Artificial Intelligence · Software-as-a-Service
+
+## IronCore Labs on APIs.io
+
+Everything profiled for IronCore Labs is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/ironcore-labs/](https://apis.io/providers/ironcore-labs/)** — or go straight to one of the APIs or properties below.
+
+### APIs (5)
+
+- [IronCore Labs Configuration Assignment API](https://apis.io/apis/ironcore-labs/ironcore-labs-configuration-assignment-api/) — Assignments between KMS configurations and tenants
+- [IronCore Labs KMS Configuration API](https://apis.io/apis/ironcore-labs/ironcore-labs-kms-configuration-api/) — KMS configurations from different providers (AWS, Azure, GCP, Thales)
+- [IronCore Labs Tag API](https://apis.io/apis/ironcore-labs/ironcore-labs-tag-api/) — Label shared between service account configs and tenants. Controls where KMS configurations can be sent.
+- [IronCore Labs Tenant API](https://apis.io/apis/ironcore-labs/ironcore-labs-tenant-api/) — Vendor tenants managed by the Config Broker
+- [IronCore Labs Tenant Secret API](https://apis.io/apis/ironcore-labs/ironcore-labs-tenant-secret-api/) — Tenant secrets created by the TSP and stored in the Config Broker
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [ironcore-vendor-bridge](https://apis.io/servers/ironcore-labs/ironcore-vendor-bridge/)
+
+#### Collections (5)
+
+Postman and Open Collection request collections.
+
+- [Vendor API Bridge Configuration Assignment API](https://apis.io/collections/ironcore-labs/open-ironcore-labs-configuration-assignment-api/)
+- [Vendor API Bridge Configuration Assignment KMS Configuration API](https://apis.io/collections/ironcore-labs/open-ironcore-labs-kms-configuration-api/)
+- [Vendor API Bridge Configuration Assignment Tag API](https://apis.io/collections/ironcore-labs/open-ironcore-labs-tag-api/)
+- [Vendor API Bridge Configuration Assignment Tenant API](https://apis.io/collections/ironcore-labs/open-ironcore-labs-tenant-api/)
+- [Vendor API Bridge Configuration Assignment Tenant Secret API](https://apis.io/collections/ironcore-labs/open-ironcore-labs-tenant-secret-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Ironcore Labs Vendor Bridge Overlay](https://apis.io/overlays/ironcore-labs/ironcore-labs-vendor-bridge-overlay/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Ironcore Labs Authentication](https://apis.io/security/ironcore-labs/ironcore-labs-authentication/)
+- [Ironcore Labs Domain Security](https://apis.io/security/ironcore-labs/ironcore-labs-domain-security/)
+- [Ironcore Labs Trust Center](https://apis.io/security/ironcore-labs/ironcore-labs-trust-center/)
+- [Ironcore Labs Vulnerability Disclosure](https://apis.io/security/ironcore-labs/ironcore-labs-vulnerability-disclosure/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://ironcorelabs.com/)
+- [Documentation](https://ironcorelabs.com/docs/)
+- [Getting started](https://ironcorelabs.com/docs/data-control-platform/quickstart/)
+- [API reference](https://ironcorelabs.com/docs/saas-shield/vendor-api/overview/)
+- [Pricing](https://ironcorelabs.com/pricing/)
+- [Support](https://github.com/IronCoreLabs/community)
+- [Blog](https://ironcorelabs.com/blog/)
+- [Security](https://ironcorelabs.com/trust-center/bug-bounty-program/)
+- [Compliance](https://ironcorelabs.com/trust-center/)
+- [Trust centre](https://ironcorelabs.com/trust-center/)
+- [Terms of service](https://ironcorelabs.com/trust-center/terms-of-service/)
+- [Privacy policy](https://ironcorelabs.com/trust-center/privacy/)
+- [GitHub](https://github.com/IronCoreLabs)
+- [Status](https://ironcorelabs.github.io/upptime/)
+
+## API Evangelist rating
+
+**Kin Score 52.9** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 64.3 |
+| Contract quality | 51.3 |
+| Contract governance | 4.5 |
+| Operational transparency | 52.6 |
+| Developer ergonomics | 74.4 |
+| Access clarity | 47.4 |
+
+**Agent readiness 26.2** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 32.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/ironcore-labs/](https://apis.io/providers/ironcore-labs/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for IronCore Labs: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/ironcore-labs/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
